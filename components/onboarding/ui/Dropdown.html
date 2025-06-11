@@ -1,0 +1,185 @@
+<!-- 
+  Dropdown Component
+  A custom styled select dropdown menu
+  
+  Usage: 
+  <div id="model-dropdown-container" 
+       data-component="components/onboarding/ui/Dropdown.html"
+       data-param-id="porsche-model"
+       data-param-label="Porsche Model"
+       data-param-required="true"
+       data-param-options='[
+         {"value": "", "text": "Select your Porsche model", "disabled": true, "selected": true},
+         {"value": "911", "text": "911"},
+         {"value": "Taycan", "text": "Taycan"},
+         {"value": "Cayenne", "text": "Cayenne"},
+         {"value": "Macan", "text": "Macan"},
+         {"value": "Panamera", "text": "Panamera"},
+         {"value": "718", "text": "718 Cayman/Boxster"}
+       ]'
+       data-param-helpText="Select the model of your Porsche vehicle"></div>
+  
+  Parameters:
+  - id: Select field ID (required)
+  - label: Field label text (required)
+  - required: Whether field is required (default: false)
+  - options: Array of option objects with value, text, disabled, selected properties (required)
+  - helpText: Additional helper text (optional)
+-->
+
+<div class="form-control dropdown-component">
+  <label class="block mb-2 font-medium" for="{{id}}">{{label}}</label>
+  <div class="custom-select">
+    <select id="{{id}}" {{#required}}required{{/required}}>
+      <!-- Options will be inserted here by JavaScript -->
+    </select>
+  </div>
+  {{#helpText}}
+  <p class="text-sm text-gray-600 mt-1">{{helpText}}</p>
+  {{/helpText}}
+  <div class="error-container"></div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component elements
+    const component = document.currentScript.parentElement;
+    const select = component.querySelector('select');
+    const errorContainer = component.querySelector('.error-container');
+    
+    if (!select) return;
+    
+    // Parse options from parameter
+    const optionsParam = '{{options}}';
+    
+    if (optionsParam) {
+      try {
+        const options = JSON.parse(optionsParam.replace(/&quot;/g, '"'));
+        
+        // Generate the options HTML
+        options.forEach(option => {
+          const optElement = document.createElement('option');
+          optElement.value = option.value;
+          optElement.textContent = option.text;
+          
+          if (option.disabled) {
+            optElement.disabled = true;
+          }
+          
+          if (option.selected) {
+            optElement.selected = true;
+          }
+          
+          select.appendChild(optElement);
+        });
+      } catch (e) {
+        console.error('Failed to parse options JSON:', e);
+      }
+    }
+    
+    // Add change event listener
+    select.addEventListener('change', function() {
+      validate();
+      // Dispatch change event to parent form
+      dispatchChangeEvent();
+    });
+    
+    // Add blur event listener for validation
+    select.addEventListener('blur', function() {
+      validate();
+    });
+    
+    // Validate the select
+    function validate() {
+      let isValid = true;
+      let errorMessage = '';
+      
+      // Clear existing errors
+      clearError();
+      
+      // Check if required and no option selected (or default option selected)
+      if (select.required && (!select.value || select.value === '')) {
+        isValid = false;
+        errorMessage = 'Please select an option';
+      }
+      
+      // Show error if not valid
+      if (!isValid) {
+        showError(errorMessage);
+        select.classList.add('border-red-500');
+      } else {
+        select.classList.remove('border-red-500');
+      }
+      
+      return isValid;
+    }
+    
+    // Show error message
+    function showError(message) {
+      if (!errorContainer) return;
+      
+      const errorElement = document.createElement('p');
+      errorElement.className = 'error-message text-red-500 text-sm mt-1';
+      errorElement.textContent = message;
+      errorContainer.appendChild(errorElement);
+    }
+    
+    // Clear error message
+    function clearError() {
+      if (!errorContainer) return;
+      errorContainer.innerHTML = '';
+    }
+    
+    // Dispatch change event
+    function dispatchChangeEvent() {
+      const changeEvent = new CustomEvent('dropdownChange', {
+        bubbles: true,
+        detail: {
+          id: select.id,
+          value: select.value,
+          selectedText: select.options[select.selectedIndex].text,
+          valid: validate()
+        }
+      });
+      
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Expose validation method to parent
+    window.validateDropdown = function(dropdownId) {
+      if (select.id === dropdownId) {
+        return validate();
+      }
+      return true;
+    };
+    
+    // Expose get/set value methods
+    window.getDropdownValue = function(dropdownId) {
+      if (select.id === dropdownId) {
+        return {
+          value: select.value,
+          text: select.options[select.selectedIndex].text
+        };
+      }
+      return null;
+    };
+    
+    window.setDropdownValue = function(dropdownId, value) {
+      if (select.id === dropdownId && select) {
+        select.value = value;
+        // Trigger validation
+        validate();
+        // Dispatch change event
+        dispatchChangeEvent();
+      }
+    };
+    
+    // Initial validation
+    validate();
+    
+  } catch (error) {
+    console.error('Error initializing Dropdown component:', error);
+  }
+})();
+</script>

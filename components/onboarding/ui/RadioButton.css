@@ -1,0 +1,84 @@
+/* RadioButton Component Styles */
+
+.radio-button-component {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.radio-button-component .custom-radio {
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
+}
+
+.radio-button-component .custom-radio input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.radio-button-component .radio-mark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.radio-button-component .custom-radio:hover input ~ .radio-mark {
+  border-color: #000000;
+}
+
+.radio-button-component .custom-radio input:checked ~ .radio-mark {
+  border-color: #000000;
+}
+
+.radio-button-component .radio-mark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.radio-button-component .custom-radio input:checked ~ .radio-mark:after {
+  display: block;
+}
+
+.radio-button-component .custom-radio .radio-mark:after {
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #000000;
+}
+
+/* Focus state */
+.radio-button-component .custom-radio input:focus ~ .radio-mark {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled state */
+.radio-button-component .custom-radio input:disabled ~ .radio-mark {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+.radio-button-component .custom-radio input:disabled ~ .radio-mark:after {
+  background-color: #9ca3af;
+}
+
+.radio-button-component .custom-radio input:disabled {
+  cursor: not-allowed;
+}
+
+.radio-button-component .custom-radio:hover input:disabled ~ .radio-mark {
+  border-color: #d1d5db;
+}

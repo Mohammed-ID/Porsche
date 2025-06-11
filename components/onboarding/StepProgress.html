@@ -1,0 +1,94 @@
+<!-- 
+  StepProgress Component
+  Usage: 
+  <div id="step-progress-container" data-component="components/onboarding/StepProgress.html" 
+       data-param-currentStep="1"
+       data-param-steps='[
+         {"number": 1, "title": "Personal Information", "description": "Tell us about yourself"},
+         {"number": 2, "title": "Choose a Plan", "description": "Select your coverage"},
+         {"number": 3, "title": "Payment Details", "description": "Complete your purchase"},
+         {"number": 4, "title": "Confirmation", "description": "Review your policy"}
+       ]'></div>
+-->
+<div class="mb-12 sm:mb-16">
+  <div class="step-progress mb-6">
+    <div class="step-line"></div>
+    <div class="step-progress-bar" id="progress-bar" style="width: {{progressPercentage}}%;"></div>
+    <div class="step-circles">
+      {{#steps}}
+      <div class="step-circle{{#active}} active{{/active}}{{#completed}} completed{{/completed}}">{{number}}</div>
+      {{/steps}}
+    </div>
+  </div>
+  <div class="text-center">
+    <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-2" id="step-title">
+      {{currentTitle}}
+    </h2>
+    <p class="text-gray-600 max-w-lg mx-auto" id="step-description">
+      {{currentDescription}}
+    </p>
+  </div>
+</div>
+
+<script>
+  (function() {
+    try {
+      // Get the current step
+      const currentStep = parseInt('{{currentStep}}', 10);
+      
+      // Parse the steps from the data-param-steps attribute
+      const stepsParam = '{{steps}}';
+      let steps;
+      
+      try {
+        steps = JSON.parse(stepsParam.replace(/&quot;/g, '"'));
+      } catch (e) {
+        console.error('Failed to parse steps JSON:', e);
+        return;
+      }
+      
+      // Update step circles
+      const stepCircles = document.querySelectorAll('.step-circle');
+      const progressBar = document.getElementById('progress-bar');
+      const stepTitle = document.getElementById('step-title');
+      const stepDescription = document.getElementById('step-description');
+      
+      // Create a function to update the progress UI
+      window.updateStepProgress = function(step) {
+        // Calculate progress percentage
+        const totalSteps = steps.length;
+        const percentage = ((step - 1) / (totalSteps - 1)) * 100;
+        
+        // Update progress bar
+        if (progressBar) {
+          progressBar.style.width = percentage + '%';
+        }
+        
+        // Update step circles
+        stepCircles.forEach((circle, index) => {
+          if (index + 1 < step) {
+            circle.classList.remove('active');
+            circle.classList.add('completed');
+          } else if (index + 1 === step) {
+            circle.classList.add('active');
+            circle.classList.remove('completed');
+          } else {
+            circle.classList.remove('active', 'completed');
+          }
+        });
+        
+        // Update step title and description
+        if (stepTitle && stepDescription && steps[step - 1]) {
+          stepTitle.textContent = steps[step - 1].title;
+          stepDescription.textContent = steps[step - 1].description;
+        }
+      };
+      
+      // Initialize the progress to the current step
+      window.updateStepProgress(currentStep);
+      
+    } catch (error) {
+      console.error('Error initializing StepProgress component:', error);
+    }
+  })();
+</script>

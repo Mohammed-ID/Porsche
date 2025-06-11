@@ -1,0 +1,168 @@
+<!-- 
+  DatePicker Component
+  A custom styled date picker
+  
+  Usage: 
+  <div id="start-date-picker-container" 
+       data-component="components/onboarding/ui/DatePicker.html"
+       data-param-id="start-date"
+       data-param-label="Insurance Start Date"
+       data-param-required="true"
+       data-param-min="2025-01-01"
+       data-param-max="2026-12-31"
+       data-param-value="2025-07-01"></div>
+  
+  Parameters:
+  - id: Date field ID (required)
+  - label: Field label text (required)
+  - required: Whether field is required (default: false)
+  - min: Minimum allowed date (optional)
+  - max: Maximum allowed date (optional)
+  - value: Initial date value (optional)
+  - helpText: Additional helper text (optional)
+-->
+
+<div class="form-control date-picker-component">
+  <label class="block mb-2 font-medium" for="{{id}}">{{label}}</label>
+  <input type="date" id="{{id}}" 
+         {{#required}}required{{/required}} 
+         {{#min}}min="{{min}}"{{/min}} 
+         {{#max}}max="{{max}}"{{/max}} 
+         {{#value}}value="{{value}}"{{/value}}>
+  {{#helpText}}
+  <p class="text-sm text-gray-600 mt-1">{{helpText}}</p>
+  {{/helpText}}
+  <div class="error-container"></div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component elements
+    const component = document.currentScript.parentElement;
+    const input = component.querySelector('input[type="date"]');
+    const errorContainer = component.querySelector('.error-container');
+    
+    if (!input) return;
+    
+    // Set default date to today if no value is provided
+    if (!input.value) {
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
+      input.value = formattedDate;
+    }
+    
+    // Add change event listener
+    input.addEventListener('change', function() {
+      validate();
+      // Dispatch change event to parent form
+      dispatchChangeEvent();
+    });
+    
+    // Add blur event listener for validation
+    input.addEventListener('blur', function() {
+      validate();
+    });
+    
+    // Validate the date
+    function validate() {
+      let isValid = true;
+      let errorMessage = '';
+      
+      // Clear existing errors
+      clearError();
+      
+      // Check if required
+      if (input.required && !input.value) {
+        isValid = false;
+        errorMessage = 'Please select a date';
+      }
+      // Check min date
+      else if (input.min && input.value && input.value < input.min) {
+        isValid = false;
+        errorMessage = `Date must be on or after ${formatDateDisplay(input.min)}`;
+      }
+      // Check max date
+      else if (input.max && input.value && input.value > input.max) {
+        isValid = false;
+        errorMessage = `Date must be on or before ${formatDateDisplay(input.max)}`;
+      }
+      
+      // Show error if not valid
+      if (!isValid) {
+        showError(errorMessage);
+        input.classList.add('border-red-500');
+      } else {
+        input.classList.remove('border-red-500');
+      }
+      
+      return isValid;
+    }
+    
+    // Format date for display (YYYY-MM-DD to readable format)
+    function formatDateDisplay(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+    
+    // Show error message
+    function showError(message) {
+      if (!errorContainer) return;
+      
+      const errorElement = document.createElement('p');
+      errorElement.className = 'error-message text-red-500 text-sm mt-1';
+      errorElement.textContent = message;
+      errorContainer.appendChild(errorElement);
+    }
+    
+    // Clear error message
+    function clearError() {
+      if (!errorContainer) return;
+      errorContainer.innerHTML = '';
+    }
+    
+    // Dispatch change event
+    function dispatchChangeEvent() {
+      const changeEvent = new CustomEvent('datePickerChange', {
+        bubbles: true,
+        detail: {
+          id: input.id,
+          value: input.value,
+          valid: validate()
+        }
+      });
+      
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Expose get/set methods to parent
+    window.getDateValue = function(dateId) {
+      if (input.id === dateId) {
+        return {
+          value: input.value,
+          formatted: input.value ? formatDateDisplay(input.value) : null
+        };
+      }
+      return null;
+    };
+    
+    window.setDateValue = function(dateId, value) {
+      if (input.id === dateId && input) {
+        input.value = value;
+        validate();
+        dispatchChangeEvent();
+      }
+    };
+    
+    // Initial validation
+    validate();
+    
+  } catch (error) {
+    console.error('Error initializing DatePicker component:', error);
+  }
+})();
+</script>

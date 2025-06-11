@@ -1,0 +1,339 @@
+<!-- 
+  PaymentScreen Component
+  Third step in the onboarding flow for payment information
+  
+  Usage: 
+  <div id="payment-screen-container" data-component="components/onboarding/PaymentScreen.html"></div>
+-->
+
+<div id="screen-3" class="screen max-w-2xl mx-auto">
+  <div class="bg-white rounded-lg p-6 sm:p-8 md:p-10 shadow-md">
+    <h3 class="text-xl font-bold mb-6">Payment Information</h3>
+    
+    <!-- Payment Method Selection -->
+    <div id="payment-methods-container" 
+         data-component="components/onboarding/ui/PaymentMethod.html"
+         data-param-methods='[
+           {
+             "id": "credit-card",
+             "name": "Credit Card",
+             "description": "Pay with Visa, Mastercard, or American Express",
+             "iconHtml": "<svg class=\"w-8 h-8\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\" /><line x1=\"2\" y1=\"10\" x2=\"22\" y2=\"10\" /></svg>",
+             "selected": true
+           },
+           {
+             "id": "paypal",
+             "name": "PayPal",
+             "description": "Pay with your PayPal account",
+             "iconHtml": "<svg class=\"w-8 h-8\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><path d=\"M6 9h8a3 3 0 003-3c0-1.5-1-2-2-2H7l-1 6\" /><path d=\"M5 11h9a3 3 0 003-3c0-1.5-1-2-2-2H6l-1 6\" /><line x1=\"12\" y1=\"16\" x2=\"20\" y2=\"16\" /><line x1=\"8\" y1=\"16\" x2=\"10\" y2=\"16\" /></svg>",
+             "selected": false
+           }
+         ]'></div>
+    
+    <!-- Credit Card Form -->
+    <div id="credit-card-form" class="mb-8">
+      <!-- Card Number -->
+      <div id="card-number-input-container" 
+           data-component="components/onboarding/ui/FormInput.html"
+           data-param-id="card-number"
+           data-param-label="Card Number"
+           data-param-type="text"
+           data-param-required="true"
+           data-param-placeholder=" "></div>
+      
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <!-- Expiration Date -->
+        <div id="card-expiry-input-container" 
+             data-component="components/onboarding/ui/FormInput.html"
+             data-param-id="card-expiry"
+             data-param-label="Expiration Date"
+             data-param-type="text"
+             data-param-required="true"
+             data-param-placeholder=" "></div>
+        
+        <!-- Security Code -->
+        <div id="card-cvc-input-container" 
+             data-component="components/onboarding/ui/FormInput.html"
+             data-param-id="card-cvc"
+             data-param-label="Security Code"
+             data-param-type="text"
+             data-param-required="true"
+             data-param-placeholder=" "></div>
+      </div>
+      
+      <!-- Name on Card -->
+      <div id="card-name-input-container" 
+           data-component="components/onboarding/ui/FormInput.html"
+           data-param-id="card-name"
+           data-param-label="Name on Card"
+           data-param-type="text"
+           data-param-required="true"
+           data-param-placeholder=" "></div>
+      
+      <!-- Save Card Checkbox -->
+      <div id="save-card-checkbox-container" 
+           data-component="components/onboarding/ui/Checkbox.html"
+           data-param-id="save-card"
+           data-param-label="Save card for future payments"></div>
+    </div>
+    
+    <!-- PayPal Form (initially hidden) -->
+    <div id="paypal-form" class="mb-8 hidden">
+      <p class="text-center text-gray-600 my-8">
+        You will be redirected to PayPal to complete your payment after clicking "Complete Payment".
+      </p>
+    </div>
+    
+    <!-- Order Summary -->
+    <div class="mt-8 p-4 bg-gray-100 rounded-md">
+      <h4 class="font-semibold mb-3">Order Summary</h4>
+      <div class="flex justify-between mb-2">
+        <span>Plan:</span>
+        <span id="summary-plan">Preferred Plan</span>
+      </div>
+      <div class="flex justify-between mb-2">
+        <span>Coverage Period:</span>
+        <span>12 months</span>
+      </div>
+      <div class="flex justify-between font-semibold border-t border-gray-300 pt-2 mt-2">
+        <span>Total:</span>
+        <span id="summary-total">$189.00/month</span>
+      </div>
+    </div>
+    
+    <!-- Navigation Buttons -->
+    <div class="mt-8 flex justify-between">
+      <!-- Back Button -->
+      <div id="back-button-container" 
+           data-component="components/onboarding/ui/Button.html"
+           data-param-id="back-to-step2"
+           data-param-text="Back"
+           data-param-type="outline"></div>
+      
+      <!-- Complete Payment Button -->
+      <div id="payment-button-container" 
+           data-component="components/onboarding/ui/Button.html"
+           data-param-id="complete-payment"
+           data-param-text="Complete Payment"
+           data-param-type="primary"
+           data-param-animation="float"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Variables to store form state
+    let selectedPaymentMethod = 'credit-card';
+    let formValid = false;
+    
+    // Initialize component
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add event listeners
+      document.addEventListener('paymentMethodChange', handlePaymentMethodChange);
+      document.addEventListener('buttonClick', handleButtonClick);
+      document.addEventListener('formInputChange', validateForm);
+      
+      // Format card number input
+      const cardNumberInput = document.getElementById('card-number');
+      if (cardNumberInput) {
+        cardNumberInput.addEventListener('input', formatCardNumber);
+      }
+      
+      // Format card expiry input
+      const cardExpiryInput = document.getElementById('card-expiry');
+      if (cardExpiryInput) {
+        cardExpiryInput.addEventListener('input', formatCardExpiry);
+      }
+      
+      // Format card CVC input
+      const cardCVCInput = document.getElementById('card-cvc');
+      if (cardCVCInput) {
+        cardCVCInput.addEventListener('input', formatCardCVC);
+      }
+      
+      // Initial form validation
+      validateForm();
+    });
+    
+    // Handle payment method change
+    function handlePaymentMethodChange(event) {
+      selectedPaymentMethod = event.detail.methodId;
+      
+      // Show/hide appropriate form
+      const creditCardForm = document.getElementById('credit-card-form');
+      const paypalForm = document.getElementById('paypal-form');
+      
+      if (creditCardForm && paypalForm) {
+        if (selectedPaymentMethod === 'credit-card') {
+          creditCardForm.classList.remove('hidden');
+          paypalForm.classList.add('hidden');
+        } else {
+          creditCardForm.classList.add('hidden');
+          paypalForm.classList.remove('hidden');
+        }
+      }
+      
+      // Re-validate form
+      validateForm();
+    }
+    
+    // Handle button clicks
+    function handleButtonClick(event) {
+      const buttonId = event.detail.id;
+      
+      if (buttonId === 'back-to-step2') {
+        // Handle back button
+        navigateBack();
+      } else if (buttonId === 'complete-payment') {
+        // Handle complete payment button
+        completePayment();
+      }
+    }
+    
+    // Format card number input with spaces
+    function formatCardNumber(event) {
+      const input = event.target;
+      let value = input.value.replace(/\D/g, '');
+      
+      if (value.length > 16) {
+        value = value.slice(0, 16);
+      }
+      
+      // Add spaces every 4 digits
+      let formattedValue = '';
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+          formattedValue += ' ';
+        }
+        formattedValue += value[i];
+      }
+      
+      input.value = formattedValue;
+    }
+    
+    // Format card expiry as MM/YY
+    function formatCardExpiry(event) {
+      const input = event.target;
+      let value = input.value.replace(/\D/g, '');
+      
+      if (value.length > 4) {
+        value = value.slice(0, 4);
+      }
+      
+      // Format as MM/YY
+      if (value.length > 2) {
+        value = value.slice(0, 2) + '/' + value.slice(2);
+      }
+      
+      input.value = value;
+    }
+    
+    // Format card CVC
+    function formatCardCVC(event) {
+      const input = event.target;
+      let value = input.value.replace(/\D/g, '');
+      
+      if (value.length > 4) {
+        value = value.slice(0, 4);
+      }
+      
+      input.value = value;
+    }
+    
+    // Validate form based on selected payment method
+    function validateForm() {
+      if (selectedPaymentMethod === 'credit-card') {
+        // Validate credit card form
+        const cardNumber = document.getElementById('card-number');
+        const cardExpiry = document.getElementById('card-expiry');
+        const cardCVC = document.getElementById('card-cvc');
+        const cardName = document.getElementById('card-name');
+        
+        // Basic validation
+        formValid = cardNumber && cardExpiry && cardCVC && cardName &&
+                   cardNumber.value.trim().length >= 16 &&
+                   cardExpiry.value.trim().length >= 4 &&
+                   cardCVC.value.trim().length >= 3 &&
+                   cardName.value.trim().length > 0;
+      } else {
+        // PayPal is always valid (will be handled externally)
+        formValid = true;
+      }
+      
+      // Update complete payment button state
+      const completeButton = document.getElementById('complete-payment');
+      if (completeButton) {
+        if (formValid) {
+          window.enableButton('complete-payment');
+        } else {
+          window.disableButton('complete-payment');
+        }
+      }
+      
+      return formValid;
+    }
+    
+    // Navigate back to previous step
+    function navigateBack() {
+      const navigateEvent = new CustomEvent('navigateStep', {
+        detail: { direction: 'back' },
+        bubbles: true
+      });
+      document.dispatchEvent(navigateEvent);
+    }
+    
+    // Complete payment
+    function completePayment() {
+      if (!formValid) {
+        return;
+      }
+      
+      // Collect payment data
+      const paymentData = {
+        method: selectedPaymentMethod
+      };
+      
+      if (selectedPaymentMethod === 'credit-card') {
+        paymentData.cardNumber = document.getElementById('card-number').value;
+        paymentData.cardExpiry = document.getElementById('card-expiry').value;
+        paymentData.cardCVC = document.getElementById('card-cvc').value;
+        paymentData.cardName = document.getElementById('card-name').value;
+        paymentData.saveCard = document.getElementById('save-card').checked;
+      }
+      
+      // Dispatch payment submitted event
+      const paymentSubmittedEvent = new CustomEvent('paymentSubmitted', {
+        detail: paymentData,
+        bubbles: true
+      });
+      document.dispatchEvent(paymentSubmittedEvent);
+      
+      // Dispatch navigation event
+      const navigateEvent = new CustomEvent('navigateStep', {
+        detail: { direction: 'next' },
+        bubbles: true
+      });
+      document.dispatchEvent(navigateEvent);
+    }
+    
+    // Set plan details in summary section
+    window.updatePaymentSummary = function(planName, planPrice) {
+      const summaryPlan = document.getElementById('summary-plan');
+      const summaryTotal = document.getElementById('summary-total');
+      
+      if (summaryPlan) {
+        summaryPlan.textContent = planName;
+      }
+      
+      if (summaryTotal) {
+        summaryTotal.textContent = '$' + planPrice + '.00/month';
+      }
+    };
+    
+  } catch (error) {
+    console.error('Error initializing PaymentScreen component:', error);
+  }
+})();
+</script>

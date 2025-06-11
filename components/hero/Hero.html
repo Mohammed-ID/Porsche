@@ -1,0 +1,74 @@
+<!-- 
+  Hero Component
+  Usage: 
+  <div id="hero-container" data-component="components/hero/Hero.html" 
+       data-param-title="Premium protection for your Porsche"
+       data-param-description="Specialized car insurance tailored for the precision, performance, and value of your Porsche."
+       data-param-videoSrc="img/video.mp4"
+       data-param-posterSrc="img/poster.jpg"></div>
+-->
+<section
+  id="hero"
+  class="relative h-screen flex items-end justify-start bg-black overflow-hidden"
+>
+  <div class="absolute inset-0 w-full h-full">
+    <video
+      class="absolute w-full h-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="{{posterSrc}}"
+      aria-hidden="true"
+    >
+      <source src="{{videoSrc}}" type="video/mp4">
+    </video>
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+    ></div>
+  </div>
+  <div
+    class="relative px-4 sm:px-8 md:px-12 lg:px-16 pb-16 sm:pb-20 md:pb-24 lg:pb-32 max-w-xl md:max-w-2xl hero-content"
+  >
+    <h1
+      class="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight"
+      data-translate-key="hero-title"
+    >
+      {{title}}
+    </h1>
+    <p
+      class="text-sm xs:text-base md:text-lg text-gray-300 mb-8 sm:mb-10 md:mb-12 max-w-xl"
+      data-translate-key="hero-description"
+    >
+      {{description}}
+    </p>
+    <div class="flex flex-col sm:flex-row gap-6 sm:gap-8">
+      <a
+        href="onboarding.html"
+        class="cta-button inline-block px-6 sm:px-8 py-3 text-center sm:text-left"
+      >
+        <span class="relative z-10" data-translate-key="get-porsche-covered">Get Your Porsche Covered</span>
+      </a>
+    </div>
+  </div>
+  <div class="absolute bottom-[clamp(1rem,4vh,2.5rem)] right-[clamp(1rem,4vw,2.5rem)] text-white">
+    <div class="scroll-indicator flex flex-col items-center">
+      <span class="text-[clamp(0.7rem,1vw,0.875rem)] uppercase tracking-widest mb-[clamp(0.25rem,1vh,0.5rem)]" data-translate-key="scroll">Scroll</span>
+      <svg
+        class="w-[clamp(1rem,1.5vw,1.5rem)] h-[clamp(1rem,1.5vw,1.5rem)]"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M19 14l-7 7m0 0l-7-7m7 7V3"
+        ></path>
+      </svg>
+    </div>
+  </div>
+</section>

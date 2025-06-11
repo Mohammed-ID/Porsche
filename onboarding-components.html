@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Porsche Insurance - Onboarding</title>
+    <!-- Client Hints for better image loading -->
+    <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width" />
+    <meta name="color-scheme" content="light" />
+    <!-- Initial scale for improved performance -->
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.ui.porsche.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload critical fonts, CSS and images -->
+    <link rel="preload" href="https://cdn.ui.porsche.com/porsche-design-system/fonts/porsche-next-latin-regular.b8f1c20.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="img/logo.png" as="image" />
+
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      /* Hide body until CSS is loaded */
+      body {
+        visibility: hidden;
+      }
+      
+      /* Critical CSS for above-the-fold content */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+      }
+    </style>
+
+    <!-- Load Tailwind CSS with blocking - prevents FOUC -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+
+    <!-- Load main CSS - with optimization -->
+    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'" />
+    
+    <!-- Load Component System -->
+    <script src="components.js"></script>
+
+    <!-- Fix FOUC when critical elements are loaded -->
+    <script>
+      // Track critical images for loading
+      const criticalImages = ['img/logo.png'];
+      let loadedImages = 0;
+      
+      // Check if all critical images are loaded
+      function checkCriticalImages() {
+        loadedImages++;
+        if (loadedImages >= criticalImages.length) {
+          document.body.style.visibility = "visible";
+        }
+      }
+      
+      // Preload critical images
+      criticalImages.forEach(src => {
+        const img = new Image();
+        img.onload = checkCriticalImages;
+        img.onerror = checkCriticalImages; // Continue even if image fails
+        img.src = src;
+      });
+      
+      // Fallback if images don't load within 500ms
+      setTimeout(function() {
+        document.body.style.visibility = "visible";
+      }, 500);
+      
+      // Make content visible once everything is loaded
+      window.addEventListener("load", function () {
+        document.body.style.visibility = "visible";
+      });
+    </script>
+  </head>
+  <body class="bg-white text-porsche">
+    <!-- Navbar Component -->
+    <div id="navbar-container" 
+         data-component="components/navigation/Navbar.html" 
+         data-param-logo="img/logo.png"></div>
+
+    <!-- Main Content -->
+    <main class="pt-24 sm:pt-28 md:pt-32 pb-16 min-h-screen">
+      <div class="container mx-auto px-4 sm:px-6 md:px-8">
+        <!-- Onboarding Component -->
+        <div id="onboarding-container" 
+             data-component="components/onboarding/Onboarding.html"></div>
+      </div>
+    </main>
+
+    <!-- Footer Component -->
+    <div id="footer-container" 
+         data-component="components/footer/Footer.html"
+         data-param-logo="img/logo.png"
+         data-param-year="2025"></div>
+
+    <!-- Preload important components for better performance -->
+    <script>
+      // Preload components to improve load time
+      preloadComponents([
+        'components/navigation/Navbar.html',
+        'components/footer/Footer.html',
+        'components/onboarding/Onboarding.html',
+        'components/onboarding/StepProgress.html',
+        'components/onboarding/FormScreen.html'
+      ]);
+    </script>
+  </body>
+</html>

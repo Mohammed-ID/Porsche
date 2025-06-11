@@ -1,0 +1,1147 @@
+/* Import Porsche Next and Noto Sans Arabic fonts with optimized loading */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
+@font-face {
+  font-family: "Porsche Next";
+  font-style: normal;
+  font-weight: 700;
+  src: url("https://cdn.ui.porsche.com/porsche-design-system/fonts/porsche-next-latin-bold.0fbdc6d.woff2")
+    format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Porsche Next";
+  font-style: normal;
+  font-weight: 400;
+  src: url("https://cdn.ui.porsche.com/porsche-design-system/fonts/porsche-next-latin-regular.b8f1c20.woff2")
+    format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Porsche Next";
+  font-style: normal;
+  font-weight: 600;
+  src: url("https://cdn.ui.porsche.com/porsche-design-system/fonts/porsche-next-latin-semi-bold.b5f6fca.woff2")
+    format("woff2");
+  font-display: swap;
+}
+
+:root {
+  --phn-header-height: clamp(4rem, 6vw, 7rem);
+  --nav-transition-duration: 0.3s;
+  --section-padding: clamp(2rem, 5vw, 5rem);
+  --card-padding: clamp(1rem, 3vw, 2rem);
+  --text-spacing: clamp(0.75rem, 2vw, 1.5rem);
+  --container-padding: clamp(1rem, 4vw, 2rem);
+  --element-spacing: clamp(0.5rem, 2vw, 1rem);
+}
+
+/* Base styles - minimal reset */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Porsche Next", Arial, sans-serif;
+  line-height: calc(8px + 2.25ex);
+  scroll-padding-top: var(--phn-header-height);
+  -webkit-text-size-adjust: none;
+  font-size: 16px; /* Base font size */
+}
+
+@media (max-width: 480px) {
+  html, body {
+    font-size: clamp(14px, 4vw, 16px); /* Slightly smaller base font on mobile */
+    line-height: calc(8px + 2.5ex); /* Increased line height for readability */
+  }
+}
+
+/* RTL Support */
+html[dir="rtl"] body {
+  font-family: "Noto Sans Arabic", Arial, sans-serif;
+  text-align: right;
+}
+
+/* Language direction specific adjustments */
+html[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+html[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+html[dir="rtl"] .right-0 {
+  right: auto;
+  left: 0;
+}
+
+html[dir="rtl"] .left-0 {
+  left: auto;
+  right: 0;
+}
+
+html[dir="rtl"] .transform-flip-x {
+  transform: scaleX(-1);
+}
+
+/* For any element that needs to be flipped in RTL */
+html[dir="rtl"] .rtl-flip {
+  transform: scaleX(-1);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+p {
+  font-weight: 400;
+  overflow-wrap: break-word;
+}
+b,
+strong {
+  font-weight: 700;
+}
+
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  height: var(--phn-header-height);
+  background-color: transparent !important;
+  box-shadow: none !important;
+  /* Removed blur effect */
+  /* backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px); */
+  transition: all 0.3s ease;
+}
+
+nav > div:first-child {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    rgba(0, 0, 0, 0.3) 75%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  opacity: 1 !important;
+}
+
+.nav-gradient {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.7) 50%,
+    rgba(0, 0, 0, 0.3) 75%,
+    rgba(0, 0, 0, 0) 100%
+  ) !important;
+  opacity: 1 !important;
+}
+
+nav .container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--container-padding);
+}
+
+/* Navigation link effects */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: clamp(1px, 0.15vw, 2px);
+  bottom: clamp(-6px, -0.5vw, -10px);
+  left: 0;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  transform: translateY(clamp(-3px, -0.3vw, -1px));
+}
+
+.nav-link:hover::after,
+.nav-link.hover-active::after {
+  width: 100%;
+}
+
+/* Mobile menu */
+#navMenu {
+  top: var(--phn-header-height);
+  background-color: rgba(0, 0, 0, 0.95);
+  box-shadow: 0 clamp(2px, 0.4vw, 4px) clamp(4px, 0.8vw, 8px) rgba(0, 0, 0, 0.2);
+  width: 100%;
+  z-index: 49;
+}
+
+#navMenu ul {
+  padding: clamp(1rem, 3vw, 2rem) 0;
+}
+
+#navMenu a {
+  position: relative;
+  transition: all 0.3s ease;
+  display: block;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 4vw, 2rem);
+  width: 100%;
+  text-align: center;
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  letter-spacing: 0.05em;
+}
+
+#navMenu a:hover {
+  transform: translateY(clamp(-3px, -0.3vw, -1px));
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* RTL adjustments for mobile menu */
+html[dir="rtl"] #navMenu a:hover {
+  transform: translateY(clamp(-3px, -0.3vw, -1px));
+}
+
+/* Center align all mobile menu items */
+#navMenu li {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  #navMenu .cta-button {
+    margin: clamp(0.5rem, 1.5vw, 1.5rem) auto;
+    display: inline-block;
+    max-width: 80%;
+  }
+}
+
+/* CTA Buttons */
+.cta-button {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  transition: transform 0.4s ease, background-color 0.4s ease,
+    box-shadow 0.4s ease, border-color 0.4s ease;
+  background-color: transparent;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: clamp(0.03em, 0.1vw, 0.08em);
+  font-weight: 500;
+  font-size: clamp(0.8rem, 1.5vw, 1rem);
+  padding: clamp(0.5rem, 1vw, 1rem) clamp(1rem, 2vw, 2rem);
+  border: 2px solid white;
+  box-shadow: none;
+}
+
+.cta-button:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  background-color: #333333;
+  border-color: transparent;
+}
+
+.cta-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.cta-button:hover::before {
+  left: 100%;
+}
+
+/* Premium CTA - Exceptional styling for car insurance */
+.cta-premium {
+  position: relative;
+  border: 2px solid white;
+  background-color: transparent;
+  background-origin: border-box;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 0.4s ease,
+              background-image 0.4s ease,
+              border-color 0.4s ease;
+  box-shadow: none;
+}
+
+.cta-premium:hover {
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+  background-color: #000000;
+  border-color: #000000;
+}
+
+.cta-premium::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  border-radius: 8px;
+  opacity: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
+  transition: opacity 0.4s ease;
+}
+
+.cta-premium:hover::after {
+  opacity: 0.15;
+}
+
+/* Secondary pages CTA button - black background */
+.cta-button-black {
+  background-color: #000000;
+  border-color: #000000;
+  color: white;
+}
+
+.cta-button-black:hover {
+  background-color: #333333;
+  border-color: #333333;
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Hero section */
+#hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: flex-end;
+}
+
+#hero video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: clamp(280px, 90vw, 600px);
+  padding: var(--container-padding);
+  padding-bottom: clamp(2rem, 8vh, 5rem);
+  margin-bottom: clamp(1rem, 3vh, 3rem);
+}
+
+/* RTL adjustments for hero content */
+html[dir="rtl"] .hero-content {
+  text-align: right;
+}
+
+/* RTL adjustments for heading spacing */
+html[dir="rtl"] h1, 
+html[dir="rtl"] h2, 
+html[dir="rtl"] h3, 
+html[dir="rtl"] h4 {
+  line-height: 1.5;
+}
+
+/* Increase spacing for Arabic paragraphs */
+html[dir="rtl"] p {
+  line-height: 1.8;
+  letter-spacing: 0;
+}
+
+/* Animation keyframes - consolidated */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  animation: bounce 2s infinite;
+}
+
+/* Cards */
+.benefit-card {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  /* aspect-ratio handled by media queries */
+}
+
+/* Ensure cards in the same section are equal height */
+.grid .benefit-card {
+  height: 0;
+  padding-bottom: 125%; /* 4:5 aspect ratio */
+  position: relative;
+}
+
+.benefit-card:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.benefit-card .card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--card-padding);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.8) 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  color: white;
+  transition: padding 0.3s ease;
+}
+
+.benefit-card:hover .card-content {
+  padding-bottom: calc(var(--card-padding) * 1.25);
+}
+
+.benefit-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.benefit-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Check circles for lists */
+.check-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  background-color: #000000;
+  border-radius: 50%;
+  margin-right: 8px;
+  position: relative;
+  overflow: visible;
+}
+
+/* Create a custom checkmark using CSS */
+.check-circle::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 6px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  margin-top: -2px;
+}
+
+/* Hide original SVG */
+.check-circle svg {
+  opacity: 0;
+  position: absolute;
+}
+
+.benefit-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.benefit-card .card-content .check-circle {
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Custom checkmark for benefit cards */
+.benefit-card .card-content .check-circle::after {
+  border-color: #000;
+  width: 5px;
+  height: 9px;
+  border-width: 0 2px 2px 0;
+}
+
+/* Fix RTL check circle positioning */
+html[dir="rtl"] .check-circle {
+  margin-right: 0;
+  margin-left: 8px;
+}
+
+/* Make sure SVG is centered in check-circle (for both LTR and RTL) */
+.check-circle svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+}
+
+/* Adjust the checkmark path to be more visible */
+.check-circle svg polyline {
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Additional fixes for all checkmark lists in RTL */
+html[dir="rtl"] li.flex.items-start {
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  text-align: right !important;
+  width: 100% !important;
+  justify-content: flex-end !important;
+}
+
+/* Put the checkmark on the right side in RTL mode */
+html[dir="rtl"] .svg-icon,
+html[dir="rtl"] li.flex.items-start svg,
+html[dir="rtl"] .check-circle {
+  margin-right: 0 !important;
+  margin-left: 8px !important;
+  order: 2 !important; /* Moved to the end (right side) */
+}
+
+/* Ensure text is properly aligned and on the left side */
+html[dir="rtl"] li.flex.items-start span,
+html[dir="rtl"] li.flex.items-start div:not(.check-circle) {
+  text-align: right !important;
+  width: calc(100% - 30px) !important;
+  order: 1 !important; /* Moved to the beginning (left side) */
+}
+
+/* RTL adjustments for benefit lists */
+html[dir="rtl"] .benefit-list li {
+  flex-direction: row-reverse;
+  justify-content: flex-end !important;
+  width: 100%;
+}
+
+html[dir="rtl"] .benefit-list li span {
+  text-align: right;
+  width: calc(100% - 26px); /* Minus check circle width and margin */
+  order: 1 !important;
+}
+
+html[dir="rtl"] .benefit-list .check-circle {
+  margin-left: 8px;
+  margin-right: 0;
+  order: 2 !important;
+}
+
+/* RTL adjustments for card content */
+html[dir="rtl"] .card-content {
+  text-align: right;
+}
+
+/* RTL adjustments for lists with checkmarks in Why Choose Us */
+html[dir="rtl"] .flex.items-start svg.text-black {
+  margin-left: 12px !important;
+  margin-right: 0 !important;
+  order: 2 !important;
+}
+
+html[dir="rtl"] ul.space-y-4 li.flex.items-start {
+  flex-direction: row-reverse;
+  text-align: right;
+  justify-content: flex-end !important;
+}
+
+html[dir="rtl"] ul.space-y-4 li.flex.items-start span {
+  display: block;
+  text-align: right !important;
+  width: calc(100% - 40px); /* Adjust based on SVG size and margin */
+  order: 1 !important;
+}
+
+/* Additional fixes for Why Choose Us in RTL mode */
+html[dir="rtl"] .bg-white.p-7 ul li {
+  flex-direction: row-reverse;
+  justify-content: flex-end !important;
+}
+
+/* Fix the checkmark in the Why Choose Us section */
+.bg-white.p-7 ul li svg {
+  display: none; /* Hide the original SVG */
+}
+
+/* Create custom checkmark for Why Choose Us section */
+.bg-white.p-7 ul li .mr-3,
+.bg-white.p-7 ul li .mr-4 {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.bg-white.p-7 ul li .mr-3::after,
+.bg-white.p-7 ul li .mr-4::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 8px;
+  height: 14px;
+  border: solid #000;
+  border-width: 0 2px 2px 0;
+  margin-top: -2px;
+}
+
+/* Force checkmark to right side in RTL mode for all sections */
+html[dir="rtl"] li svg,
+html[dir="rtl"] li .check-circle {
+  order: 2 !important;
+}
+
+html[dir="rtl"] li span {
+  order: 1 !important;
+}
+
+/* Section animations - optimized for performance */
+.animate-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
+  backface-visibility: hidden; /* Reduces paints */
+  perspective: 1000; /* Improves performance */
+  content-visibility: auto; /* Skips rendering of off-screen content */
+  contain-intrinsic-size: 1px 500px; /* Estimates size for layout */
+}
+
+.animate-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto; /* Release GPU resources when animation completes */
+}
+
+/* Connection animations - used in partners section */
+.connection-pulse {
+  width: 100%;
+  background: linear-gradient(90deg, transparent, black, transparent);
+  background-size: 200% 100%;
+  animation: pulse 3s infinite linear;
+  will-change: background-position;
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.connection-node {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  animation: node-pulse 2s infinite;
+  will-change: box-shadow;
+  width: clamp(8px, 2vw, 10px);
+  height: clamp(8px, 2vw, 10px);
+  margin-bottom: clamp(-4px, -1vw, -5px);
+}
+
+@keyframes node-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 clamp(5px, 1.5vw, 10px) rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+/* Partners section specific styling */
+.partners-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 80vw, 300px), 1fr));
+  gap: clamp(1rem, 5vw, 3rem);
+}
+
+@media (max-width: 768px) {
+  .partners-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Fade animation - optimized */
+.animate-fade {
+  opacity: 0;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+/* Stop consuming GPU resources after animation */
+.animate-fade.animated {
+  will-change: auto;
+}
+
+/* Responsive styles - using fluid values */
+.mobile-spacing > * {
+  margin-bottom: var(--element-spacing);
+}
+.mobile-spacing > *:last-child {
+  margin-bottom: 0;
+}
+.section-spacing {
+  padding: var(--section-padding) 0;
+}
+.card-spacing {
+  margin-bottom: var(--element-spacing);
+}
+.benefit-card .card-content {
+  padding: var(--card-padding);
+}
+.benefit-card:hover .card-content {
+  padding-bottom: calc(var(--card-padding) * 1.2);
+}
+.benefit-card h3 {
+  font-size: clamp(1rem, 4vw, 1.5rem);
+  margin-bottom: var(--text-spacing);
+}
+.benefit-list li {
+  margin-bottom: calc(var(--element-spacing) * 0.5);
+}
+.check-circle {
+  width: clamp(16px, 2vw, 20px);
+  height: clamp(16px, 2vw, 20px);
+  min-width: clamp(16px, 2vw, 20px);
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: var(--text-spacing);
+}
+p {
+  margin-bottom: var(--text-spacing);
+}
+.container {
+  padding: 0 var(--container-padding);
+}
+
+/* Responsive typography */
+h1 {
+  font-size: clamp(1.75rem, 6vw, 3.5rem);
+}
+h2 {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+}
+h3 {
+  font-size: clamp(1.25rem, 4vw, 2rem);
+}
+
+/* Responsive spacer utility */
+.spacer {
+  height: clamp(1rem, 5vh, 3rem);
+  width: 100%;
+}
+
+.spacer-sm {
+  height: clamp(0.5rem, 2vh, 1.5rem);
+  width: 100%;
+}
+
+.spacer-lg {
+  height: clamp(2rem, 8vh, 5rem);
+  width: 100%;
+}
+
+/* Responsive horizontal spacers */
+.h-spacer {
+  width: clamp(1rem, 3vw, 2rem);
+  display: inline-block;
+}
+
+.h-spacer-sm {
+  width: clamp(0.5rem, 1.5vw, 1rem);
+  display: inline-block;
+}
+
+.h-spacer-lg {
+  width: clamp(1.5rem, 5vw, 3rem);
+  display: inline-block;
+}
+
+/* Responsive card padding-bottom for different screen sizes */
+@media (max-width: 640px) {
+  .grid .benefit-card {
+    padding-bottom: 120%; /* 1:1.2 aspect ratio */
+  }
+}
+@media (min-width: 641px) and (max-width: 1023px) {
+  .grid .benefit-card {
+    padding-bottom: 130%; /* 1:1.3 aspect ratio */
+  }
+}
+@media (min-width: 1024px) {
+  .grid .benefit-card {
+    padding-bottom: 125%; /* 4:5 aspect ratio */
+  }
+}
+
+/* Feature cards - Why Choose Us section */
+.feature-card {
+  padding: clamp(1.5rem, 3vw, 2.8rem);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.feature-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Ensure all cards in a grid row have equal height */
+.grid-cols-3 > div, 
+.grid-cols-2 > div {
+  height: 100%;
+  display: flex;
+}
+
+/* Fix for the Why Choose Us section specifically */
+#features .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(1rem, 4vw, 3rem);
+}
+
+@media (min-width: 768px) {
+  #features .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+#features .animate-fade {
+  height: 100%;
+  display: flex;
+}
+
+#features .feature-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#features .feature-card > div:first-child {
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+#features .feature-card ul {
+  margin-top: auto;
+}
+
+/* Language Switcher */
+.lang-switch {
+  display: flex;
+  align-items: center;
+}
+
+.lang-btn {
+  color: rgba(255, 255, 255, 0.7);
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+}
+
+.lang-btn:hover {
+  color: white;
+}
+
+.lang-btn.active {
+  color: white;
+  position: relative;
+}
+
+.lang-btn.active::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  bottom: -4px;
+  left: 0;
+}
+
+html[dir="rtl"] .lang-btn.active::after {
+  left: auto;
+  right: 0;
+}
+
+/* RTL specific spacing adjustments */
+html[dir="rtl"] .mr-3,
+html[dir="rtl"] .mr-4 {
+  margin-right: 0 !important;
+  margin-left: 0.75rem !important;
+}
+
+html[dir="rtl"] .ml-3,
+html[dir="rtl"] .ml-4 {
+  margin-left: 0 !important;
+  margin-right: 0.75rem !important;
+}
+
+/* Adjust spacing in navigation */
+html[dir="rtl"] nav .space-x-10 > * {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 2.5rem;
+}
+
+html[dir="rtl"] nav .space-x-10 > *:last-child {
+  padding-left: 0;
+}
+
+/* Adjust spacing in other horizontal lists */
+html[dir="rtl"] .space-x-5 > * + *,
+html[dir="rtl"] .space-x-10 > * + * {
+  margin-left: 0 !important;
+}
+
+html[dir="rtl"] .space-x-5 {
+  margin-right: 1.25rem;
+}
+
+html[dir="rtl"] .space-x-10 {
+  margin-right: 2.5rem;
+}
+
+/* Increase font size slightly for Arabic text in specific elements */
+html[dir="rtl"] .nav-link {
+  font-size: 0.85rem;
+  letter-spacing: 0;
+}
+
+/* Adjust padding for header elements in RTL mode */
+html[dir="rtl"] nav .container {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
+/* Adjust language switcher spacing */
+html[dir="rtl"] .lang-switch {
+  margin-right: 1rem;
+  margin-left: 0;
+}
+
+/* Increase language switcher visibility */
+.lang-switch {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  margin-left: 1rem;
+}
+
+.lang-btn {
+  padding: 0.25rem 0.5rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.lang-btn.active {
+  color: white;
+}
+
+.lang-btn:hover {
+  color: white;
+}
+
+.lang-btn.active::after {
+  bottom: -3px;
+  height: 2px;
+}
+
+/* Smallest screens */
+/* RTL adjustments for footer */
+html[dir="rtl"] footer {
+  text-align: right;
+}
+
+html[dir="rtl"] footer .flex.space-x-5 {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] footer .flex.space-x-5 > * {
+  margin-right: 0;
+  margin-left: 1.25rem;
+}
+
+html[dir="rtl"] footer .flex.space-x-5 > *:last-child {
+  margin-left: 0;
+}
+
+/* Numbered indicators for cards */
+.number-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px; 
+  width: 30px;
+  height: 30px;
+  background-color: #000000;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+}
+
+/* Form elements responsive styling */
+input, select, textarea, button[type="submit"] {
+  font-size: clamp(14px, 3vw, 16px);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 3vw, 1rem);
+  border-radius: clamp(3px, 0.3vw, 5px);
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+textarea {
+  min-height: clamp(80px, 15vh, 150px);
+  resize: vertical;
+}
+
+label {
+  display: block;
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
+  font-weight: 500;
+  font-size: clamp(14px, 3vw, 16px);
+}
+
+.form-group {
+  margin-bottom: clamp(1rem, 4vw, 1.5rem);
+}
+
+/* Contact form responsive layout */
+.contact-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+@media (min-width: 640px) {
+  .contact-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .contact-form .full-width {
+    grid-column: span 2;
+  }
+}
+
+/* RTL responsive fixes */
+@media (max-width: 768px) {
+  html[dir="rtl"] .mobile-spacing > * {
+    text-align: right;
+  }
+  
+  html[dir="rtl"] .grid.gap-10.grid-cols-1 {
+    text-align: right;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-button {
+    width: 100%;
+    text-align: center;
+  }
+  
+  /* Apply fluid grid on smallest screens */
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+}

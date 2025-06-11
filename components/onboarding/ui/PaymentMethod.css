@@ -1,0 +1,84 @@
+/* PaymentMethod Component Styles */
+
+.payment-method-component {
+  margin-bottom: 1.5rem;
+}
+
+.payment-method {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: white;
+}
+
+.payment-method:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.payment-method.selected {
+  border-color: #000000;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.payment-method input[type="radio"] {
+  margin-right: 1rem;
+  accent-color: #000000;
+}
+
+.payment-method > div {
+  flex: 1;
+}
+
+.payment-method img,
+.payment-method svg {
+  height: 24px;
+  width: auto;
+  margin-left: auto;
+}
+
+.payment-method .payment-icon {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Disabled state */
+.payment-method.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.payment-method.disabled:hover {
+  border-color: #e5e7eb;
+  box-shadow: none;
+}
+
+/* Focus state */
+.payment-method:focus-within {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+/* Animation for selection */
+@keyframes select-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.payment-method.selected {
+  animation: select-pulse 0.5s ease-out;
+}

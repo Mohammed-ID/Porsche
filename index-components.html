@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Porsche Insurance</title>
+    <!-- Client Hints for better image loading -->
+    <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width" />
+    <meta name="color-scheme" content="light" />
+    <!-- Initial scale for improved performance -->
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.ui.porsche.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload critical fonts, CSS and images -->
+    <link rel="preload" href="https://cdn.ui.porsche.com/porsche-design-system/fonts/porsche-next-latin-regular.b8f1c20.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="img/logo.png" as="image" />
+    <link rel="preload" href="img/poster.jpg" as="image" />
+    <link rel="preload" href="components.js" as="script" />
+
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      /* CSS Variables */
+      :root {
+        --phn-header-height: clamp(4rem, 6vw, 7rem);
+        --nav-transition-duration: 0.3s;
+        --section-padding: clamp(2rem, 5vw, 5rem);
+        --card-padding: clamp(1rem, 3vw, 2rem);
+        --text-spacing: clamp(0.75rem, 2vw, 1.5rem);
+        --container-padding: clamp(1rem, 4vw, 2rem);
+        --element-spacing: clamp(0.5rem, 2vw, 1rem);
+      }
+
+      /* Hide body until CSS is loaded */
+      body {
+        visibility: hidden;
+      }
+      
+      /* Critical CSS for above-the-fold content */
+      #hero {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+      }
+      
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+      }
+    </style>
+
+    <!-- Load Tailwind CSS with blocking - prevents FOUC -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+
+    <!-- Load main CSS - with optimization -->
+    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'" />
+
+    <!-- Fix FOUC when critical elements are loaded -->
+    <script>
+      // Track critical images for loading
+      const criticalImages = ['img/logo.png', 'img/poster.jpg'];
+      let loadedImages = 0;
+      
+      // Check if all critical images are loaded
+      function checkCriticalImages() {
+        loadedImages++;
+        if (loadedImages >= criticalImages.length) {
+          document.body.style.visibility = "visible";
+        }
+      }
+      
+      // Preload critical images
+      criticalImages.forEach(src => {
+        const img = new Image();
+        img.onload = checkCriticalImages;
+        img.onerror = checkCriticalImages; // Continue even if image fails
+        img.src = src;
+      });
+      
+      // Fallback if images don't load within 500ms
+      setTimeout(function() {
+        document.body.style.visibility = "visible";
+      }, 500);
+      
+      // Make content visible once everything is loaded
+      window.addEventListener("load", function () {
+        document.body.style.visibility = "visible";
+      });
+    </script>
+    
+    <!-- Add Component Loader -->
+    <script src="components.js" defer></script>
+  </head>
+  <body class="bg-white text-porsche">
+    <!-- Navbar Component -->
+    <div id="navbar-container" data-component="components/navigation/Navbar.html" data-param-logo="img/logo.png"></div>
+
+    <!-- Hero Component -->
+    <div id="hero-container" data-component="components/hero/Hero.html" 
+         data-param-title="Premium protection for your Porsche"
+         data-param-description="Specialized car insurance tailored for the precision, performance, and value of your Porsche."
+         data-param-videoSrc="img/video.mp4"
+         data-param-posterSrc="img/poster.jpg"></div>
+
+    <!-- Insurance Coverage Section -->
+    <section id="products" class="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 bg-white section-spacing animate-section">
+      <div class="container mx-auto px-4 sm:px-6">
+        <!-- Section Header -->
+        <div id="products-header" data-component="components/layout/SectionHeader.html" 
+             data-param-title="Insurance Coverage"
+             data-param-description="Comprehensive car insurance features designed specifically for Porsche vehicles."
+             data-param-translateKey="insurance-coverage"></div>
+
+        <!-- Benefit Cards Grid -->
+        <div class="grid gap-8 xs:gap-10 sm:gap-12 lg:gap-16 grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto mobile-spacing">
+          <!-- Card 1 -->
+          <div id="benefit-card-1" data-component="components/cards/BenefitCard.html" 
+               data-param-title="Performance Coverage"
+               data-param-imageSrc="img/1.png"
+               data-param-imageAlt="Performance Coverage"
+               data-param-translateKey="performance-coverage"
+               data-param-listItems='[
+                 {"key": "track-day-insurance", "text": "Recreational track day insurance"},
+                 {"key": "performance-parts", "text": "Performance parts coverage"},
+                 {"key": "aftermarket-insurance", "text": "Aftermarket modifications insurance"},
+                 {"key": "safe-driver", "text": "Safe driver discounts"}
+               ]'></div>
+
+          <!-- Card 2 -->
+          <div id="benefit-card-2" data-component="components/cards/BenefitCard.html" 
+               data-param-title="Concierge Insurance Services"
+               data-param-imageSrc="img/2.png"
+               data-param-imageAlt="Exclusive Services"
+               data-param-translateKey="concierge-services"
+               data-param-listItems='[
+                 {"key": "claims-specialist", "text": "Dedicated claims specialist"},
+                 {"key": "expedited-claims", "text": "Expedited claims processing"},
+                 {"key": "owner-events", "text": "Porsche owner events access"},
+                 {"key": "policy-concierge", "text": "Insurance policy concierge"}
+               ]'></div>
+
+          <!-- Card 3 -->
+          <div id="benefit-card-3" data-component="components/cards/BenefitCard.html" 
+               data-param-title="Premium Vehicle Protection"
+               data-param-imageSrc="img/3.png"
+               data-param-imageAlt="Premium Protection"
+               data-param-translateKey="premium-protection"
+               data-param-listItems='[
+                 {"key": "agreed-value", "text": "Agreed value insurance"},
+                 {"key": "oem-parts", "text": "OEM parts guarantee"},
+                 {"key": "diminished-value", "text": "Diminished value coverage"},
+                 {"key": "collectors-insurance", "text": "Collectors vehicle insurance"}
+               ]'></div>
+
+          <!-- Card 4 -->
+          <div id="benefit-card-4" data-component="components/cards/BenefitCard.html" 
+               data-param-title="Comprehensive Coverage"
+               data-param-imageSrc="img/4.png"
+               data-param-imageAlt="Global Coverage"
+               data-param-translateKey="comprehensive-coverage"
+               data-param-listItems='[
+                 {"key": "international-coverage", "text": "International driving coverage"},
+                 {"key": "roadside-assistance", "text": "Premium roadside assistance"},
+                 {"key": "digital-claims", "text": "Digital claims filing"},
+                 {"key": "luxury-transport", "text": "Luxury vehicle transport"}
+               ]'></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Banner -->
+    <section class="relative bg-black text-white overflow-hidden animate-section">
+      <div class="container mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 relative">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-20 items-center mobile-spacing">
+          <div>
+            <h2 class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-10 leading-tight" data-translate-key="exceptional-insurance">
+              Car insurance as exceptional as your Porsche
+            </h2>
+            <p class="text-sm sm:text-base md:text-lg text-gray-300 mb-8 sm:mb-10 md:mb-12" data-translate-key="exceptional-desc">
+              Our specialized auto insurance is designed with the same attention
+              to detail and performance standards that define your Porsche,
+              providing coverage that understands the unique value of your
+              vehicle.
+            </p>
+            <a href="onboarding.html" class="cta-button cta-premium inline-block px-5 sm:px-6 md:px-8 py-2 sm:py-3">
+              <span class="relative z-10" data-translate-key="get-porsche-covered">Get Your Porsche Covered</span>
+            </a>
+          </div>
+          <div class="relative mt-8 md:mt-0">
+            <div class="aspect-[4/3] rounded-lg overflow-hidden">
+              <img
+                src="img/5.png"
+                alt="Precision Engineering"
+                class="w-full h-full object-cover"
+                width="600"
+                height="450"
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+              />
+            </div>
+            <div class="absolute -bottom-4 xs:-bottom-6 -right-4 xs:-right-6 bg-black/80 text-white p-5 sm:p-7 md:p-8 max-w-[calc(100%-2rem)] sm:max-w-xs border border-white/20 rounded-lg">
+              <p class="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4" data-translate-key="insurance-matches">
+                Insurance That Matches Your Porsche
+              </p>
+              <p class="text-xs sm:text-sm md:text-base" data-translate-key="insurance-matches-desc">
+                Protection that recognizes the precision engineering,
+                performance capabilities, and distinctive value of your Porsche.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section id="features" class="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 bg-[#f7f7f7] section-spacing animate-section">
+      <div class="container mx-auto px-4 sm:px-6">
+        <!-- Section Header -->
+        <div id="features-header" data-component="components/layout/SectionHeader.html" 
+             data-param-title="Why Choose Porsche Insurance?"
+             data-param-description="Specialized auto insurance developed exclusively for Porsche owners by those who understand your vehicle."
+             data-param-translateKey="why-choose"></div>
+
+        <!-- Feature Cards Grid -->
+        <div class="grid" id="features-grid">
+          <!-- Feature Card 1 -->
+          <div id="feature-card-1" data-component="components/cards/FeatureCard.html" 
+               data-param-title="Model-Specific Coverage"
+               data-param-description="Insurance plans specifically tailored for each Porsche model, with coverage options designed around your vehicle's unique characteristics."
+               data-param-translateKey="model-specific"
+               data-param-icon="clipboard"
+               data-param-delay="0.3"
+               data-param-listItems='[
+                 {"key": "customized-model", "text": "Customized for your specific model"},
+                 {"key": "adaptable-driving", "text": "Adaptable to your driving habits"}
+               ]'></div>
+
+          <!-- Feature Card 2 -->
+          <div id="feature-card-2" data-component="components/cards/FeatureCard.html" 
+               data-param-title="Porsche-Certified Repairs"
+               data-param-description="All insurance claims are processed with Porsche-certified technicians ensuring your vehicle receives proper care and original parts."
+               data-param-translateKey="certified-repairs"
+               data-param-icon="building"
+               data-param-delay="0.6"
+               data-param-listItems='[
+                 {"key": "factory-technicians", "text": "Factory-trained technicians"},
+                 {"key": "genuine-parts", "text": "Genuine Porsche parts guarantee"}
+               ]'></div>
+
+          <!-- Feature Card 3 -->
+          <div id="feature-card-3" data-component="components/cards/FeatureCard.html" 
+               data-param-title="Expedited Claims Process"
+               data-param-description="Fast-track claims processing and premium service levels for Porsche owners, minimizing time without your vehicle."
+               data-param-translateKey="expedited-claims-process"
+               data-param-icon="clock"
+               data-param-delay="0.9"
+               data-param-listItems='[
+                 {"key": "rapid-assessment", "text": "Rapid claims assessment"},
+                 {"key": "personal-advisor", "text": "Personal Porsche claims advisor"}
+               ]'></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote CTA Section -->
+    <section class="relative py-14 sm:py-16 md:py-20 lg:py-24 bg-black animate-section">
+      <div class="container mx-auto px-4 sm:px-6 text-center">
+        <div class="max-w-lg sm:max-w-xl md:max-w-2xl mx-auto text-white">
+          <h2 class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8" data-translate-key="premium-insurance">
+            Premium insurance for a premium vehicle
+          </h2>
+          <p class="text-base sm:text-lg md:text-xl opacity-90 mb-8 sm:mb-10 md:mb-12" data-translate-key="premium-insurance-desc">
+            Get specialized insurance coverage tailored to your Porsche model
+            and driving lifestyle.
+          </p>
+          <a href="onboarding.html" class="cta-button inline-block px-6 sm:px-8 py-3 sm:py-4 md:py-5">
+            <span class="relative z-10" data-translate-key="get-porsche-covered">Get Your Porsche Covered</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section id="partners" class="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 bg-white section-spacing animate-section">
+      <div class="container mx-auto px-4 sm:px-6">
+        <!-- Section Header -->
+        <div id="partners-header" data-component="components/layout/SectionHeader.html" 
+             data-param-title="Insurance Partners"
+             data-param-description="We collaborate with leading auto insurance providers to deliver specialized coverage and service for your Porsche."
+             data-param-translateKey="partners"></div>
+
+        <!-- Connected Partners Design with Animation -->
+        <div class="relative max-w-4xl mx-auto">
+          <!-- Connecting Elements with Animation -->
+          <div class="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gray-200 transform -translate-y-1/2 z-0">
+            <div class="absolute inset-0 overflow-hidden">
+              <div class="h-full bg-black connection-pulse"></div>
+            </div>
+          </div>
+
+          <div class="partners-grid relative z-10">
+            <!-- Partner 1 -->
+            <div class="bg-white rounded-lg shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+              <div class="relative">
+                <div class="bg-gray-100 p-8 sm:p-10 md:p-12 flex items-center justify-center h-40 sm:h-48 md:h-56">
+                  <img
+                    src="img/partner1.png"
+                    alt="Insurance Provider Partner"
+                    class="max-h-20 sm:max-h-24 md:max-h-28 grayscale hover:grayscale-0 transition-all duration-500 transform hover:scale-105"
+                    width="200"
+                    height="100"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="absolute -bottom-4 sm:-bottom-5 left-1/2 transform -translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full border-4 border-white z-20 connection-node"></div>
+              </div>
+              <div class="p-6 sm:p-8 md:p-10">
+                <p class="text-gray-600 mb-4 sm:mb-5 text-sm sm:text-base">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris.
+                </p>
+              </div>
+            </div>
+
+            <!-- Partner 2 -->
+            <div class="bg-white rounded-lg shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+              <div class="relative">
+                <div class="bg-gray-100 p-8 sm:p-10 md:p-12 flex items-center justify-center h-40 sm:h-48 md:h-56">
+                  <img
+                    src="img/partner2.png"
+                    alt="Certified Repair Network"
+                    class="max-h-20 sm:max-h-24 md:max-h-28 grayscale hover:grayscale-0 transition-all duration-500 transform hover:scale-105"
+                    width="200"
+                    height="100"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="absolute -bottom-4 sm:-bottom-5 left-1/2 transform -translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full border-4 border-white z-20 connection-node"></div>
+              </div>
+              <div class="p-6 sm:p-8 md:p-10">
+                <p class="text-gray-600 mb-4 sm:mb-5 text-sm sm:text-base">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-12 sm:mt-16 md:mt-20">
+            <p class="text-gray-600 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto text-sm sm:text-base" data-translate-key="partners-quality">
+              All our insurance partners meet rigorous qualification standards
+              to ensure they deliver the exceptional service Porsche owners
+              expect. Our combined expertise provides comprehensive protection
+              that respects the engineering excellence of your vehicle.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Component -->
+    <div id="footer-container" data-component="components/footer/Footer.html" 
+         data-param-logo="img/logo.png"
+         data-param-year="2025"></div>
+
+    <!-- Initialize section animations with Intersection Observer -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Setup Intersection Observer for animations
+        const observerOptions = {
+          rootMargin: "0px 0px -100px 0px",
+          threshold: 0.1,
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+        
+        const animateSections = document.querySelectorAll(".animate-section");
+        animateSections.forEach((section) => {
+          observer.observe(section);
+        });
+        
+        // Add animated class to fade elements after they've been animated
+        const fadeElements = document.querySelectorAll(".animate-fade");
+        fadeElements.forEach(el => {
+          el.addEventListener('transitionend', () => {
+            el.classList.add('animated');
+          }, { once: true });
+        });
+      });
+    </script>
+  </body>
+</html>

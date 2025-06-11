@@ -1,0 +1,95 @@
+/* FormInput Component Styles */
+
+.form-input-component {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-input-component .floating-label {
+  position: relative;
+}
+
+.form-input-component .floating-label input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-input-component .floating-label label {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  font-size: 1rem;
+  color: #6b7280;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.form-input-component .floating-label input:focus,
+.form-input-component .floating-label input:not(:placeholder-shown) {
+  border-color: #000;
+  outline: none;
+}
+
+.form-input-component .floating-label input:focus + label,
+.form-input-component .floating-label input:not(:placeholder-shown) + label {
+  top: -0.5rem;
+  left: 0.5rem;
+  font-size: 0.75rem;
+  background-color: white;
+  padding: 0 0.25rem;
+  color: #000;
+}
+
+.form-input-component .floating-label input:focus {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  border-color: #000000;
+}
+
+/* Error state */
+.form-input-component .floating-label input.border-red-500 {
+  border-color: #ef4444;
+}
+
+.form-input-component .floating-label input.border-red-500:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-input-component .floating-label input.border-red-500 + label {
+  color: #ef4444;
+}
+
+/* Disabled state */
+.form-input-component .floating-label input:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.form-input-component .floating-label input:disabled + label {
+  color: #9ca3af;
+}
+
+/* Success state */
+.form-input-component .floating-label input.border-green-500 {
+  border-color: #10b981;
+}
+
+.form-input-component .floating-label input.border-green-500:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-input-component .floating-label input.border-green-500 + label {
+  color: #10b981;
+}
+
+/* Helper text */
+.form-input-component .helper-text {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  color: #6b7280;
+}

@@ -1,0 +1,16 @@
+<!-- 
+  Container Component
+  Usage: 
+  <div id="container-wrapper" data-component="components/layout/Container.html" 
+       data-param-id="products"
+       data-param-class="bg-white section-spacing animate-section"></div>
+-->
+<section
+  id="{{id}}"
+  class="{{class}}"
+>
+  <div class="container mx-auto px-4 sm:px-6">
+    <!-- Content will be inserted by the parent component -->
+    <div id="{{id}}-content"></div>
+  </div>
+</section>

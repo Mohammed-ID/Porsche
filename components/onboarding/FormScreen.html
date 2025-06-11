@@ -1,0 +1,255 @@
+<!-- 
+  FormScreen Component
+  First step in the onboarding flow for collecting user and vehicle information
+  
+  Usage: 
+  <div id="form-screen-container" data-component="components/onboarding/FormScreen.html"></div>
+-->
+
+<div id="screen-1" class="screen active max-w-3xl mx-auto">
+  <form id="insurance-form" class="bg-white rounded-lg p-6 sm:p-8 md:p-10 shadow-md">
+    <!-- Vehicle Information Section -->
+    <div class="mb-8">
+      <h3 class="text-lg sm:text-xl font-semibold mb-4 pb-2 border-b border-gray-200">
+        Vehicle Information
+      </h3>
+      
+      <!-- Porsche Model - Dropdown Menu -->
+      <div id="porsche-model-dropdown-container" 
+           data-component="components/onboarding/ui/Dropdown.html"
+           data-param-id="porsche-model"
+           data-param-label="Porsche Model"
+           data-param-required="true"
+           data-param-options='[
+             {"value": "", "text": "Select your Porsche model", "disabled": true, "selected": true},
+             {"value": "911", "text": "911"},
+             {"value": "Taycan", "text": "Taycan"},
+             {"value": "Cayenne", "text": "Cayenne"},
+             {"value": "Macan", "text": "Macan"},
+             {"value": "Panamera", "text": "Panamera"},
+             {"value": "718", "text": "718 Cayman/Boxster"}
+           ]'></div>
+      
+      <!-- Vehicle Value - Range Slider -->
+      <div id="vehicle-value-slider-container" 
+           data-component="components/onboarding/ui/Slider.html"
+           data-param-id="vehicle-value"
+           data-param-label="Vehicle Value (USD)"
+           data-param-min="50000"
+           data-param-max="300000"
+           data-param-step="5000"
+           data-param-value="150000"
+           data-param-prefix="$"
+           data-param-minLabel="$50,000"
+           data-param-maxLabel="$300,000+"
+           data-param-formatValue="true"></div>
+      
+      <!-- Vehicle Year - Text Field with Floating Label -->
+      <div id="vehicle-year-input-container" 
+           data-component="components/onboarding/ui/FormInput.html"
+           data-param-id="vehicle-year"
+           data-param-label="Vehicle Year"
+           data-param-type="number"
+           data-param-required="true"
+           data-param-min="1950"
+           data-param-max="2025"
+           data-param-validate="number"
+           data-param-placeholder=" "></div>
+      
+      <!-- Start Date - Date Picker -->
+      <div id="start-date-picker-container" 
+           data-component="components/onboarding/ui/DatePicker.html"
+           data-param-id="start-date"
+           data-param-label="Insurance Start Date"
+           data-param-required="true"></div>
+    </div>
+    
+    <!-- Personal Information Section -->
+    <div class="mb-8">
+      <h3 class="text-lg sm:text-xl font-semibold mb-4 pb-2 border-b border-gray-200">
+        Personal Information
+      </h3>
+      
+      <!-- Full Name - Text Field with Floating Label -->
+      <div id="full-name-input-container" 
+           data-component="components/onboarding/ui/FormInput.html"
+           data-param-id="full-name"
+           data-param-label="Full Name"
+           data-param-type="text"
+           data-param-required="true"
+           data-param-validate="text"
+           data-param-placeholder=" "></div>
+      
+      <!-- Phone Number - Text Field with Floating Label -->
+      <div id="phone-number-input-container" 
+           data-component="components/onboarding/ui/FormInput.html"
+           data-param-id="phone-number"
+           data-param-label="Phone Number"
+           data-param-type="tel"
+           data-param-required="true"
+           data-param-validate="phone"
+           data-param-placeholder=" "></div>
+      
+      <!-- Email - Text Field with Floating Label -->
+      <div id="email-input-container" 
+           data-component="components/onboarding/ui/FormInput.html"
+           data-param-id="email"
+           data-param-label="Email Address"
+           data-param-type="email"
+           data-param-required="true"
+           data-param-validate="email"
+           data-param-placeholder=" "></div>
+    </div>
+    
+    <!-- Coverage Options Section -->
+    <div>
+      <h3 class="text-lg sm:text-xl font-semibold mb-4 pb-2 border-b border-gray-200">
+        Coverage Options
+      </h3>
+      
+      <!-- Track Day Coverage - Toggle Switch -->
+      <div id="track-day-toggle-container" 
+           data-component="components/onboarding/ui/Toggle.html"
+           data-param-id="track-day-coverage"
+           data-param-label="Include Track Day Coverage"
+           data-param-checked="false"
+           data-param-helpText="Covers your vehicle during recreational track days and events"></div>
+      
+      <!-- Coverage Type - Radio Buttons -->
+      <div id="coverage-type-radio-container" 
+           data-component="components/onboarding/ui/RadioButton.html"
+           data-param-name="coverage-type"
+           data-param-label="Coverage Type"
+           data-param-vertical="true"
+           data-param-options='[
+             {"value": "comprehensive", "label": "Comprehensive Coverage", "checked": true},
+             {"value": "basic", "label": "Basic Coverage"}
+           ]'></div>
+      
+      <!-- Include OEM Parts - Checkbox -->
+      <div id="oem-parts-checkbox-container" 
+           data-component="components/onboarding/ui/Checkbox.html"
+           data-param-id="oem-parts"
+           data-param-label="Only use Porsche OEM parts for repairs"
+           data-param-checked="true"></div>
+    </div>
+    
+    <!-- Form Navigation Buttons -->
+    <div class="mt-10 flex justify-end">
+      <button type="button" id="next-to-step2" class="onboarding-button cta-float text-white hover:bg-gray-700 hover:border-transparent">
+        Continue to Offers
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get form element
+    const form = document.getElementById('insurance-form');
+    const submitButton = document.getElementById('next-to-step2');
+    
+    if (!form || !submitButton) return;
+    
+    // Form event listeners
+    form.addEventListener('submit', function(event) {
+      // Prevent default form submission
+      event.preventDefault();
+      
+      // Validate and submit form
+      if (validateForm()) {
+        submitForm();
+      }
+    });
+    
+    submitButton.addEventListener('click', function() {
+      // Simulate form submission
+      if (validateForm()) {
+        submitForm();
+      }
+    });
+    
+    // Listen for component change events
+    document.addEventListener('formInputChange', handleComponentChange);
+    document.addEventListener('dropdownChange', handleComponentChange);
+    document.addEventListener('sliderChange', handleComponentChange);
+    document.addEventListener('datePickerChange', handleComponentChange);
+    document.addEventListener('toggleChange', handleComponentChange);
+    document.addEventListener('radioChange', handleComponentChange);
+    document.addEventListener('checkboxChange', handleComponentChange);
+    
+    // Handle component change events
+    function handleComponentChange(event) {
+      // Any time a component changes, validate the form
+      // This helps enable/disable the submit button based on form validity
+      validateForm();
+    }
+    
+    // Validate all form inputs
+    function validateForm() {
+      let isValid = true;
+      
+      // Validate text inputs
+      const requiredInputs = ['full-name', 'phone-number', 'email', 'vehicle-year'];
+      requiredInputs.forEach(id => {
+        if (window.validateInput && typeof window.validateInput === 'function') {
+          if (!window.validateInput(id)) {
+            isValid = false;
+          }
+        }
+      });
+      
+      // Validate dropdown
+      if (window.validateDropdown && typeof window.validateDropdown === 'function') {
+        if (!window.validateDropdown('porsche-model')) {
+          isValid = false;
+        }
+      }
+      
+      // Enable/disable submit button based on validity
+      if (submitButton) {
+        submitButton.disabled = !isValid;
+        submitButton.classList.toggle('opacity-50', !isValid);
+      }
+      
+      return isValid;
+    }
+    
+    // Submit form data
+    function submitForm() {
+      // Collect all form data
+      const formData = {
+        vehicle: {
+          model: window.getDropdownValue ? window.getDropdownValue('porsche-model').value : '',
+          value: window.getSliderValue ? window.getSliderValue('vehicle-value').value : '',
+          year: window.getInputValue ? window.getInputValue('vehicle-year') : '',
+          startDate: window.getDateValue ? window.getDateValue('start-date').value : ''
+        },
+        personal: {
+          name: window.getInputValue ? window.getInputValue('full-name') : '',
+          phone: window.getInputValue ? window.getInputValue('phone-number') : '',
+          email: window.getInputValue ? window.getInputValue('email') : ''
+        },
+        coverage: {
+          trackDay: window.getToggleState ? window.getToggleState('track-day-coverage') : false,
+          type: window.getRadioValue ? window.getRadioValue('coverage-type') : 'comprehensive',
+          oemParts: window.getCheckboxState ? window.getCheckboxState('oem-parts') : true
+        },
+        timestamp: new Date().toISOString()
+      };
+      
+      // Dispatch form submitted event with form data
+      const formSubmittedEvent = new CustomEvent('formSubmitted', {
+        detail: formData,
+        bubbles: true
+      });
+      
+      document.dispatchEvent(formSubmittedEvent);
+    }
+    
+  } catch (error) {
+    console.error('Error initializing FormScreen component:', error);
+  }
+})();
+</script>

@@ -1,0 +1,201 @@
+<!-- 
+  Onboarding Component
+  Main component for the multi-step onboarding flow that integrates all child components.
+  
+  Usage: 
+  <div id="onboarding-container" 
+       data-component="components/onboarding/Onboarding.html"></div>
+-->
+
+<div class="onboarding-container">
+  <!-- Step Progress Component -->
+  <div id="step-progress-container" 
+       data-component="components/onboarding/StepProgress.html"
+       data-param-currentStep="1"
+       data-param-totalSteps="3"></div>
+  
+  <!-- Content section for active step -->
+  <div class="onboarding-content">
+    <!-- Only one of these will be displayed based on current step -->
+    <div id="form-screen-container" class="step-screen active" 
+         data-component="components/onboarding/FormScreen.html"></div>
+    
+    <div id="plans-screen-container" class="step-screen" 
+         data-component="components/onboarding/PlansScreen.html"></div>
+    
+    <div id="payment-screen-container" class="step-screen" 
+         data-component="components/onboarding/PaymentScreen.html"></div>
+    
+    <div id="confirmation-screen-container" class="step-screen" 
+         data-component="components/onboarding/ConfirmationScreen.html"></div>
+  </div>
+</div>
+
+<!-- Onboarding JavaScript -->
+<script>
+(function() {
+  // Current step tracking
+  let currentStep = 1;
+  const totalSteps = 3;
+  
+  // Form data storage
+  const onboardingData = {
+    userInfo: {},
+    selectedPlan: null,
+    paymentInfo: {}
+  };
+  
+  // Initialize the onboarding flow
+  function initOnboarding() {
+    setupEventListeners();
+  }
+  
+  // Set up event listeners for navigation and form submission
+  function setupEventListeners() {
+    document.addEventListener('formSubmitted', handleFormSubmit);
+    document.addEventListener('planSelected', handlePlanSelection);
+    document.addEventListener('paymentSubmitted', handlePaymentSubmit);
+    document.addEventListener('navigateStep', handleNavigation);
+  }
+  
+  // Handle form submission from FormScreen
+  function handleFormSubmit(event) {
+    // Save form data
+    onboardingData.userInfo = event.detail;
+    
+    // Move to next step
+    navigateToStep(2);
+  }
+  
+  // Handle plan selection from PlansScreen
+  function handlePlanSelection(event) {
+    // Save selected plan
+    onboardingData.selectedPlan = event.detail;
+    
+    // Move to next step
+    navigateToStep(3);
+  }
+  
+  // Handle payment submission from PaymentScreen
+  function handlePaymentSubmit(event) {
+    // Save payment info
+    onboardingData.paymentInfo = event.detail;
+    
+    // Complete the flow and show confirmation
+    completeOnboarding();
+  }
+  
+  // Handle manual navigation (back/next buttons)
+  function handleNavigation(event) {
+    const direction = event.detail.direction;
+    const targetStep = direction === 'next' ? currentStep + 1 : currentStep - 1;
+    
+    // Validate before allowing navigation
+    if (direction === 'next' && !validateCurrentStep()) {
+      return;
+    }
+    
+    navigateToStep(targetStep);
+  }
+  
+  // Navigate to a specific step
+  function navigateToStep(step) {
+    // Ensure step is within valid range
+    if (step < 1 || step > totalSteps + 1) {
+      return;
+    }
+    
+    // Update current step
+    currentStep = step;
+    
+    // Hide all screens
+    const screens = document.querySelectorAll('.step-screen');
+    screens.forEach(screen => {
+      screen.classList.remove('active');
+    });
+    
+    // Show the current screen
+    let activeScreen;
+    
+    if (step === 1) {
+      activeScreen = document.getElementById('form-screen-container');
+    } else if (step === 2) {
+      activeScreen = document.getElementById('plans-screen-container');
+    } else if (step === 3) {
+      activeScreen = document.getElementById('payment-screen-container');
+    } else if (step === 4) {
+      activeScreen = document.getElementById('confirmation-screen-container');
+    }
+    
+    if (activeScreen) {
+      activeScreen.classList.add('active');
+    }
+    
+    // Update step progress component
+    updateStepProgress();
+  }
+  
+  // Update the step progress indicator
+  function updateStepProgress() {
+    // Create custom event to update the step progress component
+    const event = new CustomEvent('updateStepProgress', {
+      detail: { currentStep }
+    });
+    document.dispatchEvent(event);
+  }
+  
+  // Validate the current step before proceeding
+  function validateCurrentStep() {
+    if (currentStep === 1) {
+      // Validate form screen - handled by FormScreen component's internal validation
+      // This is just a fallback in case user triggers navigation manually
+      return true;
+    } else if (currentStep === 2) {
+      // Validate that a plan is selected
+      return onboardingData.selectedPlan !== null;
+    } else if (currentStep === 3) {
+      // Payment validation is handled by the PaymentScreen component
+      return true;
+    }
+    
+    return true;
+  }
+  
+  // Complete the onboarding process
+  function completeOnboarding() {
+    // Combine all collected data
+    const completeData = {
+      ...onboardingData.userInfo,
+      plan: onboardingData.selectedPlan,
+      payment: onboardingData.paymentInfo,
+      timestamp: new Date().toISOString(),
+      policyNumber: generatePolicyNumber()
+    };
+    
+    // Store the data (in a real app, this would be sent to a server)
+    sessionStorage.setItem('porscheInsurancePolicy', JSON.stringify(completeData));
+    
+    // Show confirmation screen with policy data
+    document.dispatchEvent(new CustomEvent('showConfirmation', {
+      detail: completeData
+    }));
+    
+    // Navigate to confirmation screen
+    navigateToStep(4);
+  }
+  
+  // Generate a random policy number
+  function generatePolicyNumber() {
+    const prefix = 'PI';
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `${prefix}-${timestamp}-${random}`;
+  }
+  
+  // Initialize onboarding when component is loaded
+  window.addEventListener('DOMContentLoaded', function() {
+    // Short delay to ensure all child components are loaded
+    setTimeout(initOnboarding, 100);
+  });
+})();
+</script>

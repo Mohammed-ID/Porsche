@@ -1,0 +1,78 @@
+<!-- 
+  Checkbox Component
+  A custom styled checkbox
+  
+  Usage: 
+  <div id="oem-parts-checkbox-container" 
+       data-component="components/onboarding/ui/Checkbox.html"
+       data-param-id="oem-parts"
+       data-param-label="Only use Porsche OEM parts for repairs"
+       data-param-checked="true"></div>
+  
+  Parameters:
+  - id: Checkbox field ID (required)
+  - label: Field label text (required)
+  - checked: Whether checkbox is initially checked (default: false)
+  - helpText: Additional helper text (optional)
+-->
+
+<div class="form-control checkbox-component">
+  <label class="custom-checkbox block">
+    <input type="checkbox" id="{{id}}" {{#checked}}checked{{/checked}}>
+    <span class="checkbox-mark"></span>
+    {{label}}
+  </label>
+  {{#helpText}}
+  <p class="text-sm text-gray-600 mt-1 ml-7">{{helpText}}</p>
+  {{/helpText}}
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component elements
+    const component = document.currentScript.parentElement;
+    const input = component.querySelector('input[type="checkbox"]');
+    
+    if (!input) return;
+    
+    // Add change event listener
+    input.addEventListener('change', function() {
+      // Dispatch change event to parent form
+      dispatchChangeEvent();
+    });
+    
+    // Dispatch change event
+    function dispatchChangeEvent() {
+      const changeEvent = new CustomEvent('checkboxChange', {
+        bubbles: true,
+        detail: {
+          id: input.id,
+          checked: input.checked
+        }
+      });
+      
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Expose get/set methods to parent
+    window.getCheckboxState = function(checkboxId) {
+      if (input.id === checkboxId) {
+        return input.checked;
+      }
+      return null;
+    };
+    
+    window.setCheckboxState = function(checkboxId, checked) {
+      if (input.id === checkboxId && input) {
+        input.checked = checked;
+        // Dispatch change event
+        dispatchChangeEvent();
+      }
+    };
+    
+  } catch (error) {
+    console.error('Error initializing Checkbox component:', error);
+  }
+})();
+</script>

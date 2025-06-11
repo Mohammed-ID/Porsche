@@ -1,0 +1,208 @@
+<!-- 
+  FormInput Component
+  A reusable text field component with floating label
+  
+  Usage: 
+  <div id="name-input-container" 
+       data-component="components/onboarding/ui/FormInput.html"
+       data-param-id="full-name"
+       data-param-label="Full Name"
+       data-param-type="text"
+       data-param-required="true"
+       data-param-placeholder=" "
+       data-param-value=""
+       data-param-validate="text"></div>
+  
+  Parameters:
+  - id: Input field ID (required)
+  - label: Field label text (required)
+  - type: Input type (default: "text", options: "text", "email", "tel", "number", "password")
+  - required: Whether field is required (default: false)
+  - placeholder: Placeholder text (default: " ")
+  - value: Initial value (default: "")
+  - validate: Validation type (options: "text", "email", "phone", "number", "none")
+  - min: Minimum value for number inputs (optional)
+  - max: Maximum value for number inputs (optional)
+  - pattern: Regex pattern for validation (optional)
+  - helpText: Additional helper text (optional)
+-->
+
+<div class="form-control form-input-component">
+  <div class="floating-label">
+    <input 
+      type="{{type}}" 
+      id="{{id}}" 
+      {{#required}}required{{/required}} 
+      placeholder="{{placeholder}}" 
+      value="{{value}}"
+      {{#min}}min="{{min}}"{{/min}}
+      {{#max}}max="{{max}}"{{/max}}
+      {{#pattern}}pattern="{{pattern}}"{{/pattern}}
+      data-validate="{{validate}}"
+    >
+    <label for="{{id}}">{{label}}</label>
+  </div>
+  {{#helpText}}
+  <p class="text-sm text-gray-600 mt-1">{{helpText}}</p>
+  {{/helpText}}
+  <div class="error-container"></div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component elements
+    const component = document.currentScript.parentElement;
+    const input = component.querySelector('input');
+    const errorContainer = component.querySelector('.error-container');
+    
+    if (!input) return;
+    
+    // Setup validation patterns
+    const patterns = {
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      phone: /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+      number: /^[0-9]+$/
+    };
+    
+    // Setup error messages
+    const errorMessages = {
+      required: 'This field is required',
+      email: 'Please enter a valid email address',
+      phone: 'Please enter a valid phone number',
+      number: 'Please enter a valid number',
+      pattern: 'Please enter a valid value'
+    };
+    
+    // Add input event listener
+    input.addEventListener('input', function() {
+      validate();
+      // Dispatch change event to parent form
+      dispatchChangeEvent();
+    });
+    
+    // Add blur event listener for validation
+    input.addEventListener('blur', function() {
+      validate();
+    });
+    
+    // Validate the input
+    function validate() {
+      let isValid = true;
+      let errorMessage = '';
+      
+      // Clear existing errors
+      clearError();
+      
+      // Check if required
+      if (input.required && !input.value.trim()) {
+        isValid = false;
+        errorMessage = errorMessages.required;
+      }
+      // Check validation type
+      else if (input.value.trim() && input.dataset.validate) {
+        switch(input.dataset.validate) {
+          case 'email':
+            if (!patterns.email.test(input.value)) {
+              isValid = false;
+              errorMessage = errorMessages.email;
+            }
+            break;
+          case 'phone':
+            if (!patterns.phone.test(input.value)) {
+              isValid = false;
+              errorMessage = errorMessages.phone;
+            }
+            break;
+          case 'number':
+            if (!patterns.number.test(input.value)) {
+              isValid = false;
+              errorMessage = errorMessages.number;
+            }
+            break;
+          default:
+            // No additional validation
+            break;
+        }
+      }
+      
+      // Show error if not valid
+      if (!isValid) {
+        showError(errorMessage);
+        input.classList.add('border-red-500');
+      } else {
+        input.classList.remove('border-red-500');
+      }
+      
+      return isValid;
+    }
+    
+    // Show error message
+    function showError(message) {
+      if (!errorContainer) return;
+      
+      const errorElement = document.createElement('p');
+      errorElement.className = 'error-message text-red-500 text-sm mt-1';
+      errorElement.textContent = message;
+      errorContainer.appendChild(errorElement);
+    }
+    
+    // Clear error message
+    function clearError() {
+      if (!errorContainer) return;
+      errorContainer.innerHTML = '';
+    }
+    
+    // Dispatch change event
+    function dispatchChangeEvent() {
+      const changeEvent = new CustomEvent('formInputChange', {
+        bubbles: true,
+        detail: {
+          id: input.id,
+          value: input.value,
+          valid: validate()
+        }
+      });
+      
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Set focus method (can be called from parent)
+    window.focusInput = function(inputId) {
+      if (input.id === inputId) {
+        input.focus();
+      }
+    };
+    
+    // Expose validate method to parent
+    window.validateInput = function(inputId) {
+      if (input.id === inputId) {
+        return validate();
+      }
+      return true;
+    };
+    
+    // Expose get/set value methods
+    window.getInputValue = function(inputId) {
+      if (input.id === inputId) {
+        return input.value;
+      }
+      return null;
+    };
+    
+    window.setInputValue = function(inputId, value) {
+      if (input.id === inputId && input) {
+        input.value = value;
+        // Trigger validation
+        validate();
+      }
+    };
+    
+    // Initial validation
+    validate();
+    
+  } catch (error) {
+    console.error('Error initializing FormInput component:', error);
+  }
+})();
+</script>

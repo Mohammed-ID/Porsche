@@ -1,0 +1,424 @@
+<!-- 
+  PlansScreen Component
+  Second step in the onboarding flow for plan selection
+  
+  Usage: 
+  <div id="plans-screen-container" data-component="components/onboarding/PlansScreen.html"></div>
+-->
+
+<div id="screen-2" class="screen max-w-5xl mx-auto">
+  <div class="text-center mb-10">
+    <h3 class="text-2xl font-bold mb-4">Choose Your Porsche Insurance Plan</h3>
+    <p class="text-gray-600 max-w-xl mx-auto">Our curated plans provide exceptional protection for your Porsche.</p>
+    
+    <!-- Comparison Toggle Button -->
+    <div id="comparison-toggle-container" 
+         data-component="components/onboarding/ui/Button.html"
+         data-param-id="comparison-toggle"
+         data-param-text="View detailed comparison"
+         data-param-type="text"></div>
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+    <!-- Basic Plan Card -->
+    <div id="basic-plan-card-container" 
+         data-component="components/onboarding/ui/Card.html"
+         data-param-title="Basic Plan"
+         data-param-subtitle="Essential coverage for your Porsche"
+         data-param-contentHtml="<div class='plan-price'><span class='currency'>$</span>99<span class='period'>/month</span></div>
+                                <ul class='plan-features'>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Liability coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Collision coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Roadside assistance</li>
+                                  <li class='feature-disabled'><svg class='w-5 h-5 opacity-50' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path></svg>Track day coverage</li>
+                                  <li class='feature-disabled'><svg class='w-5 h-5 opacity-50' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 18L18 6M6 6l12 12'></path></svg>OEM parts guarantee</li>
+                                </ul>"
+         data-param-footerHtml="<div id='basic-plan-button-container' data-component='components/onboarding/ui/Button.html' data-param-id='basic-plan-button' data-param-text='Select Plan' data-param-fullWidth='true'></div>"
+         data-param-highlighted="false"
+         data-param-elevation="medium"
+         data-param-borderRadius="medium"></div>
+    
+    <!-- Preferred Plan Card -->
+    <div id="preferred-plan-card-container" 
+         data-component="components/onboarding/ui/Card.html"
+         data-param-title="Preferred Plan"
+         data-param-subtitle="Premium coverage for your Porsche"
+         data-param-contentHtml="<div class='plan-price'><span class='currency'>$</span>189<span class='period'>/month</span></div>
+                                <ul class='plan-features'>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Liability coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Collision coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Premium roadside assistance</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Track day coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>OEM parts guarantee</li>
+                                </ul>"
+         data-param-footerHtml="<div id='preferred-plan-button-container' data-component='components/onboarding/ui/Button.html' data-param-id='preferred-plan-button' data-param-text='Select Plan' data-param-fullWidth='true'></div>"
+         data-param-highlighted="true"
+         data-param-badge="Recommended"
+         data-param-elevation="high"
+         data-param-borderRadius="medium"></div>
+    
+    <!-- Premium Plan Card -->
+    <div id="premium-plan-card-container" 
+         data-component="components/onboarding/ui/Card.html"
+         data-param-title="Premium Plan"
+         data-param-subtitle="Ultimate coverage for your Porsche"
+         data-param-contentHtml="<div class='plan-price'><span class='currency'>$</span>299<span class='period'>/month</span></div>
+                                <ul class='plan-features'>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Liability coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Collision coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Premium roadside assistance</li>
+                                  <li class='feature-new'><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Unlimited track day coverage</li>
+                                  <li><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>OEM parts guarantee</li>
+                                  <li class='feature-new'><svg class='w-5 h-5' fill='none' stroke='currentColor' viewBox='0 0 24 24'><path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 13l4 4L19 7'></path></svg>Concierge service</li>
+                                </ul>"
+         data-param-footerHtml="<div id='premium-plan-button-container' data-component='components/onboarding/ui/Button.html' data-param-id='premium-plan-button' data-param-text='Select Plan' data-param-fullWidth='true'></div>"
+         data-param-highlighted="false"
+         data-param-elevation="medium"
+         data-param-borderRadius="medium"></div>
+  </div>
+  
+  <!-- Navigation Buttons -->
+  <div class="mt-10 flex justify-between">
+    <!-- Back Button -->
+    <div id="back-button-container" 
+         data-component="components/onboarding/ui/Button.html"
+         data-param-id="back-to-step1"
+         data-param-text="Back"
+         data-param-type="outline"></div>
+    
+    <!-- Next Button -->
+    <div id="next-button-container" 
+         data-component="components/onboarding/ui/Button.html"
+         data-param-id="next-to-step3"
+         data-param-text="Proceed to Payment"
+         data-param-type="primary"
+         data-param-animation="pulse"
+         data-param-disabled="true"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Track selected plan
+    let selectedPlan = null;
+    
+    // Reference to next button
+    let nextButton = null;
+    
+    // Add event listeners on document load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set up comparison toggle button
+      const comparisonToggle = document.getElementById('comparison-toggle');
+      if (comparisonToggle) {
+        comparisonToggle.addEventListener('click', showComparisonPopup);
+      }
+      
+      // Set up plan buttons
+      document.addEventListener('buttonClick', handleButtonClick);
+      
+      // Get next button reference
+      nextButton = document.getElementById('next-to-step3');
+      
+      // Select the preferred plan by default after a short delay
+      setTimeout(function() {
+        const preferredPlanButton = document.getElementById('preferred-plan-button');
+        if (preferredPlanButton) {
+          preferredPlanButton.click();
+        }
+      }, 500);
+    });
+    
+    // Handle button clicks
+    function handleButtonClick(event) {
+      const buttonId = event.detail.id;
+      
+      // Check if this is a plan selection button
+      if (buttonId === 'basic-plan-button') {
+        selectPlan('basic', 'Basic Plan', 99);
+      } else if (buttonId === 'preferred-plan-button') {
+        selectPlan('preferred', 'Preferred Plan', 189);
+      } else if (buttonId === 'premium-plan-button') {
+        selectPlan('premium', 'Premium Plan', 299);
+      } else if (buttonId === 'back-to-step1') {
+        // Handle back button
+        navigateBack();
+      } else if (buttonId === 'next-to-step3') {
+        // Handle next button
+        navigateNext();
+      }
+    }
+    
+    // Select a plan
+    function selectPlan(planId, planName, price) {
+      // Reset all plan cards
+      unhighlightAllCards();
+      
+      // Highlight the selected plan card
+      highlightSelectedCard(planId);
+      
+      // Store selected plan data
+      selectedPlan = {
+        id: planId,
+        name: planName,
+        price: price
+      };
+      
+      // Enable next button
+      if (nextButton && window.enableButton) {
+        window.enableButton('next-to-step3');
+      }
+    }
+    
+    // Unhighlight all plan cards
+    function unhighlightAllCards() {
+      if (window.unhighlightCard) {
+        window.unhighlightCard('basic-plan-card-container');
+        window.unhighlightCard('preferred-plan-card-container');
+        window.unhighlightCard('premium-plan-card-container');
+      }
+    }
+    
+    // Highlight selected card
+    function highlightSelectedCard(planId) {
+      if (window.highlightCard) {
+        if (planId === 'basic') {
+          window.highlightCard('basic-plan-card-container');
+        } else if (planId === 'preferred') {
+          window.highlightCard('preferred-plan-card-container');
+        } else if (planId === 'premium') {
+          window.highlightCard('premium-plan-card-container');
+        }
+      }
+    }
+    
+    // Navigate back to previous step
+    function navigateBack() {
+      const navigateEvent = new CustomEvent('navigateStep', {
+        detail: { direction: 'back' },
+        bubbles: true
+      });
+      document.dispatchEvent(navigateEvent);
+    }
+    
+    // Navigate to next step
+    function navigateNext() {
+      if (!selectedPlan) {
+        return;
+      }
+      
+      // Dispatch plan selected event
+      const planSelectedEvent = new CustomEvent('planSelected', {
+        detail: selectedPlan,
+        bubbles: true
+      });
+      document.dispatchEvent(planSelectedEvent);
+      
+      // Dispatch navigation event
+      const navigateEvent = new CustomEvent('navigateStep', {
+        detail: { direction: 'next' },
+        bubbles: true
+      });
+      document.dispatchEvent(navigateEvent);
+    }
+    
+    // Show comparison popup
+    function showComparisonPopup() {
+      // Create a popup with detailed comparison if not exists
+      if (!document.getElementById('plan-comparison-popup')) {
+        const popup = document.createElement('div');
+        popup.id = 'plan-comparison-popup';
+        popup.className = 'fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center opacity-0 transition-opacity duration-300';
+        popup.style.backdropFilter = 'blur(5px)';
+        
+        // Create popup content
+        popup.innerHTML = `
+          <div class="bg-white p-6 max-w-3xl w-full max-h-[90vh] overflow-auto relative transform transition-transform duration-300 scale-95">
+            <button type="button" id="close-comparison" class="absolute top-4 right-4 text-gray-500 hover:text-black">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+            <h3 class="text-xl font-bold mb-6">Plan Comparison</h3>
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead>
+                  <tr>
+                    <th class="py-2 text-left border-b w-1/3 font-medium text-sm">Features</th>
+                    <th class="py-2 text-center border-b font-medium text-sm">Basic</th>
+                    <th class="py-2 text-center border-b font-medium text-sm bg-black text-white">Preferred</th>
+                    <th class="py-2 text-center border-b font-medium text-sm">Premium</th>
+                  </tr>
+                </thead>
+                <tbody class="text-sm">
+                  <tr>
+                    <td class="py-3 border-b text-gray-700">Monthly Premium</td>
+                    <td class="py-3 border-b text-center">$99</td>
+                    <td class="py-3 border-b text-center bg-gray-50 font-medium">$189</td>
+                    <td class="py-3 border-b text-center">$299</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 border-b text-gray-700">Liability Coverage</td>
+                    <td class="py-3 border-b text-center">✓</td>
+                    <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                    <td class="py-3 border-b text-center">✓</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 border-b text-gray-700">Collision Coverage</td>
+                    <td class="py-3 border-b text-center">✓</td>
+                    <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                    <td class="py-3 border-b text-center">✓</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 border-b text-gray-700">Roadside Assistance</td>
+                    <td class="py-3 border-b text-center">Basic</td>
+                    <td class="py-3 border-b text-center bg-gray-50">Premium</td>
+                    <td class="py-3 border-b text-center">Premium</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 border-b text-gray-700">Track Day Coverage</td>
+                    <td class="py-3 border-b text-center">—</td>
+                    <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                    <td class="py-3 border-b text-center">Unlimited</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 border-b text-gray-700">OEM Parts Guarantee</td>
+                    <td class="py-3 border-b text-center">—</td>
+                    <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                    <td class="py-3 border-b text-center">✓</td>
+                  </tr>
+                  <tr>
+                    <td class="py-3 border-b text-gray-700">Concierge Service</td>
+                    <td class="py-3 border-b text-center">—</td>
+                    <td class="py-3 border-b text-center bg-gray-50">—</td>
+                    <td class="py-3 border-b text-center">✓</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="mt-4 text-center text-sm text-gray-500">
+              <p>All plans include 24/7 roadside assistance and collision coverage.</p>
+            </div>
+          </div>
+        `;
+        
+        document.body.appendChild(popup);
+        
+        // Add close handlers
+        document.getElementById('close-comparison').addEventListener('click', function() {
+          closeComparisonPopup();
+        });
+        
+        // Close on outside click
+        popup.addEventListener('click', function(e) {
+          if (e.target === popup) {
+            closeComparisonPopup();
+          }
+        });
+        
+        // Show popup with animation
+        setTimeout(function() {
+          popup.classList.add('opacity-100');
+          popup.querySelector('div').classList.add('scale-100');
+          popup.querySelector('div').classList.remove('scale-95');
+        }, 10);
+      } else {
+        // If popup exists, just show it
+        const popup = document.getElementById('plan-comparison-popup');
+        popup.classList.add('opacity-100');
+        popup.querySelector('div').classList.add('scale-100');
+        popup.querySelector('div').classList.remove('scale-95');
+      }
+    }
+    
+    // Close comparison popup
+    function closeComparisonPopup() {
+      const popup = document.getElementById('plan-comparison-popup');
+      if (popup) {
+        popup.classList.remove('opacity-100');
+        popup.querySelector('div').classList.add('scale-95');
+        popup.querySelector('div').classList.remove('scale-100');
+        
+        setTimeout(function() {
+          document.body.removeChild(popup);
+        }, 300);
+      }
+    }
+    
+  } catch (error) {
+    console.error('Error initializing PlansScreen component:', error);
+  }
+})();
+</script>
+
+<style>
+/* Plan-specific styles */
+.plan-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  line-height: 1;
+}
+
+.plan-price .currency {
+  font-size: 1.2rem;
+  font-weight: 500;
+  vertical-align: super;
+}
+
+.plan-price .period {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.plan-features {
+  margin-top: 1.5rem;
+  flex-grow: 1;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.plan-features li svg {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.plan-features li.feature-disabled {
+  color: #9ca3af;
+}
+
+.plan-features li.feature-new {
+  position: relative;
+}
+
+.plan-features li.feature-new::after {
+  content: 'NEW';
+  position: absolute;
+  font-size: 0.6rem;
+  color: #000000;
+  right: -20px;
+  top: 0;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.card-component.highlighted .plan-price .period {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.card-component.highlighted .plan-features li.feature-disabled {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.card-component.highlighted .plan-features li.feature-new::after {
+  color: white;
+}
+</style>

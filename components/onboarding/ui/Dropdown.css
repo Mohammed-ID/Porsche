@@ -1,0 +1,88 @@
+/* Dropdown Component Styles */
+
+.dropdown-component {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.dropdown-component .custom-select {
+  position: relative;
+}
+
+.dropdown-component .custom-select select {
+  appearance: none;
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dropdown-component .custom-select:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #000;
+  pointer-events: none;
+}
+
+.dropdown-component .custom-select select:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+/* Error state */
+.dropdown-component .custom-select select.border-red-500 {
+  border-color: #ef4444;
+}
+
+.dropdown-component .custom-select select.border-red-500:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.dropdown-component .custom-select.error:after {
+  border-top-color: #ef4444;
+}
+
+/* Disabled state */
+.dropdown-component .custom-select select:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.dropdown-component .custom-select select:disabled + .custom-select:after {
+  opacity: 0.5;
+}
+
+/* Hover state */
+.dropdown-component .custom-select select:hover:not(:disabled) {
+  border-color: #d1d5db;
+}
+
+/* Dropdown options styling */
+.dropdown-component .custom-select select option {
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.dropdown-component .custom-select select option:checked {
+  background-color: #e5e7eb;
+  color: #000;
+}
+
+.dropdown-component .error-message {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ef4444;
+}

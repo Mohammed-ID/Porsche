@@ -1,0 +1,129 @@
+<!-- 
+  Slider Component
+  A custom styled range slider with value display
+  
+  Usage: 
+  <div id="vehicle-value-slider-container" 
+       data-component="components/onboarding/ui/Slider.html"
+       data-param-id="vehicle-value"
+       data-param-label="Vehicle Value (USD)"
+       data-param-min="50000"
+       data-param-max="300000"
+       data-param-step="5000"
+       data-param-value="150000"
+       data-param-prefix="$"
+       data-param-suffix=""
+       data-param-minLabel="$50,000"
+       data-param-maxLabel="$300,000+"
+       data-param-formatValue="true"></div>
+  
+  Parameters:
+  - id: Slider field ID (required)
+  - label: Field label text (required)
+  - min: Minimum slider value (required)
+  - max: Maximum slider value (required)
+  - step: Step value (required)
+  - value: Initial value (required)
+  - prefix: Prefix for displayed value (e.g. "$") (optional)
+  - suffix: Suffix for displayed value (e.g. "km") (optional)
+  - minLabel: Label for minimum value (optional)
+  - maxLabel: Label for maximum value (optional)
+  - formatValue: Whether to format value with thousand separators (default: false)
+  - helpText: Additional helper text (optional)
+-->
+
+<div class="form-control slider-component mb-6">
+  <label class="block mb-2 font-medium" for="{{id}}">{{label}}</label>
+  <input type="range" class="range-slider" id="{{id}}" 
+         min="{{min}}" max="{{max}}" step="{{step}}" value="{{value}}">
+  <div class="flex justify-between mt-2 text-sm text-gray-600">
+    <span class="min-label">{{minLabel}}</span>
+    <span id="{{id}}-display" class="value-display"></span>
+    <span class="max-label">{{maxLabel}}</span>
+  </div>
+  {{#helpText}}
+  <p class="text-sm text-gray-600 mt-1">{{helpText}}</p>
+  {{/helpText}}
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component elements
+    const component = document.currentScript.parentElement;
+    const slider = component.querySelector('input[type="range"]');
+    const valueDisplay = component.querySelector('.value-display');
+    
+    if (!slider || !valueDisplay) return;
+    
+    // Get parameters
+    const prefix = '{{prefix}}' || '';
+    const suffix = '{{suffix}}' || '';
+    const formatValue = '{{formatValue}}' === 'true';
+    
+    // Format the value
+    function formatDisplayValue(value) {
+      let formattedValue = value;
+      
+      // Add thousand separators if enabled
+      if (formatValue) {
+        formattedValue = parseInt(value).toLocaleString();
+      }
+      
+      return prefix + formattedValue + suffix;
+    }
+    
+    // Update value display
+    function updateValueDisplay() {
+      valueDisplay.textContent = formatDisplayValue(slider.value);
+    }
+    
+    // Add input event listener
+    slider.addEventListener('input', function() {
+      updateValueDisplay();
+      // Dispatch change event to parent form
+      dispatchChangeEvent();
+    });
+    
+    // Dispatch change event
+    function dispatchChangeEvent() {
+      const changeEvent = new CustomEvent('sliderChange', {
+        bubbles: true,
+        detail: {
+          id: slider.id,
+          value: slider.value,
+          displayValue: valueDisplay.textContent
+        }
+      });
+      
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Expose get/set methods to parent
+    window.getSliderValue = function(sliderId) {
+      if (slider.id === sliderId) {
+        return {
+          value: slider.value,
+          displayValue: valueDisplay.textContent
+        };
+      }
+      return null;
+    };
+    
+    window.setSliderValue = function(sliderId, value) {
+      if (slider.id === sliderId && slider) {
+        slider.value = value;
+        updateValueDisplay();
+        // Dispatch change event
+        dispatchChangeEvent();
+      }
+    };
+    
+    // Initialize value display
+    updateValueDisplay();
+    
+  } catch (error) {
+    console.error('Error initializing Slider component:', error);
+  }
+})();
+</script>

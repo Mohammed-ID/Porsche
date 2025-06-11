@@ -1,0 +1,122 @@
+<!-- 
+  PaymentMethod Component
+  A component for selecting payment methods
+  
+  Usage: 
+  <div id="payment-methods-container" 
+       data-component="components/onboarding/ui/PaymentMethod.html"
+       data-param-methods='[
+         {
+           "id": "credit-card",
+           "name": "Credit Card",
+           "description": "Pay with Visa, Mastercard, or American Express",
+           "iconHtml": "<svg class=\"w-8 h-8\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><rect x=\"2\" y=\"5\" width=\"20\" height=\"14\" rx=\"2\" /><line x1=\"2\" y1=\"10\" x2=\"22\" y2=\"10\" /></svg>",
+           "selected": true
+         },
+         {
+           "id": "paypal",
+           "name": "PayPal",
+           "description": "Pay with your PayPal account",
+           "iconHtml": "<svg class=\"w-8 h-8\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\"><path d=\"M6 9h8a3 3 0 003-3c0-1.5-1-2-2-2H7l-1 6\" /><path d=\"M5 11h9a3 3 0 003-3c0-1.5-1-2-2-2H6l-1 6\" /><line x1=\"12\" y1=\"16\" x2=\"20\" y2=\"16\" /><line x1=\"8\" y1=\"16\" x2=\"10\" y2=\"16\" /></svg>",
+           "selected": false
+         }
+       ]'></div>
+  
+  Parameters:
+  - methods: Array of payment method objects, each with id, name, description, iconHtml, and selected properties (required)
+-->
+
+<div class="payment-method-component">
+  <label class="block mb-3 font-medium">Payment Method</label>
+  <div class="payment-methods">
+    <!-- Payment methods will be injected here by JavaScript -->
+  </div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component element
+    const component = document.currentScript.parentElement;
+    const methodsContainer = component.querySelector('.payment-methods');
+    
+    if (!component || !methodsContainer) return;
+    
+    // Parse methods from parameter
+    const methodsParam = '{{methods}}';
+    
+    if (methodsParam) {
+      try {
+        const methods = JSON.parse(methodsParam.replace(/&quot;/g, '"'));
+        
+        // Create payment method elements
+        methods.forEach(method => {
+          const methodElement = document.createElement('div');
+          methodElement.className = `payment-method ${method.selected ? 'selected' : ''}`;
+          methodElement.dataset.methodId = method.id;
+          
+          methodElement.innerHTML = `
+            <input type="radio" name="payment-method" value="${method.id}" ${method.selected ? 'checked' : ''}>
+            <div>
+              <span class="font-medium">${method.name}</span>
+              <p class="text-sm text-gray-600">${method.description}</p>
+            </div>
+            <div class="flex space-x-2 ml-auto">
+              ${method.iconHtml}
+            </div>
+          `;
+          
+          // Add click handler
+          methodElement.addEventListener('click', function() {
+            // Select this method
+            selectMethod(method.id);
+          });
+          
+          // Add to container
+          methodsContainer.appendChild(methodElement);
+        });
+      } catch (e) {
+        console.error('Failed to parse methods JSON:', e);
+      }
+    }
+    
+    // Select a payment method
+    function selectMethod(methodId) {
+      // Update UI
+      const methodElements = methodsContainer.querySelectorAll('.payment-method');
+      methodElements.forEach(element => {
+        const isSelected = element.dataset.methodId === methodId;
+        element.classList.toggle('selected', isSelected);
+        
+        // Update radio button
+        const radio = element.querySelector('input[type="radio"]');
+        if (radio) {
+          radio.checked = isSelected;
+        }
+      });
+      
+      // Dispatch change event
+      const changeEvent = new CustomEvent('paymentMethodChange', {
+        bubbles: true,
+        detail: {
+          methodId: methodId
+        }
+      });
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Expose get/set methods to parent
+    window.getSelectedPaymentMethod = function() {
+      const selectedInput = component.querySelector('input[type="radio"]:checked');
+      return selectedInput ? selectedInput.value : null;
+    };
+    
+    window.setSelectedPaymentMethod = function(methodId) {
+      selectMethod(methodId);
+    };
+    
+  } catch (error) {
+    console.error('Error initializing PaymentMethod component:', error);
+  }
+})();
+</script>

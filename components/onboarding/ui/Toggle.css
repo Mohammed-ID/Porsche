@@ -1,0 +1,86 @@
+/* Toggle Component Styles */
+
+.toggle-component {
+  position: relative;
+}
+
+.toggle-component .toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.toggle-component .toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-component .toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e5e7eb;
+  transition: 0.4s;
+  border-radius: 24px;
+}
+
+.toggle-component .toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.toggle-component .toggle-switch input:checked + .toggle-slider {
+  background-color: #000000;
+}
+
+.toggle-component .toggle-switch input:focus + .toggle-slider {
+  box-shadow: 0 0 1px #000000;
+}
+
+.toggle-component .toggle-switch input:checked + .toggle-slider:before {
+  transform: translateX(24px);
+}
+
+/* Disabled state */
+.toggle-component .toggle-switch input:disabled + .toggle-slider {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.toggle-component .toggle-switch input:disabled + .toggle-slider:before {
+  background-color: #d1d5db;
+}
+
+/* Hover states */
+.toggle-component .toggle-switch:hover input:not(:disabled) + .toggle-slider {
+  background-color: #d1d5db;
+}
+
+.toggle-component .toggle-switch:hover input:checked:not(:disabled) + .toggle-slider {
+  background-color: #333333;
+}
+
+/* Label styles */
+.toggle-component .toggle-label {
+  cursor: pointer;
+}
+
+/* Helper text */
+.toggle-component .helper-text {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}

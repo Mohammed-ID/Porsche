@@ -1,0 +1,95 @@
+/**
+ * Layout Component Styles
+ */
+
+/* Container layout */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 var(--container-padding);
+}
+
+/* Section spacing */
+.section-spacing {
+  padding: var(--section-padding) 0;
+}
+
+/* Responsive Grid Layouts */
+.grid {
+  display: grid;
+  gap: var(--element-spacing);
+}
+
+/* 2-column grid */
+.grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* 3-column grid */
+.grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .grid-cols-2, .grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+  .grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Spacing utilities */
+.spacer {
+  height: clamp(1rem, 5vh, 3rem);
+  width: 100%;
+}
+
+.spacer-sm {
+  height: clamp(0.5rem, 2vh, 1.5rem);
+  width: 100%;
+}
+
+.spacer-lg {
+  height: clamp(2rem, 8vh, 5rem);
+  width: 100%;
+}
+
+/* Responsive horizontal spacers */
+.h-spacer {
+  width: clamp(1rem, 3vw, 2rem);
+  display: inline-block;
+}
+
+.h-spacer-sm {
+  width: clamp(0.5rem, 1.5vw, 1rem);
+  display: inline-block;
+}
+
+.h-spacer-lg {
+  width: clamp(1.5rem, 5vw, 3rem);
+  display: inline-block;
+}
+
+/* Section animations */
+.animate-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
+  backface-visibility: hidden; /* Reduces paints */
+  perspective: 1000; /* Improves performance */
+  content-visibility: auto; /* Skips rendering of off-screen content */
+  contain-intrinsic-size: 1px 500px; /* Estimates size for layout */
+}
+
+.animate-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+  will-change: auto; /* Release GPU resources when animation completes */
+}

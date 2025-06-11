@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Porsche Insurance</title>
+    <!-- Client Hints for better image loading -->
+    <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width" />
+    <meta name="color-scheme" content="light" />
+    <!-- Initial scale for improved performance -->
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.ui.porsche.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload critical fonts, CSS and images -->
+    <link rel="preload" href="https://cdn.ui.porsche.com/porsche-design-system/fonts/porsche-next-latin-regular.b8f1c20.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="img/logo.png" as="image" />
+    <link rel="preload" href="img/poster.jpg" as="image" />
+    <link rel="preload" href="img/1.png" as="image" />
+
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      /* Hide body until CSS is loaded */
+      body {
+        visibility: hidden;
+      }
+      
+      /* Critical CSS for above-the-fold content */
+      #hero {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+      }
+      
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+      }
+    </style>
+
+    <!-- Load Tailwind CSS with blocking - prevents FOUC -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+
+    <!-- Load main CSS - with optimization -->
+    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'" />
+
+    <!-- Fix FOUC when critical elements are loaded -->
+    <script>
+      // Track critical images for loading
+      const criticalImages = ['img/logo.png', 'img/poster.jpg'];
+      let loadedImages = 0;
+      
+      // Check if all critical images are loaded
+      function checkCriticalImages() {
+        loadedImages++;
+        if (loadedImages >= criticalImages.length) {
+          document.body.style.visibility = "visible";
+        }
+      }
+      
+      // Preload critical images
+      criticalImages.forEach(src => {
+        const img = new Image();
+        img.onload = checkCriticalImages;
+        img.onerror = checkCriticalImages; // Continue even if image fails
+        img.src = src;
+      });
+      
+      // Fallback if images don't load within 500ms
+      setTimeout(function() {
+        document.body.style.visibility = "visible";
+      }, 500);
+      
+      // Make content visible once everything is loaded
+      window.addEventListener("load", function () {
+        document.body.style.visibility = "visible";
+      });
+    </script>
+  </head>
+  <body class="bg-white text-porsche">
+    <!-- Navbar - Fixed position with gradient overlay -->
+    <nav class="fixed w-full z-50">
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent"
+      ></div>
+      <div
+        class="container mx-auto flex justify-between items-center h-full py-4 sm:py-5 md:py-6 px-4 sm:px-6 md:px-8 relative z-10"
+      >
+        <a href="#hero" class="text-white relative z-10">
+          <img
+            src="img/logo.png"
+            alt="Porsche"
+            class="h-8 sm:h-10"
+            width="120"
+            height="40"
+            fetchpriority="high"
+          />
+        </a>
+        <ul class="hidden xl:flex space-x-10 font-medium">
+          <li>
+            <a
+              href="#products"
+              class="nav-link text-sm uppercase tracking-wider text-white"
+              data-translate-key="insurance-coverage"
+              >Insurance Coverage</a
+            >
+          </li>
+          <li>
+            <a
+              href="#features"
+              class="nav-link text-sm uppercase tracking-wider text-white"
+              data-translate-key="why-porsche-insurance"
+              >Why Porsche Insurance</a
+            >
+          </li>
+          <li>
+            <a
+              href="#partners"
+              class="nav-link text-sm uppercase tracking-wider text-white"
+              data-translate-key="insurance-partners"
+              >Insurance Partners</a
+            >
+          </li>
+        </ul>
+        <div class="hidden xl:flex items-center">
+          <a href="onboarding.html" class="cta-button inline-block px-6 py-3"
+            data-translate-key="get-porsche-covered">Get Your Porsche Covered</a
+          >
+          <div class="lang-switch ml-4 flex items-center">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="mx-2 text-white/70">|</span>
+            <button class="lang-btn" data-lang="ar">AR</button>
+          </div>
+        </div>
+        <button
+          id="menuBtn"
+          class="xl:hidden p-3 rounded-md relative z-10 hover:bg-white/10 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg
+            class="w-7 h-7 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+      <div id="navMenu" class="hidden bg-black/95 shadow-md absolute w-full">
+        <ul
+          class="flex flex-col items-center py-6 space-y-5 text-sm uppercase tracking-wider text-white"
+        >
+          <li>
+            <a href="#products" class="py-2 px-4 block" data-translate-key="insurance-coverage">Insurance Coverage</a>
+          </li>
+          <li>
+            <a href="#features" class="py-2 px-4 block" data-translate-key="why-porsche-insurance"
+              >Why Porsche Insurance</a
+            >
+          </li>
+          <li>
+            <a href="#partners" class="py-2 px-4 block" data-translate-key="insurance-partners">Insurance Partners</a>
+          </li>
+          <li>
+            <a href="onboarding.html" class="cta-button mt-3 inline-block px-6 py-3" data-translate-key="get-porsche-covered"
+              >Get Your Porsche Covered</a
+            >
+          </li>
+          <li class="mt-4">
+            <div class="lang-switch flex items-center justify-center">
+              <button class="lang-btn active" data-lang="en">EN</button>
+              <span class="mx-2 text-white/70">|</span>
+              <button class="lang-btn" data-lang="ar">AR</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero with Local Video -->
+    <section
+      id="hero"
+      class="relative h-screen flex items-end justify-start bg-black overflow-hidden"
+    >
+      <div class="absolute inset-0 w-full h-full">
+        <video
+          class="absolute w-full h-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="img/poster.jpg"
+          aria-hidden="true"
+        >
+          <source src="img/video.mp4" type="video/mp4">
+        </video>
+        <div
+          class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
+        ></div>
+      </div>
+      <div
+        class="relative px-4 sm:px-8 md:px-12 lg:px-16 pb-16 sm:pb-20 md:pb-24 lg:pb-32 max-w-xl md:max-w-2xl hero-content"
+      >
+        <h1
+          class="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 sm:mb-8 leading-tight"
+          data-translate-key="hero-title"
+        >
+          Premium protection for your Porsche
+        </h1>
+        <p
+          class="text-sm xs:text-base md:text-lg text-gray-300 mb-8 sm:mb-10 md:mb-12 max-w-xl"
+          data-translate-key="hero-description"
+        >
+          Specialized car insurance tailored for the precision, performance, and
+          value of your Porsche.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-6 sm:gap-8">
+          <a
+            href="onboarding.html"
+            class="cta-button inline-block px-6 sm:px-8 py-3 text-center sm:text-left"
+          >
+            <span class="relative z-10" data-translate-key="get-porsche-covered">Get Your Porsche Covered</span>
+          </a>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-[clamp(1rem,4vh,2.5rem)] right-[clamp(1rem,4vw,2.5rem)] text-white"
+      >
+        <div class="scroll-indicator flex flex-col items-center">
+          <span class="text-[clamp(0.7rem,1vw,0.875rem)] uppercase tracking-widest mb-[clamp(0.25rem,1vh,0.5rem)]" data-translate-key="scroll">Scroll</span>
+          <svg
+            class="w-[clamp(1rem,1.5vw,1.5rem)] h-[clamp(1rem,1.5vw,1.5rem)]"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- Insurance Coverage -->
+    <section
+      id="products"
+      class="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 bg-white section-spacing animate-section"
+    >
+      <div class="container mx-auto px-4 sm:px-6">
+        <div class="mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          <h2
+            class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6"
+            data-translate-key="insurance-coverage-title"
+          >
+            Insurance Coverage
+          </h2>
+          <p class="text-gray-600 max-w-xl text-sm sm:text-base" data-translate-key="insurance-coverage-desc">
+            Comprehensive car insurance features designed specifically for
+            Porsche vehicles.
+          </p>
+        </div>
+
+        <!-- 2x2 Coverage Grid with Images and Lists -->
+        <div
+          class="grid gap-8 xs:gap-10 sm:gap-12 lg:gap-16 grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto mobile-spacing"
+        >
+          <!-- Card 1 -->
+          <div class="benefit-card card-spacing">
+            <img
+              src="img/1.png"
+              srcset="img/1-small.png 300w, img/1.png 600w"
+              sizes="(max-width: 640px) 300px, 600px"
+              alt="Performance Coverage"
+              width="400"
+              height="600"
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+              onerror="this.onerror=null; this.src='img/1.png';"
+            />
+            <div class="card-content">
+              <h3 class="text-lg xs:text-xl md:text-2xl font-bold mb-3 sm:mb-5" data-translate-key="performance-coverage">
+                Performance Coverage
+              </h3>
+              <ul class="benefit-list space-y-2 xs:space-y-3 mt-3 xs:mt-5">
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="track-day-insurance"
+                    >Recreational track day insurance</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="performance-parts"
+                    >Performance parts coverage</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="aftermarket-insurance"
+                    >Aftermarket modifications insurance</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="safe-driver"
+                    >Safe driver discounts</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="benefit-card card-spacing">
+            <img
+              src="img/2.png"
+              alt="Exclusive Services"
+              width="400"
+              height="600"
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+            />
+            <div class="card-content">
+              <h3 class="text-lg xs:text-xl md:text-2xl font-bold mb-3 sm:mb-5" data-translate-key="concierge-services">
+                Concierge Insurance Services
+              </h3>
+              <ul class="benefit-list space-y-2 xs:space-y-3 mt-3 xs:mt-5">
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="claims-specialist"
+                    >Dedicated claims specialist</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="expedited-claims"
+                    >Expedited claims processing</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="owner-events"
+                    >Porsche owner events access</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="policy-concierge"
+                    >Insurance policy concierge</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="benefit-card card-spacing">
+            <img
+              src="img/3.png"
+              alt="Premium Protection"
+              width="400"
+              height="600"
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+            />
+            <div class="card-content">
+              <h3 class="text-lg xs:text-xl md:text-2xl font-bold mb-3 sm:mb-5" data-translate-key="premium-protection">
+                Premium Vehicle Protection
+              </h3>
+              <ul class="benefit-list space-y-2 xs:space-y-3 mt-3 xs:mt-5">
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="agreed-value">Agreed value insurance</span>
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="oem-parts">OEM parts guarantee</span>
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="diminished-value"
+                    >Diminished value coverage</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="collectors-insurance"
+                    >Collectors vehicle insurance</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="benefit-card card-spacing">
+            <img
+              src="img/4.png"
+              alt="Global Coverage"
+              width="400"
+              height="600"
+              loading="lazy"
+              decoding="async"
+              fetchpriority="low"
+            />
+            <div class="card-content">
+              <h3 class="text-lg xs:text-xl md:text-2xl font-bold mb-3 sm:mb-5" data-translate-key="comprehensive-coverage">
+                Comprehensive Coverage
+              </h3>
+              <ul class="benefit-list space-y-2 xs:space-y-3 mt-3 xs:mt-5">
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="international-coverage"
+                    >International driving coverage</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="roadside-assistance"
+                    >Premium roadside assistance</span
+                  >
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="digital-claims">Digital claims filing</span>
+                </li>
+                <li class="flex items-start">
+                  <div class="check-circle">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </div>
+                  <span class="text-xs sm:text-sm" data-translate-key="luxury-transport"
+                    >Luxury vehicle transport</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Banner -->
+    <section
+      class="relative bg-black text-white overflow-hidden animate-section"
+    >
+      <div
+        class="container mx-auto px-4 sm:px-6 py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 relative"
+      >
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-20 items-center mobile-spacing"
+        >
+          <div>
+            <h2
+              class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-10 leading-tight"
+              data-translate-key="exceptional-insurance"
+            >
+              Car insurance as exceptional as your Porsche
+            </h2>
+            <p
+              class="text-sm sm:text-base md:text-lg text-gray-300 mb-8 sm:mb-10 md:mb-12"
+              data-translate-key="exceptional-desc"
+            >
+              Our specialized auto insurance is designed with the same attention
+              to detail and performance standards that define your Porsche,
+              providing coverage that understands the unique value of your
+              vehicle.
+            </p>
+            <a
+              href="onboarding.html"
+              class="cta-button cta-premium inline-block px-5 sm:px-6 md:px-8 py-2 sm:py-3"
+            >
+              <span class="relative z-10" data-translate-key="get-porsche-covered">Get Your Porsche Covered</span>
+            </a>
+          </div>
+          <div class="relative mt-8 md:mt-0">
+            <div class="aspect-[4/3] rounded-lg overflow-hidden">
+              <img
+                src="img/5.png"
+                alt="Precision Engineering"
+                class="w-full h-full object-cover"
+                width="600"
+                height="450"
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
+              />
+            </div>
+            <div
+              class="absolute -bottom-4 xs:-bottom-6 -right-4 xs:-right-6 bg-black/80 text-white p-5 sm:p-7 md:p-8 max-w-[calc(100%-2rem)] sm:max-w-xs border border-white/20 rounded-lg"
+            >
+              <p class="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4" data-translate-key="insurance-matches">
+                Insurance That Matches Your Porsche
+              </p>
+              <p class="text-xs sm:text-sm md:text-base" data-translate-key="insurance-matches-desc">
+                Protection that recognizes the precision engineering,
+                performance capabilities, and distinctive value of your Porsche.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section
+      id="features"
+      class="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 bg-[#f7f7f7] section-spacing animate-section"
+    >
+      <div class="container mx-auto px-4 sm:px-6">
+        <div class="mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          <h2
+            class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6"
+            data-translate-key="why-choose-title"
+          >
+            Why Choose Porsche Insurance?
+          </h2>
+          <p class="text-gray-600 max-w-xl text-sm sm:text-base" data-translate-key="why-choose-desc">
+            Specialized auto insurance developed exclusively for Porsche owners
+            by those who understand your vehicle.
+          </p>
+        </div>
+        <div class="grid" id="features-grid">
+          <div class="animate-fade" style="animation-delay: 0.3s">
+            <div
+              class="feature-card bg-white border-b-4 border-black h-full hover:translate-y-[-10px] transition-all duration-500 rounded-lg shadow-md relative"
+            >
+              <div
+                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-black flex items-center justify-center mb-6 sm:mb-8 md:mb-10 rounded-md"
+              >
+                <svg
+                  class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  width="32"
+                  height="32"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                  ></path>
+                </svg>
+              </div>
+              <h3
+                class="text-lg sm:text-xl md:text-2xl font-bold mb-4"
+                data-translate-key="model-specific"
+              >
+                Model-Specific Coverage
+              </h3>
+              <p
+                class="text-gray-600 mb-5 text-sm sm:text-base"
+                data-translate-key="model-specific-desc"
+              >
+                Insurance plans specifically tailored for each Porsche model,
+                with coverage options designed around your vehicle's unique
+                characteristics.
+              </p>
+              <ul class="space-y-4 sm:space-y-5 text-sm sm:text-base">
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-black mt-0.5 mr-3 sm:mr-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  <span data-translate-key="customized-model">Customized for your specific model</span>
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-black mt-0.5 mr-3 sm:mr-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  <span data-translate-key="adaptable-driving">Adaptable to your driving habits</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="animate-fade" style="animation-delay: 0.6s">
+            <div
+              class="feature-card bg-white border-b-4 border-black h-full hover:translate-y-[-10px] transition-all duration-500 rounded-lg shadow-md relative"
+            >
+              <div
+                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-black flex items-center justify-center mb-6 sm:mb-8 md:mb-10 rounded-md"
+              >
+                <svg
+                  class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  width="32"
+                  height="32"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                  ></path>
+                </svg>
+              </div>
+              <h3
+                class="text-lg sm:text-xl md:text-2xl font-bold mb-4"
+                data-translate-key="certified-repairs"
+              >
+                Porsche-Certified Repairs
+              </h3>
+              <p
+                class="text-gray-600 mb-5 text-sm sm:text-base"
+                data-translate-key="certified-repairs-desc"
+              >
+                All insurance claims are processed with Porsche-certified
+                technicians ensuring your vehicle receives proper care and
+                original parts.
+              </p>
+              <ul class="space-y-4 sm:space-y-5 text-sm sm:text-base">
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-black mt-0.5 mr-3 sm:mr-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  <span data-translate-key="factory-technicians">Factory-trained technicians</span>
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-black mt-0.5 mr-3 sm:mr-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  <span data-translate-key="genuine-parts">Genuine Porsche parts guarantee</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="animate-fade" style="animation-delay: 0.9s">
+            <div
+              class="feature-card bg-white border-b-4 border-black h-full hover:translate-y-[-10px] transition-all duration-500 rounded-lg shadow-md relative"
+            >
+              <div
+                class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-black flex items-center justify-center mb-6 sm:mb-8 md:mb-10 rounded-md"
+              >
+                <svg
+                  class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  width="32"
+                  height="32"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+              </div>
+              <h3
+                class="text-lg sm:text-xl md:text-2xl font-bold mb-4"
+                data-translate-key="expedited-claims-process"
+              >
+                Expedited Claims Process
+              </h3>
+              <p
+                class="text-gray-600 mb-5 text-sm sm:text-base"
+                data-translate-key="expedited-claims-desc"
+              >
+                Fast-track claims processing and premium service levels for
+                Porsche owners, minimizing time without your vehicle.
+              </p>
+              <ul class="space-y-4 sm:space-y-5 text-sm sm:text-base">
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-black mt-0.5 mr-3 sm:mr-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  <span data-translate-key="rapid-assessment">Rapid claims assessment</span>
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="w-5 h-5 sm:w-6 sm:h-6 text-black mt-0.5 mr-3 sm:mr-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    ></path>
+                  </svg>
+                  <span data-translate-key="personal-advisor">Personal Porsche claims advisor</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quote CTA -->
+    <section
+      class="relative py-14 sm:py-16 md:py-20 lg:py-24 bg-black animate-section"
+    >
+      <div class="container mx-auto px-4 sm:px-6 text-center">
+        <div class="max-w-lg sm:max-w-xl md:max-w-2xl mx-auto text-white">
+          <h2
+            class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 md:mb-8"
+            data-translate-key="premium-insurance"
+          >
+            Premium insurance for a premium vehicle
+          </h2>
+          <p
+            class="text-base sm:text-lg md:text-xl opacity-90 mb-8 sm:mb-10 md:mb-12"
+            data-translate-key="premium-insurance-desc"
+          >
+            Get specialized insurance coverage tailored to your Porsche model
+            and driving lifestyle.
+          </p>
+          <a
+            href="onboarding.html"
+            class="cta-button inline-block px-6 sm:px-8 py-3 sm:py-4 md:py-5"
+          >
+            <span class="relative z-10" data-translate-key="get-porsche-covered">Get Your Porsche Covered</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partners -->
+    <section
+      id="partners"
+      class="py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36 bg-white section-spacing animate-section"
+    >
+      <div class="container mx-auto px-4 sm:px-6">
+        <div class="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24">
+          <h2
+            class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6"
+            data-translate-key="partners-title"
+          >
+            Insurance Partners
+          </h2>
+          <p
+            class="text-gray-600 max-w-xl sm:max-w-2xl mx-auto text-sm sm:text-base"
+            data-translate-key="partners-desc"
+          >
+            We collaborate with leading auto insurance providers to deliver
+            specialized coverage and service for your Porsche.
+          </p>
+        </div>
+
+        <!-- Connected Partners Design with Animation -->
+        <div class="relative max-w-4xl mx-auto">
+          <!-- Connecting Elements with Animation -->
+          <div
+            class="hidden md:block absolute top-1/2 left-0 right-0 h-1 bg-gray-200 transform -translate-y-1/2 z-0"
+          >
+            <div class="absolute inset-0 overflow-hidden">
+              <div class="h-full bg-black connection-pulse"></div>
+            </div>
+          </div>
+
+          <div
+            class="partners-grid relative z-10"
+          >
+            <!-- Partner 1 -->
+            <div
+              class="bg-white rounded-lg shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+            >
+              <div class="relative">
+                <div
+                  class="bg-gray-100 p-8 sm:p-10 md:p-12 flex items-center justify-center h-40 sm:h-48 md:h-56"
+                >
+                  <img
+                    src="img/partner1.png"
+                    alt="Insurance Provider Partner"
+                    class="max-h-20 sm:max-h-24 md:max-h-28 grayscale hover:grayscale-0 transition-all duration-500 transform hover:scale-105"
+                    width="200"
+                    height="100"
+                    loading="lazy"
+                  />
+                </div>
+                <div
+                  class="absolute -bottom-4 sm:-bottom-5 left-1/2 transform -translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full border-4 border-white z-20 connection-node"
+                ></div>
+              </div>
+              <div class="p-6 sm:p-8 md:p-10">
+                <p class="text-gray-600 mb-4 sm:mb-5 text-sm sm:text-base">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris.
+                </p>
+              </div>
+            </div>
+
+            <!-- Partner 2 -->
+            <div
+              class="bg-white rounded-lg shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+            >
+              <div class="relative">
+                <div
+                  class="bg-gray-100 p-8 sm:p-10 md:p-12 flex items-center justify-center h-40 sm:h-48 md:h-56"
+                >
+                  <img
+                    src="img/partner2.png"
+                    alt="Certified Repair Network"
+                    class="max-h-20 sm:max-h-24 md:max-h-28 grayscale hover:grayscale-0 transition-all duration-500 transform hover:scale-105"
+                    width="200"
+                    height="100"
+                    loading="lazy"
+                  />
+                </div>
+                <div
+                  class="absolute -bottom-4 sm:-bottom-5 left-1/2 transform -translate-x-1/2 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full border-4 border-white z-20 connection-node"
+                ></div>
+              </div>
+              <div class="p-6 sm:p-8 md:p-10">
+                <p class="text-gray-600 mb-4 sm:mb-5 text-sm sm:text-base">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                  laboris.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center mt-12 sm:mt-16 md:mt-20">
+            <p
+              class="text-gray-600 max-w-xl sm:max-w-2xl md:max-w-3xl mx-auto text-sm sm:text-base"
+              data-translate-key="partners-quality"
+            >
+              All our insurance partners meet rigorous qualification standards
+              to ensure they deliver the exceptional service Porsche owners
+              expect. Our combined expertise provides comprehensive protection
+              that respects the engineering excellence of your vehicle.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      class="bg-black text-white pt-14 sm:pt-16 md:pt-20 pb-10 sm:pb-12 md:pb-14"
+    >
+      <div class="container mx-auto px-4 sm:px-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-0 lg:gap-2">
+          <!-- Logo and company info -->
+          <div class="md:col-span-7 lg:col-span-8">
+            <a href="#hero" class="inline-block mb-6 sm:mb-8">
+              <img
+                src="img/logo.png"
+                alt="Porsche"
+                class="h-10 sm:h-12"
+                width="120"
+                height="48"
+              />
+            </a>
+            <p class="text-gray-400 mb-8 text-sm md:text-base max-w-lg" data-translate-key="porsche-insurance-desc">
+              Porsche Insurance delivers specialized auto coverage designed with
+              the same precision and performance standards as the vehicles we
+              protect.
+            </p>
+            <div class="flex space-x-5 mb-8">
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors rounded-full hover:bg-white/10 p-3"
+                aria-label="Twitter"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors rounded-full hover:bg-white/10 p-3"
+                aria-label="Instagram"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                  />
+                </svg>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-white transition-colors rounded-full hover:bg-white/10 p-3"
+                aria-label="Facebook"
+              >
+                <svg
+                  class="w-6 h-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- CTA - adjusted spacing -->
+          <div class="md:col-span-5 lg:col-span-4 flex flex-col justify-center">
+            <div
+              class="bg-black p-7 sm:p-8 md:p-10 rounded-lg border border-gray-800"
+            >
+              <h4 class="text-xl font-bold mb-5 text-white" data-translate-key="ready-protect">
+                Ready to protect your Porsche?
+              </h4>
+              <p class="text-gray-300 mb-6" data-translate-key="get-coverage">
+                Get specialized insurance coverage tailored for your Porsche
+                model.
+              </p>
+              <a
+                href="onboarding.html"
+                class="cta-button inline-block px-8 py-3 w-full text-center"
+                data-translate-key="get-porsche-covered"
+              >
+                Get Your Porsche Covered
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="pt-10 mt-14 border-t border-gray-800">
+          <p class="text-gray-500 text-sm text-center" data-translate-key="copyright">
+            © 2025 Porsche Insurance. All rights reserved. Porsche is a
+            registered trademark.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Custom JavaScript - deferred loading -->
+    <script src="main.js" defer></script>
+  </body>
+</html>

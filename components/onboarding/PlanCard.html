@@ -1,0 +1,94 @@
+<!-- 
+  PlanCard Component
+  Usage: 
+  <div id="plan-card-container" data-component="components/onboarding/PlanCard.html" 
+       data-param-title="Basic Plan"
+       data-param-description="Essential coverage for your Porsche"
+       data-param-price="99"
+       data-param-planId="basic"
+       data-param-recommended="false"
+       data-param-features='[
+         {"text": "Liability coverage", "enabled": true},
+         {"text": "Collision coverage", "enabled": true},
+         {"text": "Roadside assistance", "enabled": true},
+         {"text": "Track day coverage", "enabled": false},
+         {"text": "OEM parts guarantee", "enabled": false}
+       ]'></div>
+-->
+<div class="relative">
+  <div class="plan-card h-full {{#recommended}}recommended{{/recommended}}">
+    {{#recommended}}
+    <div class="recommended-badge">Recommended</div>
+    {{/recommended}}
+    <div class="plan-header">
+      <h3 class="text-xl font-bold">{{title}}</h3>
+      <p class="text-sm text-gray-400">{{description}}</p>
+    </div>
+    <div class="plan-price">
+      <span class="currency">$</span>{{price}}<span class="period">/month</span>
+    </div>
+    <ul class="plan-features">
+      <!-- Features will be inserted here by JavaScript -->
+    </ul>
+    <div class="mt-6">
+      <button type="button" class="w-full py-3 onboarding-button font-medium rounded-md hover:bg-gray-700 hover:border-transparent transition-colors select-plan" data-plan="{{planId}}">
+        Select Plan
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    try {
+      // Get the container element
+      const card = document.currentScript.parentElement;
+      const featuresContainer = card.querySelector('.plan-features');
+      
+      // Parse the features from the data-param-features attribute
+      const featuresParam = '{{features}}';
+      
+      if (featuresContainer && featuresParam) {
+        let features;
+        
+        try {
+          features = JSON.parse(featuresParam.replace(/&quot;/g, '"'));
+        } catch (e) {
+          console.error('Failed to parse features JSON:', e);
+          return;
+        }
+        
+        // Generate the features HTML
+        features.forEach(feature => {
+          const li = document.createElement('li');
+          
+          if (feature.enabled) {
+            li.innerHTML = `
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+              </svg>
+              ${feature.text}
+            `;
+          } else {
+            li.className = 'feature-disabled';
+            li.innerHTML = `
+              <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+              ${feature.text}
+            `;
+          }
+          
+          // Add "new" class if feature is marked as new
+          if (feature.isNew) {
+            li.className += ' feature-new';
+          }
+          
+          featuresContainer.appendChild(li);
+        });
+      }
+    } catch (error) {
+      console.error('Error initializing PlanCard component:', error);
+    }
+  })();
+</script>

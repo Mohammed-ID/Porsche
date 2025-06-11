@@ -1,0 +1,74 @@
+<!-- 
+  Enhanced Feature Banner Component
+  Demonstrates advanced templating features
+  
+  Parameters:
+  - title: Banner title
+  - description: Banner description
+  - imageSrc: Path to image
+  - imageAlt: Image alt text
+  - features: Array of feature objects {title, description, isHighlighted}
+  - showCta: Boolean to show/hide CTA button
+  - ctaText: CTA button text
+-->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-12 md:gap-16 lg:gap-20 items-center mobile-spacing">
+  <div>
+    <h2 class="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 md:mb-10 leading-tight" data-translate-key="exceptional-insurance">
+      {{title}}
+    </h2>
+    <p class="text-sm sm:text-base md:text-lg text-gray-300 mb-8 sm:mb-10 md:mb-12" data-translate-key="exceptional-desc">
+      {{description}}
+    </p>
+    
+    <!-- Conditional rendering of CTA button -->
+    {{#if showCta}}
+      <a href="onboarding.html" class="cta-button cta-premium inline-block px-5 sm:px-6 md:px-8 py-2 sm:py-3">
+        <span class="relative z-10" data-translate-key="get-porsche-covered">{{ctaText}}</span>
+      </a>
+    {{/if}}
+    
+    <!-- Feature list - uses loop through features array -->
+    {{#if features}}
+      <div class="feature-list mt-8 space-y-4">
+        {{#each features}}
+          <div class="feature-item p-4 border border-gray-700 rounded transition-all cursor-pointer hover:bg-gray-800 {{#if this.isHighlighted}}bg-gray-800 border-gray-500{{/if}}">
+            <h3 class="text-lg font-bold">{{this.title}}</h3>
+            <p class="text-sm text-gray-300 mt-2">{{this.description}}</p>
+          </div>
+        {{/each}}
+      </div>
+    {{/if}}
+  </div>
+  
+  <div class="relative mt-8 md:mt-0">
+    <div class="aspect-[4/3] rounded-lg overflow-hidden">
+      <img
+        src="{{imageSrc}}"
+        alt="{{imageAlt}}"
+        class="w-full h-full object-cover"
+        width="600"
+        height="450"
+        loading="lazy"
+        decoding="async"
+        fetchpriority="low"
+      />
+    </div>
+    
+    <!-- Conditionally show overlay content if features exist -->
+    {{#if features}}
+      <div class="absolute -bottom-4 xs:-bottom-6 -right-4 xs:-right-6 bg-black/80 text-white p-5 sm:p-7 md:p-8 max-w-[calc(100%-2rem)] sm:max-w-xs border border-white/20 rounded-lg overlay-card">
+        <!-- Use loop and conditionals to display active feature -->
+        {{#each features}}
+          <div class="feature-overlay {{#unless @index}}active{{/unless}}" data-index="{{@index}}">
+            <p class="text-base sm:text-lg md:text-xl font-bold mb-3 sm:mb-4">
+              {{this.title}}
+            </p>
+            <p class="text-xs sm:text-sm md:text-base">
+              {{this.description}}
+            </p>
+          </div>
+        {{/each}}
+      </div>
+    {{/if}}
+  </div>
+</div>

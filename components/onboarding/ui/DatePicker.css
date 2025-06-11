@@ -1,0 +1,82 @@
+/* DatePicker Component Styles */
+
+.date-picker-component {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.date-picker-component input[type="date"] {
+  position: relative;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 4px;
+  background-color: white;
+  font-family: "Porsche Next", Arial, sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+}
+
+.date-picker-component input[type="date"]:focus {
+  border-color: #000000;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.date-picker-component input[type="date"]:hover:not(:disabled) {
+  border-color: #d1d5db;
+}
+
+/* Error state */
+.date-picker-component input[type="date"].border-red-500 {
+  border-color: #ef4444;
+}
+
+.date-picker-component input[type="date"].border-red-500:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* Disabled state */
+.date-picker-component input[type="date"]:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Calendar icon styling */
+.date-picker-component input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.date-picker-component input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* For Firefox */
+.date-picker-component input[type="date"]::-moz-calendar-picker-indicator {
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.date-picker-component input[type="date"]::-moz-calendar-picker-indicator:hover {
+  opacity: 1;
+}
+
+/* Mobile-friendly styling */
+@media (max-width: 640px) {
+  .date-picker-component input[type="date"] {
+    font-size: 14px;
+    padding: 0.5rem;
+  }
+}
+
+/* Error message */
+.date-picker-component .error-message {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ef4444;
+}

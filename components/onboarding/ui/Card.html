@@ -1,0 +1,124 @@
+<!-- 
+  Card Component
+  A generic card container with various styling options
+  
+  Usage: 
+  <div id="plan-card-container" 
+       data-component="components/onboarding/ui/Card.html"
+       data-param-title="Basic Plan"
+       data-param-subtitle="Essential coverage for your Porsche"
+       data-param-contentHtml="<div>Card content goes here</div>"
+       data-param-footerHtml="<button>Select Plan</button>"
+       data-param-highlighted="false"
+       data-param-badge="Recommended"></div>
+  
+  Parameters:
+  - title: Card title (optional)
+  - subtitle: Card subtitle/description (optional)
+  - contentHtml: HTML content for the card body (required)
+  - footerHtml: HTML content for the card footer (optional)
+  - highlighted: Whether card should be highlighted (default: false)
+  - badge: Badge text to display if highlighted (optional)
+  - elevation: Shadow elevation (default: "medium", options: "none", "low", "medium", "high")
+  - borderRadius: Border radius style (default: "medium", options: "none", "small", "medium", "large", "full")
+-->
+
+<div class="card-component
+  {{#highlighted}}highlighted{{/highlighted}}
+  {{#elevation}}{{#elevation}}
+    {{#if elevation === 'none'}}shadow-none{{/if}}
+    {{#if elevation === 'low'}}shadow-sm{{/if}}
+    {{#if elevation === 'medium'}}shadow-md{{/if}}
+    {{#if elevation === 'high'}}shadow-lg{{/if}}
+  {{/elevation}}{{/elevation}}
+  {{^elevation}}shadow-md{{/elevation}}
+  {{#borderRadius}}{{#borderRadius}}
+    {{#if borderRadius === 'none'}}rounded-none{{/if}}
+    {{#if borderRadius === 'small'}}rounded-sm{{/if}}
+    {{#if borderRadius === 'medium'}}rounded-md{{/if}}
+    {{#if borderRadius === 'large'}}rounded-lg{{/if}}
+    {{#if borderRadius === 'full'}}rounded-full{{/if}}
+  {{/borderRadius}}{{/borderRadius}}
+  {{^borderRadius}}rounded-md{{/borderRadius}}">
+  
+  {{#highlighted}}{{#badge}}
+  <div class="card-badge">{{badge}}</div>
+  {{/badge}}{{/highlighted}}
+  
+  <div class="card-content">
+    {{#title}}
+    <div class="card-header">
+      <h3 class="card-title">{{title}}</h3>
+      {{#subtitle}}
+      <p class="card-subtitle">{{subtitle}}</p>
+      {{/subtitle}}
+    </div>
+    {{/title}}
+    
+    <div class="card-body">
+      {{{contentHtml}}}
+    </div>
+    
+    {{#footerHtml}}
+    <div class="card-footer">
+      {{{footerHtml}}}
+    </div>
+    {{/footerHtml}}
+  </div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the card element
+    const card = document.currentScript.previousElementSibling;
+    
+    if (!card) return;
+    
+    // Add click handler to the entire card (optional)
+    card.addEventListener('click', function(event) {
+      // Only trigger card click if the click was directly on the card (not on buttons or links)
+      if (event.target === card || event.target.classList.contains('card-content') || 
+          event.target.classList.contains('card-body') || event.target.classList.contains('card-header')) {
+        dispatchCardClick();
+      }
+    });
+    
+    // Dispatch card click event
+    function dispatchCardClick() {
+      const clickEvent = new CustomEvent('cardClick', {
+        bubbles: true,
+        detail: {
+          id: card.id
+        }
+      });
+      
+      card.dispatchEvent(clickEvent);
+    }
+    
+    // Expose highlight/unhighlight methods
+    window.highlightCard = function(cardId) {
+      if (card.id === cardId) {
+        card.classList.add('highlighted');
+        
+        // Add animation class
+        card.classList.add('animated');
+        
+        // Remove animation class after animation completes
+        setTimeout(function() {
+          card.classList.remove('animated');
+        }, 600);
+      }
+    };
+    
+    window.unhighlightCard = function(cardId) {
+      if (card.id === cardId) {
+        card.classList.remove('highlighted', 'animated');
+      }
+    };
+    
+  } catch (error) {
+    console.error('Error initializing Card component:', error);
+  }
+})();
+</script>

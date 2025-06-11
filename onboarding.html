@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-root">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Porsche Insurance - Onboarding</title>
+    <!-- Client Hints for better image loading -->
+    <meta http-equiv="Accept-CH" content="DPR, Width, Viewport-Width" />
+    <meta name="color-scheme" content="light" />
+    <!-- Initial scale for improved performance -->
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.ui.porsche.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Preload critical fonts, CSS and images -->
+    <link rel="preload" href="https://cdn.ui.porsche.com/porsche-design-system/fonts/porsche-next-latin-regular.b8f1c20.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="styles.css" as="style" />
+    <link rel="preload" href="img/logo.png" as="image" />
+
+    <!-- Prevent FOUC (Flash of Unstyled Content) -->
+    <style>
+      /* Hide body until CSS is loaded */
+      body {
+        visibility: hidden;
+      }
+      
+      /* Critical CSS for above-the-fold content */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 50;
+      }
+    </style>
+
+    <!-- Load Tailwind CSS with blocking - prevents FOUC -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind-config.js"></script>
+
+    <!-- Load main CSS - with optimization -->
+    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'" />
+
+    <!-- Additional styles for onboarding flow -->
+    <style>
+      /* Progress Stepper */
+      .step-progress {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      
+      .step-line {
+        position: absolute;
+        top: 14px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #e5e7eb;
+        z-index: 1;
+      }
+      
+      .step-progress-bar {
+        position: absolute;
+        top: 14px;
+        left: 0;
+        height: 2px;
+        background: #000000;
+        transition: width 0.6s ease;
+        z-index: 2;
+      }
+      
+      .step-circles {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        z-index: 3;
+      }
+      
+      /* Button styles */
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+      
+      button:not(:disabled) {
+        cursor: pointer;
+      }
+      
+      /* Enhanced onboarding page button styles */
+      .onboarding-button {
+        background-color: #000000;
+        color: white;
+        border: 2px solid #000000;
+        border-radius: 4px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+      
+      .onboarding-button:hover {
+        background-color: #333333;
+        border-color: #333333;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+      }
+      
+      .onboarding-button:active {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      }
+      
+      .onboarding-button::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+        transform: translateX(-100%);
+        transition: transform 0.8s;
+      }
+      
+      .onboarding-button:hover::after {
+        transform: translateX(100%);
+      }
+      
+      /* Selected plan button styling */
+      .onboarding-button-selected {
+        background-color: #333333;
+        border-color: #333333;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        position: relative;
+      }
+      
+      .onboarding-button-selected::before {
+        content: '✓';
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background-color: #000000;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      }
+      
+      /* Floating animation for main CTA buttons */
+      .cta-float {
+        animation: float 3s ease-in-out infinite;
+      }
+      
+      @keyframes float {
+        0% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+        100% {
+          transform: translateY(0px);
+        }
+      }
+      
+      /* Minimalist plan selection animation */
+      .plan-card.animated {
+        animation: plan-selected 0.4s ease-out;
+      }
+      
+      @keyframes plan-selected {
+        0% {
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+        }
+        100% {
+          box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
+        }
+      }
+      
+      /* Minimalist feature annotations */
+      .feature-new {
+        position: relative;
+      }
+      
+      .feature-new::after {
+        content: 'NEW';
+        position: absolute;
+        font-size: 0.6rem;
+        color: #000000;
+        right: -20px;
+        top: 0;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+      }
+      
+      .plan-card.recommended .feature-new::after {
+        color: white;
+      }
+      
+      .step-circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #e5e7eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+      
+      .step-circle.active {
+        background: #000000;
+        border-color: #000000;
+        color: white;
+      }
+      
+      .step-circle.completed {
+        background: #000;
+        border-color: #000;
+        color: white;
+      }
+
+      /* Custom form elements */
+      .form-control {
+        position: relative;
+        margin-bottom: 1.5rem;
+      }
+      
+      /* Floating label */
+      .floating-label {
+        position: relative;
+      }
+      
+      .floating-label input, 
+      .floating-label textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 4px;
+        font-size: 1rem;
+        background-color: white;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .floating-label label {
+        position: absolute;
+        left: 0.75rem;
+        top: 0.75rem;
+        font-size: 1rem;
+        color: #6b7280;
+        transition: all 0.3s ease;
+        pointer-events: none;
+      }
+      
+      .floating-label input:focus,
+      .floating-label textarea:focus,
+      .floating-label input:not(:placeholder-shown),
+      .floating-label textarea:not(:placeholder-shown) {
+        border-color: #000;
+        outline: none;
+      }
+      
+      .floating-label input:focus + label,
+      .floating-label textarea:focus + label,
+      .floating-label input:not(:placeholder-shown) + label,
+      .floating-label textarea:not(:placeholder-shown) + label {
+        top: -0.5rem;
+        left: 0.5rem;
+        font-size: 0.75rem;
+        background-color: white;
+        padding: 0 0.25rem;
+        color: #000;
+      }
+      
+      .floating-label input:focus,
+      .floating-label textarea:focus {
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        border-color: #000000;
+      }
+      
+      /* Custom select with styling */
+      .custom-select {
+        position: relative;
+      }
+      
+      .custom-select select {
+        appearance: none;
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 4px;
+        background-color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      
+      .custom-select:after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 1rem;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid #000;
+        pointer-events: none;
+      }
+      
+      .custom-select select:focus {
+        border-color: #000000;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        outline: none;
+      }
+      
+      /* Custom toggle switch */
+      .toggle-switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 24px;
+      }
+      
+      .toggle-switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      
+      .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e5e7eb;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+      
+      .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      
+      input:checked + .toggle-slider {
+        background-color: #000000;
+      }
+      
+      input:focus + .toggle-slider {
+        box-shadow: 0 0 1px #000000;
+      }
+      
+      input:checked + .toggle-slider:before {
+        transform: translateX(24px);
+      }
+      
+      /* Custom checkbox */
+      .custom-checkbox {
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        user-select: none;
+        display: inline-block;
+      }
+      
+      .custom-checkbox input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+      
+      .checkbox-mark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        border: 2px solid #e5e7eb;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+      }
+      
+      .custom-checkbox:hover input ~ .checkbox-mark {
+        border-color: #000000;
+      }
+      
+      .custom-checkbox input:checked ~ .checkbox-mark {
+        background-color: #000000;
+        border-color: #000000;
+      }
+      
+      .checkbox-mark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      
+      .custom-checkbox input:checked ~ .checkbox-mark:after {
+        display: block;
+      }
+      
+      .custom-checkbox .checkbox-mark:after {
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      
+      /* Custom radio buttons */
+      .custom-radio {
+        position: relative;
+        padding-left: 30px;
+        cursor: pointer;
+        user-select: none;
+        display: inline-block;
+      }
+      
+      .custom-radio input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+      }
+      
+      .radio-mark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 20px;
+        width: 20px;
+        border: 2px solid #e5e7eb;
+        border-radius: 50%;
+        transition: all 0.2s ease;
+      }
+      
+      .custom-radio:hover input ~ .radio-mark {
+        border-color: #000000;
+      }
+      
+      .custom-radio input:checked ~ .radio-mark {
+        border-color: #000000;
+      }
+      
+      .radio-mark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+      
+      .custom-radio input:checked ~ .radio-mark:after {
+        display: block;
+      }
+      
+      .custom-radio .radio-mark:after {
+        top: 3px;
+        left: 3px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #000000;
+      }
+      
+      /* Custom slider */
+      .range-slider {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 6px;
+        border-radius: 3px;
+        background: #e5e7eb;
+        outline: none;
+      }
+      
+      .range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #000000;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+      }
+      
+      .range-slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #000000;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: all 0.2s ease;
+        border: none;
+      }
+      
+      .range-slider::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+      }
+      
+      .range-slider::-moz-range-thumb:hover {
+        transform: scale(1.1);
+      }
+      
+      /* Date picker styling */
+      input[type="date"] {
+        position: relative;
+        padding: 0.75rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 4px;
+        background-color: white;
+        font-family: "Porsche Next", Arial, sans-serif;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      
+      input[type="date"]:focus {
+        border-color: #000000;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        outline: none;
+      }
+      
+      /* Minimalist Insurance plan cards */
+      .plan-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 4px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        background-color: white;
+        color: #333333;
+      }
+      
+      .plan-card.recommended {
+        border: 2px solid #000000;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
+        z-index: 10;
+        background-color: #000000;
+        color: white;
+      }
+      
+      .plan-card .recommended-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: white;
+        color: black;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 0.25rem 0.75rem;
+        border-radius: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      
+      .plan-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+      }
+      
+      .plan-card.recommended:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+      
+      .plan-header {
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      
+      .plan-card.recommended .plan-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      }
+      
+      .plan-card .plan-price {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 1rem 0;
+        line-height: 1;
+      }
+      
+      .plan-card .plan-price .currency {
+        font-size: 1.2rem;
+        font-weight: 500;
+        vertical-align: super;
+      }
+      
+      .plan-card .plan-price .period {
+        font-size: 0.9rem;
+        color: #6b7280;
+        font-weight: 400;
+      }
+      
+      .plan-card.recommended .plan-price .period {
+        color: rgba(255, 255, 255, 0.7);
+      }
+      
+      .plan-features {
+        margin-top: 1.5rem;
+        flex-grow: 1;
+      }
+      
+      .plan-features li {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        font-size: 0.9rem;
+      }
+      
+      .plan-features li svg {
+        margin-right: 0.5rem;
+        flex-shrink: 0;
+        width: 16px;
+        height: 16px;
+      }
+      
+      .plan-card.recommended .plan-features li svg {
+        color: white;
+      }
+      
+      .plan-features li.feature-disabled {
+        color: #9ca3af;
+      }
+      
+      .plan-card.recommended .plan-features li.feature-disabled {
+        color: rgba(255, 255, 255, 0.4);
+      }
+      
+      /* Payment form */
+      .payment-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.3s ease;
+      }
+      
+      .payment-card:hover {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      
+      .payment-method {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .payment-method:hover {
+        border-color: #000000;
+      }
+      
+      .payment-method.selected {
+        border-color: #000000;
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      
+      .payment-method input[type="radio"] {
+        margin-right: 1rem;
+      }
+      
+      .payment-method img {
+        height: 24px;
+        margin-left: auto;
+      }
+      
+      /* Screens transitions */
+      .screen {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+        transform: translateX(20px);
+      }
+      
+      .screen.active {
+        display: block;
+        opacity: 1;
+        transform: translateX(0);
+      }
+      
+      /* Thank you animation */
+      .checkmark-circle {
+        width: 120px;
+        height: 120px;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .checkmark-circle .background {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: #000000;
+        position: absolute;
+      }
+      
+      .checkmark-circle .checkmark {
+        border-radius: 5px;
+      }
+      
+      .checkmark-circle .checkmark.draw:after {
+        animation-delay: 0.2s;
+        animation-duration: 0.8s;
+        animation-timing-function: ease;
+        animation-name: checkmark;
+        transform: scaleX(-1) rotate(135deg);
+        animation-fill-mode: forwards;
+      }
+      
+      .checkmark-circle .checkmark:after {
+        opacity: 0;
+        height: 60px;
+        width: 30px;
+        transform-origin: left top;
+        border-right: 10px solid white;
+        border-top: 10px solid white;
+        content: '';
+        left: 30px;
+        top: 60px;
+        position: absolute;
+      }
+      
+      @keyframes checkmark {
+        0% {
+          height: 0;
+          width: 0;
+          opacity: 1;
+        }
+        20% {
+          height: 0;
+          width: 30px;
+          opacity: 1;
+        }
+        40% {
+          height: 60px;
+          width: 30px;
+          opacity: 1;
+        }
+        100% {
+          height: 60px;
+          width: 30px;
+          opacity: 1;
+        }
+      }
+      
+      .animate-scale {
+        animation: scale 0.5s ease-in-out;
+      }
+      
+      @keyframes scale {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      
+      /* Enhanced attention-grabbing effect for important buttons */
+      .attention-pulse {
+        animation: button-pulse 2s infinite;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .attention-pulse::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.7);
+        animation: button-glow 1.5s ease-in-out infinite alternate;
+      }
+      
+      @keyframes button-pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 12px rgba(0, 0, 0, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+        }
+      }
+      
+      @keyframes button-glow {
+        0% {
+          opacity: 0.6;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1.05);
+        }
+      }
+    </style>
+
+    <!-- Fix FOUC when critical elements are loaded -->
+    <script>
+      // Track critical images for loading
+      const criticalImages = ['img/logo.png'];
+      let loadedImages = 0;
+      
+      // Check if all critical images are loaded
+      function checkCriticalImages() {
+        loadedImages++;
+        if (loadedImages >= criticalImages.length) {
+          document.body.style.visibility = "visible";
+        }
+      }
+      
+      // Preload critical images
+      criticalImages.forEach(src => {
+        const img = new Image();
+        img.onload = checkCriticalImages;
+        img.onerror = checkCriticalImages; // Continue even if image fails
+        img.src = src;
+      });
+      
+      // Fallback if images don't load within 500ms
+      setTimeout(function() {
+        document.body.style.visibility = "visible";
+      }, 500);
+      
+      // Make content visible once everything is loaded
+      window.addEventListener("load", function () {
+        document.body.style.visibility = "visible";
+      });
+    </script>
+  </head>
+  <body class="bg-white text-porsche">
+    <!-- Navbar - Fixed position with gradient overlay -->
+    <nav class="fixed w-full z-50">
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent"
+      ></div>
+      <div
+        class="container mx-auto flex justify-between items-center h-full py-4 sm:py-5 md:py-6 px-4 sm:px-6 md:px-8 relative z-10"
+      >
+        <a href="index.html" class="text-white relative z-10">
+          <img
+            src="img/logo.png"
+            alt="Porsche"
+            class="h-8 sm:h-10"
+            width="120"
+            height="40"
+            fetchpriority="high"
+          />
+        </a>
+        <div class="hidden xl:flex items-center">
+          <div class="lang-switch ml-4 flex items-center">
+            <button class="lang-btn active" data-lang="en">EN</button>
+            <span class="mx-2 text-white/70">|</span>
+            <button class="lang-btn" data-lang="ar">AR</button>
+          </div>
+        </div>
+        <button
+          id="menuBtn"
+          class="xl:hidden p-3 rounded-md relative z-10 hover:bg-white/10 transition-colors"
+          aria-label="Toggle menu"
+        >
+          <svg
+            class="w-7 h-7 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="1.5"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+      </div>
+      <div id="navMenu" class="hidden bg-black/95 shadow-md absolute w-full">
+        <ul
+          class="flex flex-col items-center py-6 space-y-5 text-sm uppercase tracking-wider text-white"
+        >
+          <li>
+            <a href="index.html" class="py-2 px-4 block">Back to Home</a>
+          </li>
+          <li>
+            <div class="lang-switch flex items-center justify-center mt-4">
+              <button class="lang-btn active" data-lang="en">EN</button>
+              <span class="mx-2 text-white/70">|</span>
+              <button class="lang-btn" data-lang="ar">AR</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 sm:pt-28 md:pt-32 pb-16 min-h-screen">
+      <div class="container mx-auto px-4 sm:px-6 md:px-8">
+        <!-- Progress Steps -->
+        <div class="mb-12 sm:mb-16">
+          <div class="step-progress mb-6">
+            <div class="step-line"></div>
+            <div class="step-progress-bar" id="progress-bar" style="width: 0%;"></div>
+            <div class="step-circles">
+              <div class="step-circle active">1</div>
+              <div class="step-circle">2</div>
+              <div class="step-circle">3</div>
+              <div class="step-circle">4</div>
+            </div>
+          </div>
+          <div class="text-center">
+            <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-2" id="step-title">
+              Tell us about your Porsche
+            </h2>
+            <p class="text-gray-600 max-w-lg mx-auto" id="step-description">
+              To provide you with the most accurate coverage, we need some information about your vehicle.
+            </p>
+          </div>
+        </div>
+
+        <!-- Form Screen (Step 1) -->
+        <div id="screen-1" class="screen active max-w-3xl mx-auto">
+          <form id="insurance-form" class="bg-white rounded-lg p-6 sm:p-8 md:p-10 shadow-md">
+            <!-- Vehicle Information Section -->
+            <div class="mb-8">
+              <h3 class="text-lg sm:text-xl font-semibold mb-4 pb-2 border-b border-gray-200">
+                Vehicle Information
+              </h3>
+              
+              <!-- Porsche Model - Dropdown Menu -->
+              <div class="form-control mb-6">
+                <label class="block mb-2 font-medium">Porsche Model</label>
+                <div class="custom-select">
+                  <select id="porsche-model" required>
+                    <option value="" disabled selected>Select your Porsche model</option>
+                    <option value="911">911</option>
+                    <option value="Taycan">Taycan</option>
+                    <option value="Cayenne">Cayenne</option>
+                    <option value="Macan">Macan</option>
+                    <option value="Panamera">Panamera</option>
+                    <option value="718">718 Cayman/Boxster</option>
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Vehicle Value - Range Slider -->
+              <div class="form-control mb-6">
+                <label class="block mb-2 font-medium">Vehicle Value (USD)</label>
+                <input type="range" class="range-slider" id="vehicle-value" min="50000" max="300000" step="5000" value="150000">
+                <div class="flex justify-between mt-2 text-sm text-gray-600">
+                  <span>$50,000</span>
+                  <span id="value-display">$150,000</span>
+                  <span>$300,000+</span>
+                </div>
+              </div>
+              
+              <!-- Vehicle Year - Text Field with Floating Label -->
+              <div class="form-control mb-6">
+                <div class="floating-label">
+                  <input type="number" id="vehicle-year" min="1950" max="2025" placeholder=" " required>
+                  <label for="vehicle-year">Vehicle Year</label>
+                </div>
+              </div>
+              
+              <!-- Start Date - Date Picker -->
+              <div class="form-control">
+                <label class="block mb-2 font-medium">Insurance Start Date</label>
+                <input type="date" id="start-date" required>
+              </div>
+            </div>
+            
+            <!-- Personal Information Section -->
+            <div class="mb-8">
+              <h3 class="text-lg sm:text-xl font-semibold mb-4 pb-2 border-b border-gray-200">
+                Personal Information
+              </h3>
+              
+              <!-- Full Name - Text Field with Floating Label -->
+              <div class="form-control mb-6">
+                <div class="floating-label">
+                  <input type="text" id="full-name" placeholder=" " required>
+                  <label for="full-name">Full Name</label>
+                </div>
+              </div>
+              
+              <!-- Phone Number - Text Field with Floating Label -->
+              <div class="form-control mb-6">
+                <div class="floating-label">
+                  <input type="tel" id="phone-number" placeholder=" " required>
+                  <label for="phone-number">Phone Number</label>
+                </div>
+              </div>
+              
+              <!-- Email - Text Field with Floating Label -->
+              <div class="form-control">
+                <div class="floating-label">
+                  <input type="email" id="email" placeholder=" " required>
+                  <label for="email">Email Address</label>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Coverage Options Section -->
+            <div>
+              <h3 class="text-lg sm:text-xl font-semibold mb-4 pb-2 border-b border-gray-200">
+                Coverage Options
+              </h3>
+              
+              <!-- Track Day Coverage - Toggle Switch -->
+              <div class="form-control mb-6">
+                <div class="flex justify-between items-center">
+                  <label class="font-medium">Include Track Day Coverage</label>
+                  <label class="toggle-switch">
+                    <input type="checkbox" id="track-day-coverage">
+                    <span class="toggle-slider"></span>
+                  </label>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">
+                  Covers your vehicle during recreational track days and events
+                </p>
+              </div>
+              
+              <!-- Coverage Type - Radio Buttons -->
+              <div class="form-control mb-6">
+                <label class="block mb-2 font-medium">Coverage Type</label>
+                <div class="space-y-2">
+                  <label class="custom-radio block">
+                    <input type="radio" name="coverage-type" value="comprehensive" checked>
+                    <span class="radio-mark"></span>
+                    Comprehensive Coverage
+                  </label>
+                  <label class="custom-radio block">
+                    <input type="radio" name="coverage-type" value="basic">
+                    <span class="radio-mark"></span>
+                    Basic Coverage
+                  </label>
+                </div>
+              </div>
+              
+              <!-- Include OEM Parts - Checkbox -->
+              <div class="form-control">
+                <label class="custom-checkbox block">
+                  <input type="checkbox" id="oem-parts" checked>
+                  <span class="checkbox-mark"></span>
+                  Only use Porsche OEM parts for repairs
+                </label>
+              </div>
+            </div>
+            
+            <!-- Form Navigation Buttons -->
+            <div class="mt-10 flex justify-end">
+              <button type="button" id="next-to-step2" class="onboarding-button cta-float text-white hover:bg-gray-700 hover:border-transparent">
+                Continue to Offers
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Offers Screen (Step 2) -->
+        <div id="screen-2" class="screen max-w-5xl mx-auto">
+          <div class="text-center mb-10">
+            <h3 class="text-2xl font-bold mb-4">Choose Your Porsche Insurance Plan</h3>
+            <p class="text-gray-600 max-w-xl mx-auto">Our curated plans provide exceptional protection for your Porsche.</p>
+            <button type="button" id="comparison-toggle" class="mt-4 text-sm font-medium text-black hover:text-gray-700 border-b border-black hover:border-gray-700 pb-0.5 transition-colors focus:outline-none">
+              View detailed comparison
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <!-- Basic Plan -->
+            <div class="relative">
+              <div class="plan-card h-full">
+                <div class="plan-header">
+                  <h3 class="text-xl font-bold">Basic Plan</h3>
+                  <p class="text-sm text-gray-400">Essential coverage for your Porsche</p>
+                </div>
+                <div class="plan-price">
+                  <span class="currency">$</span>99<span class="period">/month</span>
+                </div>
+                <ul class="plan-features">
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Liability coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Collision coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Roadside assistance
+                  </li>
+                  <li class="feature-disabled">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    Track day coverage
+                  </li>
+                  <li class="feature-disabled">
+                    <svg class="w-5 h-5 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    OEM parts guarantee
+                  </li>
+                </ul>
+                <div class="mt-6">
+                  <button type="button" class="w-full py-3 onboarding-button font-medium rounded-md hover:bg-gray-700 hover:border-transparent transition-colors select-plan" data-plan="basic">
+                    Select Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Preferred Plan -->
+            <div class="relative">
+              <div class="plan-card recommended h-full">
+                <div class="recommended-badge">Recommended</div>
+                <div class="plan-header">
+                  <h3 class="text-xl font-bold">Preferred Plan</h3>
+                  <p class="text-sm text-gray-400">Premium coverage for your Porsche</p>
+                </div>
+                <div class="plan-price">
+                  <span class="currency">$</span>189<span class="period">/month</span>
+                </div>
+                <ul class="plan-features">
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Liability coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Collision coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Premium roadside assistance
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Track day coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    OEM parts guarantee
+                  </li>
+                </ul>
+                <div class="mt-6">
+                  <button type="button" class="w-full py-3 onboarding-button font-medium rounded-md hover:bg-gray-700 hover:border-transparent transition-colors select-plan" data-plan="preferred">
+                    Select Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Premium Plan -->
+            <div class="relative">
+              <div class="plan-card h-full">
+                <div class="plan-header">
+                  <h3 class="text-xl font-bold">Premium Plan</h3>
+                  <p class="text-sm text-gray-400">Ultimate coverage for your Porsche</p>
+                </div>
+                <div class="plan-price">
+                  <span class="currency">$</span>299<span class="period">/month</span>
+                </div>
+                <ul class="plan-features">
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Liability coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Collision coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Premium roadside assistance
+                  </li>
+                  <li class="feature-new">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Unlimited track day coverage
+                  </li>
+                  <li>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    OEM parts guarantee
+                  </li>
+                  <li class="feature-new">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Concierge service
+                  </li>
+                </ul>
+                <div class="mt-6">
+                  <button type="button" class="w-full py-3 onboarding-button font-medium rounded-md hover:bg-gray-700 hover:border-transparent transition-colors select-plan" data-plan="premium">
+                    Select Plan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Navigation Buttons -->
+          <div class="mt-10 flex justify-between">
+            <button type="button" id="back-to-step1" class="px-6 py-3 onboarding-button font-medium rounded-md hover:bg-gray-700 hover:border-transparent transition-colors">
+              Back
+            </button>
+            <button type="button" id="next-to-step3" class="onboarding-button cta-float text-white hover:bg-gray-700 hover:border-transparent attention-pulse">
+              Proceed to Payment
+            </button>
+          </div>
+        </div>
+
+        <!-- Payment Screen (Step 3) -->
+        <div id="screen-3" class="screen max-w-2xl mx-auto">
+          <div class="bg-white rounded-lg p-6 sm:p-8 md:p-10 shadow-md">
+            <h3 class="text-xl font-bold mb-6">Payment Information</h3>
+            
+            <!-- Payment Method Selection -->
+            <div class="mb-8">
+              <label class="block mb-3 font-medium">Payment Method</label>
+              <div class="payment-method selected">
+                <input type="radio" name="payment-method" value="credit-card" checked>
+                <div>
+                  <span class="font-medium">Credit Card</span>
+                  <p class="text-sm text-gray-600">Pay with Visa, Mastercard, or American Express</p>
+                </div>
+                <div class="flex space-x-2">
+                  <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <rect x="2" y="5" width="20" height="14" rx="2" />
+                    <line x1="2" y1="10" x2="22" y2="10" />
+                  </svg>
+                </div>
+              </div>
+              <div class="payment-method">
+                <input type="radio" name="payment-method" value="paypal">
+                <div>
+                  <span class="font-medium">PayPal</span>
+                  <p class="text-sm text-gray-600">Pay with your PayPal account</p>
+                </div>
+                <svg class="w-8 h-8 ml-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M6 9h8a3 3 0 003-3c0-1.5-1-2-2-2H7l-1 6" />
+                  <path d="M5 11h9a3 3 0 003-3c0-1.5-1-2-2-2H6l-1 6" />
+                  <line x1="12" y1="16" x2="20" y2="16" />
+                  <line x1="8" y1="16" x2="10" y2="16" />
+                </svg>
+              </div>
+            </div>
+            
+            <!-- Credit Card Form -->
+            <div id="credit-card-form">
+              <div class="mb-6">
+                <label class="block mb-2 font-medium">Card Number</label>
+                <div class="floating-label">
+                  <input type="text" id="card-number" placeholder=" " maxlength="19">
+                  <label for="card-number">Card Number</label>
+                </div>
+              </div>
+              
+              <div class="grid grid-cols-2 gap-4 mb-6">
+                <div>
+                  <label class="block mb-2 font-medium">Expiration Date</label>
+                  <div class="floating-label">
+                    <input type="text" id="card-expiry" placeholder=" " maxlength="5">
+                    <label for="card-expiry">MM/YY</label>
+                  </div>
+                </div>
+                <div>
+                  <label class="block mb-2 font-medium">Security Code</label>
+                  <div class="floating-label">
+                    <input type="text" id="card-cvc" placeholder=" " maxlength="4">
+                    <label for="card-cvc">CVC</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-8">
+                <label class="block mb-2 font-medium">Name on Card</label>
+                <div class="floating-label">
+                  <input type="text" id="card-name" placeholder=" ">
+                  <label for="card-name">Name on Card</label>
+                </div>
+              </div>
+              
+              <div class="mb-6">
+                <label class="custom-checkbox block">
+                  <input type="checkbox" id="save-card">
+                  <span class="checkbox-mark"></span>
+                  Save card for future payments
+                </label>
+              </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="mt-8 p-4 bg-gray-100 rounded-md">
+              <h4 class="font-semibold mb-3">Order Summary</h4>
+              <div class="flex justify-between mb-2">
+                <span>Plan:</span>
+                <span id="summary-plan">Preferred Plan</span>
+              </div>
+              <div class="flex justify-between mb-2">
+                <span>Coverage Period:</span>
+                <span>12 months</span>
+              </div>
+              <div class="flex justify-between font-semibold border-t border-gray-300 pt-2 mt-2">
+                <span>Total:</span>
+                <span id="summary-total">$189.00/month</span>
+              </div>
+            </div>
+            
+            <!-- Navigation Buttons -->
+            <div class="mt-8 flex justify-between">
+              <button type="button" id="back-to-step2" class="px-6 py-3 onboarding-button font-medium rounded-md hover:bg-gray-700 hover:border-transparent transition-colors">
+                Back
+              </button>
+              <button type="button" id="complete-payment" class="onboarding-button cta-float text-white hover:bg-gray-700 hover:border-transparent">
+                Complete Payment
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thank You Screen (Step 4) -->
+        <div id="screen-4" class="screen max-w-2xl mx-auto text-center">
+          <div class="bg-white rounded-lg p-6 sm:p-8 md:p-10 shadow-md">
+            <div class="checkmark-circle mb-6 mx-auto">
+              <div class="background"></div>
+              <div class="checkmark draw"></div>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-bold mb-4 animate-scale" style="animation-delay: 0.5s">
+              Thank You for Your Purchase!
+            </h2>
+            <p class="text-lg text-gray-600 mb-8 animate-scale" style="animation-delay: 0.7s">
+              Your Porsche insurance policy has been successfully activated.
+            </p>
+            <div class="bg-gray-100 rounded-md p-6 mb-8 text-left animate-scale" style="animation-delay: 0.9s">
+              <h3 class="font-semibold mb-3">Policy Information</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <p class="text-sm text-gray-600">Policy Number</p>
+                  <p class="font-medium" id="policy-number">POR-123456789</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Effective Date</p>
+                  <p class="font-medium" id="effective-date">June 5, 2025</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Coverage Plan</p>
+                  <p class="font-medium" id="coverage-plan">Preferred Plan</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-600">Monthly Premium</p>
+                  <p class="font-medium" id="monthly-premium">$189.00</p>
+                </div>
+              </div>
+            </div>
+            <p class="text-gray-600 mb-6 animate-scale" style="animation-delay: 1.1s">
+              We've sent a confirmation email with all the details to your inbox.
+            </p>
+            <div class="animate-scale" style="animation-delay: 1.3s">
+              <a href="index.html" class="onboarding-button cta-float inline-block text-white hover:bg-gray-700 hover:border-transparent">
+                Return to Home
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-8">
+      <div class="container mx-auto px-4 sm:px-6 text-center">
+        <a href="index.html" class="inline-block mb-6">
+          <img
+            src="img/logo.png"
+            alt="Porsche"
+            class="h-8 sm:h-10"
+            width="120"
+            height="40"
+          />
+        </a>
+        <p class="text-gray-400 text-sm">
+          © 2025 Porsche Insurance. All rights reserved. Porsche is a registered trademark.
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript for Onboarding Flow -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Navigation elements
+        const nextToStep2Button = document.getElementById('next-to-step2');
+        const nextToStep3Button = document.getElementById('next-to-step3');
+        const backToStep1Button = document.getElementById('back-to-step1');
+        const backToStep2Button = document.getElementById('back-to-step2');
+        const completePaymentButton = document.getElementById('complete-payment');
+        
+        // Screen elements
+        const screen1 = document.getElementById('screen-1');
+        const screen2 = document.getElementById('screen-2');
+        const screen3 = document.getElementById('screen-3');
+        const screen4 = document.getElementById('screen-4');
+        
+        // Step indicators
+        const progressBar = document.getElementById('progress-bar');
+        const stepTitle = document.getElementById('step-title');
+        const stepDescription = document.getElementById('step-description');
+        const stepCircles = document.querySelectorAll('.step-circle');
+        
+        // Form elements
+        const vehicleValueSlider = document.getElementById('vehicle-value');
+        const valueDisplay = document.getElementById('value-display');
+        const planButtons = document.querySelectorAll('.select-plan');
+        const summaryPlan = document.getElementById('summary-plan');
+        const summaryTotal = document.getElementById('summary-total');
+        
+        // Update vehicle value display when slider changes
+        vehicleValueSlider.addEventListener('input', function() {
+          valueDisplay.textContent = '$' + parseInt(this.value).toLocaleString();
+        });
+        
+        // Plan selection
+        let selectedPlan = 'preferred';
+        
+        // Plan selection initialization
+        nextToStep3Button.disabled = true;
+        planButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            planButtons.forEach(btn => {
+              btn.closest('.plan-card').classList.remove('recommended');
+              // Reset all buttons to default black style with hover fill
+              btn.classList.remove('border-black', 'bg-black');
+              btn.classList.add('onboarding-button', 'text-white', 'hover:bg-gray-700');
+              btn.style.backgroundColor = '';
+              btn.style.borderColor = '';
+            });
+            
+            const planCard = this.closest('.plan-card');
+            planCard.classList.add('recommended');
+            // Make selected button stand out
+            this.classList.remove('hover:bg-gray-700');
+            this.classList.add('onboarding-button-selected');
+            
+            // Add animation to the selected plan card
+            const selectedCard = this.closest('.plan-card');
+            selectedCard.classList.add('animated');
+            
+            // Remove animation class after animation completes
+            setTimeout(function() {
+              selectedCard.classList.remove('animated');
+            }, 600);
+            
+            selectedPlan = this.dataset.plan;
+            nextToStep3Button.disabled = false;
+            nextToStep3Button.classList.remove('opacity-50');
+            nextToStep3Button.classList.add('attention-pulse');
+            
+            // Update summary
+            switch(selectedPlan) {
+              case 'basic':
+                summaryPlan.textContent = 'Basic Plan';
+                summaryTotal.textContent = '$99.00/month';
+                break;
+              case 'preferred':
+                summaryPlan.textContent = 'Preferred Plan';
+                summaryTotal.textContent = '$189.00/month';
+                break;
+              case 'premium':
+                summaryPlan.textContent = 'Premium Plan';
+                summaryTotal.textContent = '$299.00/month';
+                break;
+            }
+          });
+        });
+        
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (menuBtn && navMenu) {
+          menuBtn.addEventListener('click', function() {
+            navMenu.classList.toggle('hidden');
+          });
+        }
+        
+        // Helper function to update progress
+        function updateProgress(step) {
+          // Update progress bar
+          progressBar.style.width = ((step - 1) / 3 * 100) + '%';
+          
+          // Update step circles
+          stepCircles.forEach((circle, index) => {
+            if (index + 1 < step) {
+              circle.classList.remove('active');
+              circle.classList.add('completed');
+            } else if (index + 1 === step) {
+              circle.classList.add('active');
+              circle.classList.remove('completed');
+            } else {
+              circle.classList.remove('active', 'completed');
+            }
+          });
+          
+          // Update step title and description
+          switch(step) {
+            case 1:
+              stepTitle.textContent = 'Tell us about your Porsche';
+              stepDescription.textContent = 'To provide you with the most accurate coverage, we need some information about your vehicle.';
+              break;
+            case 2:
+              stepTitle.textContent = 'Choose your plan';
+              stepDescription.textContent = 'Select the insurance plan that best fits your needs.';
+              break;
+            case 3:
+              stepTitle.textContent = 'Payment information';
+              stepDescription.textContent = 'Enter your payment details to complete your purchase.';
+              break;
+            case 4:
+              stepTitle.textContent = 'Confirmation';
+              stepDescription.textContent = 'Your Porsche insurance policy has been successfully activated.';
+              break;
+          }
+        }
+        
+        // Navigation event listeners
+        nextToStep2Button.addEventListener('click', function() {
+          screen1.classList.remove('active');
+          screen2.classList.add('active');
+          updateProgress(2);
+          window.scrollTo(0, 0);
+          
+          // Automatically select the Preferred (middle) plan on load
+          const preferredPlanButton = document.querySelector('[data-plan="preferred"]');
+          if (preferredPlanButton) {
+            // Trigger the click event after a short delay to ensure everything is loaded
+            setTimeout(() => {
+              preferredPlanButton.click();
+            }, 300);
+          }
+        });
+        
+        backToStep1Button.addEventListener('click', function() {
+          screen2.classList.remove('active');
+          screen1.classList.add('active');
+          updateProgress(1);
+          window.scrollTo(0, 0);
+        });
+        
+        nextToStep3Button.addEventListener('click', function() {
+          screen2.classList.remove('active');
+          screen3.classList.add('active');
+          updateProgress(3);
+          window.scrollTo(0, 0);
+        });
+        
+        backToStep2Button.addEventListener('click', function() {
+          screen3.classList.remove('active');
+          screen2.classList.add('active');
+          updateProgress(2);
+          window.scrollTo(0, 0);
+        });
+        
+        // Plan comparison toggle
+        const comparisonToggle = document.getElementById('comparison-toggle');
+        if (comparisonToggle) {
+          comparisonToggle.addEventListener('click', function() {
+            // Create a popup with detailed comparison if not exists
+            if (!document.getElementById('plan-comparison-popup')) {
+              const popup = document.createElement('div');
+              popup.id = 'plan-comparison-popup';
+              popup.className = 'fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center opacity-0 transition-opacity duration-300';
+              popup.style.backdropFilter = 'blur(5px)';
+              
+              // Create popup content
+              popup.innerHTML = `
+                <div class="bg-white p-6 max-w-3xl w-full max-h-[90vh] overflow-auto relative transform transition-transform duration-300 scale-95">
+                  <button type="button" id="close-comparison" class="absolute top-4 right-4 text-gray-500 hover:text-black">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </button>
+                  <h3 class="text-xl font-bold mb-6">Plan Comparison</h3>
+                  <div class="overflow-x-auto">
+                    <table class="w-full">
+                      <thead>
+                        <tr>
+                          <th class="py-2 text-left border-b w-1/3 font-medium text-sm">Features</th>
+                          <th class="py-2 text-center border-b font-medium text-sm">Basic</th>
+                          <th class="py-2 text-center border-b font-medium text-sm bg-black text-white">Preferred</th>
+                          <th class="py-2 text-center border-b font-medium text-sm">Premium</th>
+                        </tr>
+                      </thead>
+                      <tbody class="text-sm">
+                        <tr>
+                          <td class="py-3 border-b text-gray-700">Monthly Premium</td>
+                          <td class="py-3 border-b text-center">$99</td>
+                          <td class="py-3 border-b text-center bg-gray-50 font-medium">$189</td>
+                          <td class="py-3 border-b text-center">$299</td>
+                        </tr>
+                        <tr>
+                          <td class="py-3 border-b text-gray-700">Liability Coverage</td>
+                          <td class="py-3 border-b text-center">✓</td>
+                          <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                          <td class="py-3 border-b text-center">✓</td>
+                        </tr>
+                        <tr>
+                          <td class="py-3 border-b text-gray-700">Collision Coverage</td>
+                          <td class="py-3 border-b text-center">✓</td>
+                          <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                          <td class="py-3 border-b text-center">✓</td>
+                        </tr>
+                        <tr>
+                          <td class="py-3 border-b text-gray-700">Roadside Assistance</td>
+                          <td class="py-3 border-b text-center">Basic</td>
+                          <td class="py-3 border-b text-center bg-gray-50">Premium</td>
+                          <td class="py-3 border-b text-center">Premium</td>
+                        </tr>
+                        <tr>
+                          <td class="py-3 border-b text-gray-700">Track Day Coverage</td>
+                          <td class="py-3 border-b text-center">—</td>
+                          <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                          <td class="py-3 border-b text-center">Unlimited</td>
+                        </tr>
+                        <tr>
+                          <td class="py-3 border-b text-gray-700">OEM Parts Guarantee</td>
+                          <td class="py-3 border-b text-center">—</td>
+                          <td class="py-3 border-b text-center bg-gray-50">✓</td>
+                          <td class="py-3 border-b text-center">✓</td>
+                        </tr>
+                        <tr>
+                          <td class="py-3 border-b text-gray-700">Concierge Service</td>
+                          <td class="py-3 border-b text-center">—</td>
+                          <td class="py-3 border-b text-center bg-gray-50">—</td>
+                          <td class="py-3 border-b text-center">✓</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="mt-4 text-center text-sm text-gray-500">
+                    <p>All plans include 24/7 roadside assistance and collision coverage.</p>
+                  </div>
+                </div>
+              `;
+              
+              document.body.appendChild(popup);
+              
+              // Add close handlers
+              document.getElementById('close-comparison').addEventListener('click', function() {
+                closeComparisonPopup();
+              });
+              
+              document.getElementById('close-comparison-btn').addEventListener('click', function() {
+                closeComparisonPopup();
+              });
+              
+              // Close on outside click
+              popup.addEventListener('click', function(e) {
+                if (e.target === popup) {
+                  closeComparisonPopup();
+                }
+              });
+              
+              // Show popup with animation
+              setTimeout(function() {
+                popup.classList.add('opacity-100');
+                popup.querySelector('div').classList.add('scale-100');
+                popup.querySelector('div').classList.remove('scale-95');
+              }, 10);
+              
+              function closeComparisonPopup() {
+                const popup = document.getElementById('plan-comparison-popup');
+                popup.classList.remove('opacity-100');
+                popup.querySelector('div').classList.add('scale-95');
+                popup.querySelector('div').classList.remove('scale-100');
+                
+                setTimeout(function() {
+                  document.body.removeChild(popup);
+                }, 300);
+              }
+            } else {
+              // If popup exists, just show it
+              const popup = document.getElementById('plan-comparison-popup');
+              popup.classList.add('opacity-100');
+              popup.querySelector('div').classList.add('scale-100');
+              popup.querySelector('div').classList.remove('scale-95');
+            }
+          });
+        }
+        
+        completePaymentButton.addEventListener('click', function() {
+          screen3.classList.remove('active');
+          screen4.classList.add('active');
+          updateProgress(4);
+          window.scrollTo(0, 0);
+          
+          // Update policy information based on selected plan
+          document.getElementById('coverage-plan').textContent = summaryPlan.textContent;
+          document.getElementById('monthly-premium').textContent = summaryTotal.textContent;
+          
+          // Generate effective date (today's date)
+          const today = new Date();
+          const options = { year: 'numeric', month: 'long', day: 'numeric' };
+          document.getElementById('effective-date').textContent = today.toLocaleDateString('en-US', options);
+          
+          // Generate random policy number
+          const policyNumber = 'POR-' + Math.floor(100000000 + Math.random() * 900000000);
+          document.getElementById('policy-number').textContent = policyNumber;
+        });
+        
+        // Credit card formatting
+        const cardNumberInput = document.getElementById('card-number');
+        const cardExpiryInput = document.getElementById('card-expiry');
+        
+        cardNumberInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length > 16) value = value.slice(0, 16);
+          
+          // Add spaces every 4 digits
+          let formattedValue = '';
+          for (let i = 0; i < value.length; i++) {
+            if (i > 0 && i % 4 === 0) formattedValue += ' ';
+            formattedValue += value[i];
+          }
+          
+          e.target.value = formattedValue;
+        });
+        
+        cardExpiryInput.addEventListener('input', function(e) {
+          let value = e.target.value.replace(/\D/g, '');
+          if (value.length > 4) value = value.slice(0, 4);
+          
+          // Format as MM/YY
+          if (value.length > 2) {
+            value = value.slice(0, 2) + '/' + value.slice(2);
+          }
+          
+          e.target.value = value;
+        });
+        
+        // Payment method selection
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        paymentMethods.forEach(method => {
+          method.addEventListener('click', function() {
+            paymentMethods.forEach(m => m.classList.remove('selected'));
+            this.classList.add('selected');
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!-- 
+  RadioButton Component
+  A custom styled radio button group
+  
+  Usage: 
+  <div id="coverage-type-radio-container" 
+       data-component="components/onboarding/ui/RadioButton.html"
+       data-param-name="coverage-type"
+       data-param-label="Coverage Type"
+       data-param-options='[
+         {"value": "comprehensive", "label": "Comprehensive Coverage", "checked": true},
+         {"value": "basic", "label": "Basic Coverage"}
+       ]'></div>
+  
+  Parameters:
+  - name: Radio button group name (required)
+  - label: Field group label text (required)
+  - options: Array of option objects with value, label, checked properties (required)
+  - vertical: Whether to display radio buttons vertically (default: true)
+  - helpText: Additional helper text (optional)
+-->
+
+<div class="form-control radio-button-component mb-6">
+  <label class="block mb-2 font-medium">{{label}}</label>
+  <div class="{{#vertical}}space-y-2{{/vertical}}{{^vertical}}flex space-x-4{{/vertical}}">
+    <!-- Options will be inserted here by JavaScript -->
+  </div>
+  {{#helpText}}
+  <p class="text-sm text-gray-600 mt-1">{{helpText}}</p>
+  {{/helpText}}
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component elements
+    const component = document.currentScript.parentElement;
+    const optionsContainer = component.querySelector('div.{{#vertical}}space-y-2{{/vertical}}{{^vertical}}flex space-x-4{{/vertical}}');
+    
+    if (!optionsContainer) return;
+    
+    // Parse options from parameter
+    const optionsParam = '{{options}}';
+    const name = '{{name}}';
+    const vertical = ('{{vertical}}' === 'true');
+    
+    if (optionsParam && name) {
+      try {
+        const options = JSON.parse(optionsParam.replace(/&quot;/g, '"'));
+        
+        // Generate the radio buttons HTML
+        options.forEach(option => {
+          const radioLabel = document.createElement('label');
+          radioLabel.className = 'custom-radio block';
+          
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.name = name;
+          input.value = option.value;
+          
+          if (option.checked) {
+            input.checked = true;
+          }
+          
+          const mark = document.createElement('span');
+          mark.className = 'radio-mark';
+          
+          // Add event listener for input change
+          input.addEventListener('change', function() {
+            if (this.checked) {
+              dispatchChangeEvent(this.value);
+            }
+          });
+          
+          radioLabel.appendChild(input);
+          radioLabel.appendChild(mark);
+          radioLabel.appendChild(document.createTextNode(' ' + option.label));
+          
+          optionsContainer.appendChild(radioLabel);
+        });
+      } catch (e) {
+        console.error('Failed to parse options JSON:', e);
+      }
+    }
+    
+    // Dispatch change event when selection changes
+    function dispatchChangeEvent(value) {
+      const changeEvent = new CustomEvent('radioChange', {
+        bubbles: true,
+        detail: {
+          name: name,
+          value: value
+        }
+      });
+      
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Get currently selected value
+    function getSelectedValue() {
+      const selectedInput = component.querySelector(`input[name="${name}"]:checked`);
+      return selectedInput ? selectedInput.value : null;
+    }
+    
+    // Expose get/set methods to parent
+    window.getRadioValue = function(radioName) {
+      if (name === radioName) {
+        return getSelectedValue();
+      }
+      return null;
+    };
+    
+    window.setRadioValue = function(radioName, value) {
+      if (name === radioName) {
+        const input = component.querySelector(`input[name="${name}"][value="${value}"]`);
+        if (input) {
+          input.checked = true;
+          dispatchChangeEvent(value);
+        }
+      }
+    };
+    
+  } catch (error) {
+    console.error('Error initializing RadioButton component:', error);
+  }
+})();
+</script>

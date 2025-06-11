@@ -1,0 +1,109 @@
+<!-- 
+  Navbar Component
+  Usage: 
+  <div id="navbar-container" data-component="components/navigation/Navbar.html" 
+       data-param-logo="img/logo.png"
+       data-param-activeSection="home"></div>
+-->
+<nav class="fixed w-full z-50">
+  <div class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent"></div>
+  <div class="container mx-auto flex justify-between items-center h-full py-4 sm:py-5 md:py-6 px-4 sm:px-6 md:px-8 relative z-10">
+    <a href="#hero" class="text-white relative z-10">
+      <img
+        src="{{logo}}"
+        alt="Porsche"
+        class="h-8 sm:h-10"
+        width="120"
+        height="40"
+        fetchpriority="high"
+      />
+    </a>
+    
+    <!-- Desktop Navigation -->
+    <ul class="hidden xl:flex space-x-10 font-medium">
+      <li>
+        <a
+          href="#products"
+          class="nav-link text-sm uppercase tracking-wider text-white {{productsActive}}"
+          data-translate-key="insurance-coverage"
+        >Insurance Coverage</a>
+      </li>
+      <li>
+        <a
+          href="#features"
+          class="nav-link text-sm uppercase tracking-wider text-white {{featuresActive}}"
+          data-translate-key="why-porsche-insurance"
+        >Why Porsche Insurance</a>
+      </li>
+      <li>
+        <a
+          href="#partners"
+          class="nav-link text-sm uppercase tracking-wider text-white {{partnersActive}}"
+          data-translate-key="insurance-partners"
+        >Insurance Partners</a>
+      </li>
+    </ul>
+    
+    <!-- Desktop CTA and Language Switcher -->
+    <div class="hidden xl:flex items-center">
+      <a href="onboarding.html" class="cta-button inline-block px-6 py-3"
+        data-translate-key="get-porsche-covered">Get Your Porsche Covered</a>
+      <div class="lang-switch ml-4 flex items-center">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="mx-2 text-white/70">|</span>
+        <button class="lang-btn" data-lang="ar">AR</button>
+      </div>
+    </div>
+    
+    <!-- Mobile Menu Button -->
+    <button
+      id="menuBtn"
+      class="xl:hidden p-3 rounded-md relative z-10 hover:bg-white/10 transition-colors"
+      aria-label="Toggle menu"
+    >
+      <svg
+        class="w-7 h-7 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
+      </svg>
+    </button>
+  </div>
+  
+  <!-- Mobile Menu -->
+  <div id="navMenu" class="hidden bg-black/95 shadow-md absolute w-full">
+    <ul class="flex flex-col items-center py-6 space-y-5 text-sm uppercase tracking-wider text-white">
+      <li>
+        <a href="#products" class="py-2 px-4 block" data-translate-key="insurance-coverage">Insurance Coverage</a>
+      </li>
+      <li>
+        <a href="#features" class="py-2 px-4 block" data-translate-key="why-porsche-insurance"
+          >Why Porsche Insurance</a
+        >
+      </li>
+      <li>
+        <a href="#partners" class="py-2 px-4 block" data-translate-key="insurance-partners">Insurance Partners</a>
+      </li>
+      <li>
+        <a href="onboarding.html" class="cta-button mt-3 inline-block px-6 py-3" data-translate-key="get-porsche-covered"
+          >Get Your Porsche Covered</a
+        >
+      </li>
+      <li class="mt-4">
+        <div class="lang-switch flex items-center justify-center">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <span class="mx-2 text-white/70">|</span>
+          <button class="lang-btn" data-lang="ar">AR</button>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

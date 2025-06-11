@@ -1,0 +1,85 @@
+/**
+ * FeatureCard Component Styles
+ */
+
+/* Feature cards - Why Choose Us section */
+.feature-card {
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+}
+
+/* Ensure all cards in a grid row have equal height */
+.grid-cols-3 > div, 
+.grid-cols-2 > div {
+  height: 100%;
+  display: flex;
+}
+
+/* Fix for the Why Choose Us section specifically */
+#features .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(1rem, 4vw, 3rem);
+}
+
+@media (min-width: 768px) {
+  #features .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+#features .animate-fade {
+  height: 100%;
+  display: flex;
+}
+
+#features .feature-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#features .feature-card > div:first-child {
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+#features .feature-card ul {
+  margin-top: auto;
+}
+
+/* Animation for feature cards */
+.animate-fade {
+  opacity: 0;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  perspective: 1000;
+  transform: translateZ(0); /* Force GPU acceleration */
+}
+
+/* RTL adjustments for feature cards */
+html[dir="rtl"] #features .feature-card {
+  text-align: right;
+}
+
+html[dir="rtl"] #features ul.space-y-4 li.flex.items-start {
+  flex-direction: row-reverse;
+  text-align: right;
+  justify-content: flex-end !important;
+}
+
+html[dir="rtl"] #features ul.space-y-4 li.flex.items-start span {
+  display: block;
+  text-align: right !important;
+  width: calc(100% - 40px); /* Adjust based on SVG size and margin */
+  order: 1 !important;
+}
+
+html[dir="rtl"] #features ul.space-y-4 li.flex.items-start svg {
+  margin-right: 0 !important;
+  margin-left: 12px !important;
+  order: 2 !important;
+}

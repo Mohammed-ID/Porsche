@@ -1,0 +1,145 @@
+/* PlanCard Component Styles */
+
+.plan-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: white;
+  color: #333333;
+}
+
+.plan-card.recommended {
+  border: 2px solid #000000;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+  z-index: 10;
+  background-color: #000000;
+  color: white;
+}
+
+.plan-card .recommended-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: white;
+  color: black;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.plan-card.recommended:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.plan-header {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.plan-card.recommended .plan-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.plan-card .plan-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 1rem 0;
+  line-height: 1;
+}
+
+.plan-card .plan-price .currency {
+  font-size: 1.2rem;
+  font-weight: 500;
+  vertical-align: super;
+}
+
+.plan-card .plan-price .period {
+  font-size: 0.9rem;
+  color: #6b7280;
+  font-weight: 400;
+}
+
+.plan-card.recommended .plan-price .period {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.plan-features {
+  margin-top: 1.5rem;
+  flex-grow: 1;
+}
+
+.plan-features li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.plan-features li svg {
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.plan-card.recommended .plan-features li svg {
+  color: white;
+}
+
+.plan-features li.feature-disabled {
+  color: #9ca3af;
+}
+
+.plan-card.recommended .plan-features li.feature-disabled {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Animation for plan selection */
+.plan-card.animated {
+  animation: plan-selected 0.4s ease-out;
+}
+
+@keyframes plan-selected {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgba(0, 0, 0, 0);
+  }
+}
+
+/* Feature new styling */
+.feature-new {
+  position: relative;
+}
+
+.feature-new::after {
+  content: 'NEW';
+  position: absolute;
+  font-size: 0.6rem;
+  color: #000000;
+  right: -20px;
+  top: 0;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.plan-card.recommended .feature-new::after {
+  color: white;
+}

@@ -1,0 +1,41 @@
+/**
+ * Footer Component Styles
+ */
+
+/* Footer styles */
+footer {
+  background-color: #000;
+  color: white;
+}
+
+footer a:hover {
+  color: white;
+}
+
+footer .border-gray-800 {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* RTL adjustments for footer */
+html[dir="rtl"] footer {
+  text-align: right;
+}
+
+html[dir="rtl"] footer .flex.space-x-5 {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] footer .flex.space-x-5 > * {
+  margin-right: 0;
+  margin-left: 1.25rem;
+}
+
+html[dir="rtl"] footer .flex.space-x-5 > *:last-child {
+  margin-left: 0;
+}
+
+@media (max-width: 768px) {
+  html[dir="rtl"] footer > div > div {
+    text-align: right;
+  }
+}

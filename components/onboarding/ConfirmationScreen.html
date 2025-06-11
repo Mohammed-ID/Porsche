@@ -1,0 +1,113 @@
+<!-- 
+  ConfirmationScreen Component
+  Final step in the onboarding flow showing purchase confirmation
+  
+  Usage: 
+  <div id="confirmation-screen-container" data-component="components/onboarding/ConfirmationScreen.html"></div>
+-->
+
+<div id="screen-4" class="screen max-w-2xl mx-auto text-center">
+  <div class="bg-white rounded-lg p-6 sm:p-8 md:p-10 shadow-md">
+    <!-- Success Animation -->
+    <div id="confirmation-animation-container" 
+         data-component="components/onboarding/ui/SuccessAnimation.html"
+         data-param-size="120"
+         data-param-color="#000000"></div>
+    
+    <!-- Confirmation Title and Message -->
+    <h2 class="text-2xl sm:text-3xl font-bold mb-4 animate-scale" style="animation-delay: 0.5s">
+      Thank You for Your Purchase!
+    </h2>
+    <p class="text-lg text-gray-600 mb-8 animate-scale" style="animation-delay: 0.7s">
+      Your Porsche insurance policy has been successfully activated.
+    </p>
+    
+    <!-- Policy Information -->
+    <div id="policy-info-container" 
+         data-component="components/onboarding/ui/PolicyInfo.html"
+         data-param-policyNumber="POR-123456789"
+         data-param-effectiveDate="January 1, 2025"
+         data-param-coveragePlan="Preferred Plan"
+         data-param-monthlyPremium="$189.00"></div>
+    
+    <!-- Confirmation Message -->
+    <p class="text-gray-600 mb-6 animate-scale" style="animation-delay: 1.1s">
+      We've sent a confirmation email with all the details to your inbox.
+    </p>
+    
+    <!-- Return to Home Button -->
+    <div class="animate-scale" style="animation-delay: 1.3s">
+      <div id="home-button-container" 
+           data-component="components/onboarding/ui/Button.html"
+           data-param-id="return-home"
+           data-param-text="Return to Home"
+           data-param-type="primary"
+           data-param-animation="float"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Initialize component
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set up event listeners
+      document.addEventListener('buttonClick', handleButtonClick);
+      document.addEventListener('showConfirmation', handleShowConfirmation);
+    });
+    
+    // Handle button clicks
+    function handleButtonClick(event) {
+      const buttonId = event.detail.id;
+      
+      if (buttonId === 'return-home') {
+        // Redirect to home page
+        window.location.href = 'index.html';
+      }
+    }
+    
+    // Handle showing confirmation with policy data
+    function handleShowConfirmation(event) {
+      const policyData = event.detail;
+      
+      if (!policyData) return;
+      
+      // Update policy information
+      updatePolicyData(policyData);
+    }
+    
+    // Update policy data in the UI
+    function updatePolicyData(data) {
+      // Format date
+      const effectiveDate = new Date();
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = effectiveDate.toLocaleDateString('en-US', options);
+      
+      // Format price
+      const monthlyPremium = '$' + (data.plan?.price || '189') + '.00';
+      
+      // Update policy info component
+      if (window.updatePolicyInfo) {
+        window.updatePolicyInfo({
+          'Policy Number': data.policyNumber || generatePolicyNumber(),
+          'Effective Date': formattedDate,
+          'Coverage Plan': data.plan?.name || 'Preferred Plan',
+          'Monthly Premium': monthlyPremium
+        });
+      }
+    }
+    
+    // Generate a random policy number
+    function generatePolicyNumber() {
+      const prefix = 'POR';
+      const timestamp = Date.now().toString().slice(-8);
+      const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+      return `${prefix}-${timestamp}-${random}`;
+    }
+    
+  } catch (error) {
+    console.error('Error initializing ConfirmationScreen component:', error);
+  }
+})();
+</script>

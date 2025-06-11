@@ -1,0 +1,130 @@
+<!-- 
+  Button Component
+  A reusable styled button with various options
+  
+  Usage: 
+  <div id="submit-button-container" 
+       data-component="components/onboarding/ui/Button.html"
+       data-param-id="submit-button"
+       data-param-text="Continue to Offers"
+       data-param-type="primary"
+       data-param-disabled="false"
+       data-param-animation="float"></div>
+  
+  Parameters:
+  - id: Button ID (required)
+  - text: Button text (required)
+  - type: Button type (default: "primary", options: "primary", "secondary", "outline", "text")
+  - disabled: Whether button is disabled (default: false)
+  - animation: Animation effect (optional, options: "float", "pulse", "none")
+  - icon: Icon name to display (optional)
+  - iconPosition: Position of the icon (default: "left", options: "left", "right")
+  - fullWidth: Whether button should take full width (default: false)
+  - onClick: Function to call when button is clicked (optional)
+-->
+
+<button 
+  id="{{id}}" 
+  type="button"
+  class="button-component
+    {{#type}}{{#type}}
+      {{#if type === 'primary'}}onboarding-button text-white hover:bg-gray-700 hover:border-transparent{{/if}}
+      {{#if type === 'secondary'}}onboarding-button bg-gray-200 text-gray-800 hover:bg-gray-300 border-gray-200 hover:border-gray-300{{/if}}
+      {{#if type === 'outline'}}onboarding-button bg-transparent text-black hover:bg-gray-100 border-black hover:border-gray-700{{/if}}
+      {{#if type === 'text'}}bg-transparent text-black hover:text-gray-700 border-none hover:underline p-2{{/if}}
+    {{/type}}{{/type}}
+    {{^type}}onboarding-button text-white hover:bg-gray-700 hover:border-transparent{{/type}}
+    {{#animation}}{{#animation}}
+      {{#if animation === 'float'}}cta-float{{/if}}
+      {{#if animation === 'pulse'}}attention-pulse{{/if}}
+    {{/animation}}{{/animation}}
+    {{#fullWidth}}w-full{{/fullWidth}}
+    {{#disabled}}opacity-50 cursor-not-allowed{{/disabled}}"
+  {{#disabled}}disabled{{/disabled}}>
+  
+  {{#icon}}{{#iconPosition}}{{#if iconPosition === 'left'}}
+  <span class="icon-left mr-2">{{icon}}</span>
+  {{/if}}{{/iconPosition}}{{/icon}}
+  
+  {{text}}
+  
+  {{#icon}}{{#iconPosition}}{{#if iconPosition === 'right'}}
+  <span class="icon-right ml-2">{{icon}}</span>
+  {{/if}}{{/iconPosition}}{{/icon}}
+  {{^iconPosition}}
+    {{#icon}}<span class="icon-right ml-2">{{icon}}</span>{{/icon}}
+  {{/iconPosition}}
+</button>
+
+<script>
+(function() {
+  try {
+    // Get the button element
+    const button = document.currentScript.previousElementSibling;
+    
+    if (!button) return;
+    
+    // Add click event listener
+    button.addEventListener('click', function(event) {
+      // Prevent default behavior if disabled
+      if (button.disabled) {
+        event.preventDefault();
+        return;
+      }
+      
+      // Add ripple effect on click
+      addRippleEffect(event);
+      
+      // Dispatch click event to parent
+      dispatchClickEvent();
+    });
+    
+    // Add ripple effect
+    function addRippleEffect(event) {
+      const x = event.clientX - button.getBoundingClientRect().left;
+      const y = event.clientY - button.getBoundingClientRect().top;
+      
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple-effect';
+      ripple.style.left = x + 'px';
+      ripple.style.top = y + 'px';
+      
+      button.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    }
+    
+    // Dispatch click event
+    function dispatchClickEvent() {
+      const clickEvent = new CustomEvent('buttonClick', {
+        bubbles: true,
+        detail: {
+          id: button.id
+        }
+      });
+      
+      button.dispatchEvent(clickEvent);
+    }
+    
+    // Expose enable/disable methods to parent
+    window.enableButton = function(buttonId) {
+      if (button.id === buttonId) {
+        button.disabled = false;
+        button.classList.remove('opacity-50', 'cursor-not-allowed');
+      }
+    };
+    
+    window.disableButton = function(buttonId) {
+      if (button.id === buttonId) {
+        button.disabled = true;
+        button.classList.add('opacity-50', 'cursor-not-allowed');
+      }
+    };
+    
+  } catch (error) {
+    console.error('Error initializing Button component:', error);
+  }
+})();
+</script>

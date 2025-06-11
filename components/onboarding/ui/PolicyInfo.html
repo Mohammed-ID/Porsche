@@ -1,0 +1,107 @@
+<!-- 
+  PolicyInfo Component
+  Displays policy information in a grid
+  
+  Usage: 
+  <div id="policy-info-container" 
+       data-component="components/onboarding/ui/PolicyInfo.html"
+       data-param-policyNumber="POR-123456789"
+       data-param-effectiveDate="January 1, 2025"
+       data-param-coveragePlan="Preferred Plan"
+       data-param-monthlyPremium="$189.00"></div>
+  
+  Parameters:
+  - policyNumber: Policy number (required)
+  - effectiveDate: Effective date (required)
+  - coveragePlan: Coverage plan (required)
+  - monthlyPremium: Monthly premium (required)
+  - additionalInfo: JSON string with additional fields to display (optional)
+-->
+
+<div class="policy-info-component bg-gray-100 rounded-md p-6 mb-8 text-left animate-scale">
+  <h3 class="font-semibold mb-3">Policy Information</h3>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div>
+      <p class="text-sm text-gray-600">Policy Number</p>
+      <p class="font-medium">{{policyNumber}}</p>
+    </div>
+    <div>
+      <p class="text-sm text-gray-600">Effective Date</p>
+      <p class="font-medium">{{effectiveDate}}</p>
+    </div>
+    <div>
+      <p class="text-sm text-gray-600">Coverage Plan</p>
+      <p class="font-medium">{{coveragePlan}}</p>
+    </div>
+    <div>
+      <p class="text-sm text-gray-600">Monthly Premium</p>
+      <p class="font-medium">{{monthlyPremium}}</p>
+    </div>
+    
+    {{#additionalInfo}}
+    <!-- Additional info fields will be added here -->
+    {{/additionalInfo}}
+  </div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get component element
+    const component = document.currentScript.parentElement;
+    
+    if (!component) return;
+    
+    // Add additional info if provided
+    const additionalInfoParam = '{{additionalInfo}}';
+    if (additionalInfoParam) {
+      try {
+        const additionalInfo = JSON.parse(additionalInfoParam.replace(/&quot;/g, '"'));
+        const grid = component.querySelector('.grid');
+        
+        if (grid && additionalInfo) {
+          // Add each additional field to the grid
+          Object.entries(additionalInfo).forEach(([key, value]) => {
+            const div = document.createElement('div');
+            
+            // Format key from camelCase to Title Case with spaces
+            const formattedKey = key
+              .replace(/([A-Z])/g, ' $1')
+              .replace(/^./, str => str.toUpperCase());
+            
+            div.innerHTML = `
+              <p class="text-sm text-gray-600">${formattedKey}</p>
+              <p class="font-medium">${value}</p>
+            `;
+            
+            grid.appendChild(div);
+          });
+        }
+      } catch (e) {
+        console.error('Failed to parse additionalInfo JSON:', e);
+      }
+    }
+    
+    // Expose update method
+    window.updatePolicyInfo = function(updates) {
+      Object.entries(updates).forEach(([key, value]) => {
+        // Find the element containing this info
+        const elements = component.querySelectorAll('.font-medium');
+        const labelElements = component.querySelectorAll('.text-gray-600');
+        
+        // Look for a matching label, then update its value
+        for (let i = 0; i < labelElements.length; i++) {
+          const label = labelElements[i].textContent;
+          if (label.toLowerCase().includes(key.toLowerCase())) {
+            elements[i].textContent = value;
+            break;
+          }
+        }
+      });
+    };
+    
+  } catch (error) {
+    console.error('Error initializing PolicyInfo component:', error);
+  }
+})();
+</script>

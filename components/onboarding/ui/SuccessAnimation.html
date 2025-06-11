@@ -1,0 +1,47 @@
+<!-- 
+  SuccessAnimation Component
+  A checkmark animation for success states
+  
+  Usage: 
+  <div id="success-animation-container" 
+       data-component="components/onboarding/ui/SuccessAnimation.html"
+       data-param-size="120"
+       data-param-color="#000000"></div>
+  
+  Parameters:
+  - size: Size of the animation in pixels (default: 120)
+  - color: Background color of the animation (default: "#000000")
+-->
+
+<div class="success-animation-component">
+  <div class="checkmark-circle" style="width: {{size}}px; height: {{size}}px;">
+    <div class="background" style="width: {{size}}px; height: {{size}}px; background: {{color}};"></div>
+    <div class="checkmark draw"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  try {
+    // Get component element
+    const component = document.currentScript.parentElement;
+    
+    if (!component) return;
+    
+    // When animation completes, dispatch an event
+    setTimeout(() => {
+      const animationCompleteEvent = new CustomEvent('animationComplete', {
+        bubbles: true,
+        detail: {
+          id: component.id,
+          type: 'success'
+        }
+      });
+      component.dispatchEvent(animationCompleteEvent);
+    }, 1200); // Animation takes about 1 second
+    
+  } catch (error) {
+    console.error('Error initializing SuccessAnimation component:', error);
+  }
+})();
+</script>

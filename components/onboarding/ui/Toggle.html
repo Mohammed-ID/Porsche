@@ -1,0 +1,102 @@
+<!-- 
+  Toggle Component
+  A custom styled toggle switch
+  
+  Usage: 
+  <div id="track-day-toggle-container" 
+       data-component="components/onboarding/ui/Toggle.html"
+       data-param-id="track-day-coverage"
+       data-param-label="Include Track Day Coverage"
+       data-param-checked="false"
+       data-param-helpText="Covers your vehicle during recreational track days and events"></div>
+  
+  Parameters:
+  - id: Toggle field ID (required)
+  - label: Field label text (required)
+  - checked: Whether toggle is initially checked (default: false)
+  - helpText: Additional helper text (optional)
+  - labelPosition: Position of the label (default: "left", options: "left", "right")
+-->
+
+<div class="form-control toggle-component mb-6">
+  <div class="flex {{#labelPosition}}{{#labelPosition}}justify-between{{/labelPosition}}{{/labelPosition}}{{^labelPosition}}justify-between{{/labelPosition}} items-center">
+    {{#labelPosition}}
+      {{#labelPosition}}
+        {{#if labelPosition === "right"}}
+          <label class="toggle-switch">
+            <input type="checkbox" id="{{id}}" {{#checked}}checked{{/checked}}>
+            <span class="toggle-slider"></span>
+          </label>
+          <label class="font-medium toggle-label" for="{{id}}">{{label}}</label>
+        {{else}}
+          <label class="font-medium toggle-label" for="{{id}}">{{label}}</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="{{id}}" {{#checked}}checked{{/checked}}>
+            <span class="toggle-slider"></span>
+          </label>
+        {{/if}}
+      {{/labelPosition}}
+    {{/labelPosition}}
+    
+    {{^labelPosition}}
+      <label class="font-medium toggle-label" for="{{id}}">{{label}}</label>
+      <label class="toggle-switch">
+        <input type="checkbox" id="{{id}}" {{#checked}}checked{{/checked}}>
+        <span class="toggle-slider"></span>
+      </label>
+    {{/labelPosition}}
+  </div>
+  {{#helpText}}
+  <p class="text-sm text-gray-600 mt-1">{{helpText}}</p>
+  {{/helpText}}
+</div>
+
+<script>
+(function() {
+  try {
+    // Get the component elements
+    const component = document.currentScript.parentElement;
+    const input = component.querySelector('input[type="checkbox"]');
+    
+    if (!input) return;
+    
+    // Add change event listener
+    input.addEventListener('change', function() {
+      // Dispatch change event to parent form
+      dispatchChangeEvent();
+    });
+    
+    // Dispatch change event
+    function dispatchChangeEvent() {
+      const changeEvent = new CustomEvent('toggleChange', {
+        bubbles: true,
+        detail: {
+          id: input.id,
+          checked: input.checked
+        }
+      });
+      
+      component.dispatchEvent(changeEvent);
+    }
+    
+    // Expose get/set methods to parent
+    window.getToggleState = function(toggleId) {
+      if (input.id === toggleId) {
+        return input.checked;
+      }
+      return null;
+    };
+    
+    window.setToggleState = function(toggleId, checked) {
+      if (input.id === toggleId && input) {
+        input.checked = checked;
+        // Dispatch change event
+        dispatchChangeEvent();
+      }
+    };
+    
+  } catch (error) {
+    console.error('Error initializing Toggle component:', error);
+  }
+})();
+</script>

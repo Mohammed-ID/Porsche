@@ -1,0 +1,83 @@
+<!-- 
+  BenefitCard Component
+  Usage: 
+  <div id="benefit-card-container" data-component="components/cards/BenefitCard.html" 
+       data-param-title="Performance Coverage"
+       data-param-imageSrc="img/1.png"
+       data-param-imageAlt="Performance Coverage"
+       data-param-translateKey="performance-coverage"
+       data-param-listItems='[
+         {"key": "track-day-insurance", "text": "Recreational track day insurance"},
+         {"key": "performance-parts", "text": "Performance parts coverage"},
+         {"key": "aftermarket-insurance", "text": "Aftermarket modifications insurance"},
+         {"key": "safe-driver", "text": "Safe driver discounts"}
+       ]'></div>
+-->
+<div class="benefit-card card-spacing">
+  <img
+    src="{{imageSrc}}"
+    alt="{{imageAlt}}"
+    width="400"
+    height="600"
+    loading="lazy"
+    decoding="async"
+    fetchpriority="low"
+  />
+  <div class="card-content">
+    <h3 class="text-lg xs:text-xl md:text-2xl font-bold mb-3 sm:mb-5" data-translate-key="{{translateKey}}">
+      {{title}}
+    </h3>
+    <ul class="benefit-list space-y-2 xs:space-y-3 mt-3 xs:mt-5">
+      <!-- List items will be inserted here by JavaScript -->
+    </ul>
+  </div>
+</div>
+
+<script>
+  (function() {
+    try {
+      // Parse the list items from the data-param-listItems attribute
+      const listItemsContainer = document.currentScript.parentElement.querySelector('.benefit-list');
+      const listItemsParam = '{{listItems}}';
+      
+      if (listItemsContainer && listItemsParam) {
+        let listItems;
+        
+        try {
+          listItems = JSON.parse(listItemsParam.replace(/&quot;/g, '"'));
+        } catch (e) {
+          console.error('Failed to parse list items JSON:', e);
+          return;
+        }
+        
+        // Generate the list items HTML
+        listItems.forEach(item => {
+          const li = document.createElement('li');
+          li.className = 'flex items-start';
+          
+          li.innerHTML = `
+            <div class="check-circle">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+            <span class="text-xs sm:text-sm" data-translate-key="${item.key}">${item.text}</span>
+          `;
+          
+          listItemsContainer.appendChild(li);
+        });
+      }
+    } catch (error) {
+      console.error('Error initializing BenefitCard component:', error);
+    }
+  })();
+</script>
